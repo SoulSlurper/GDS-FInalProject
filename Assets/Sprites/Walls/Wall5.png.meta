@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 87b7070546a0ac142954c17a422ad8b4
+guid: d08a9e3c541be1d4cb06bea311786096
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7617867864436919023
-    second: ReverseWall1_0
+      213: -5287073493741109268
+    second: Wall5_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -84,6 +84,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -100,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ReverseWall1_0
+      name: Wall5_0
       rect:
         serializedVersion: 2
         x: 0
@@ -114,8 +127,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 115bf5ad985e74690800000000000000
-      internalID: -7617867864436919023
+      spriteID: cef7d286baa80a6b0800000000000000
+      internalID: -5287073493741109268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall5_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51417160345ff264aa58477322419c92
+      internalID: -57069790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall5_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1adf0a9e3f98bc43bf7e039223d66f5
+      internalID: -367843225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall5_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d91d44ac07dd76042b4282ac7496a8ca
+      internalID: 838824284
       vertices: []
       indices: 
       edges: []
@@ -123,7 +199,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 18c9b5d3c4f1afc458b529e81482d6b5
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +207,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ReverseWall1_0: -7617867864436919023
+      Wall5_0: -5287073493741109268
+      Wall5_1: -57069790
+      Wall5_2: -367843225
+      Wall5_3: 838824284
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

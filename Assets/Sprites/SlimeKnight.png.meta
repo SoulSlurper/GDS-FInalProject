@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 857b56c3538ceb342a4a5cbb1b159a1d
+guid: 6d701a96bc9d24c40acc727338cc8c05
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3564510474238583178
-    second: ReverseWall3_0
+      213: -2794642300173142867
+    second: SlimeKnight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,20 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ReverseWall3_0
+      name: SlimeKnight_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 63
-        width: 37
-        height: 37
+        x: 22
+        y: 27
+        width: 56
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +127,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67e99d8fb90588ec0800000000000000
-      internalID: -3564510474238583178
+      spriteID: da436e772af6739d0800000000000000
+      internalID: -2794642300173142867
       vertices: []
       indices: 
       edges: []
@@ -130,8 +143,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      ReverseWall3_0: -3564510474238583178
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
