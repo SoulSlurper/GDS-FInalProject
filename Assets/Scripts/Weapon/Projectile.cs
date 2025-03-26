@@ -14,7 +14,7 @@ public class Projectile : Weapon
         transform.position += transform.right * speed * Time.deltaTime;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         //this ensures the the projectile will always be destroyed upon contact
 
@@ -26,7 +26,7 @@ public class Projectile : Weapon
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         //this triggers the projectile to attack
 

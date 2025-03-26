@@ -9,11 +9,19 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float damage;
     //[SerializeField] private float healthCost; //the amount of health taken when the player creates the weapon
 
+    private bool isAttacking = false;
+
     public WeaponType GetWeaponType() { return type; }
 
     public float GetDamage() { return damage; }
 
     public void SetDamage(float damage) { this.damage = damage; }
+
+    //public float GetHealthCost() { return healthCost; }
+
+    //public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
+
+    public bool IsAttacking() { return isAttacking; }
 
     public void WeaponFaceMouse()
     {
@@ -21,7 +29,20 @@ public class Weapon : MonoBehaviour
         transform.right = mousePosition - (Vector2)transform.position;
     }
 
-    //public float GetHealthCost() { return healthCost; }
+    public bool CanAttack()
+    {
+        int mouseCode = 0; //for left mouse clicks
 
-    //public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
+        if (Input.GetMouseButtonDown(mouseCode))
+        {
+            isAttacking = true;
+        }
+        else if (Input.GetMouseButtonUp(mouseCode))
+        {
+            isAttacking = false;
+        }
+
+        return isAttacking;
+    }
+
 }

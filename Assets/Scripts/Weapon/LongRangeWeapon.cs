@@ -61,22 +61,6 @@ public class LongRangeWeapon : Weapon
         Debug.Log("Projectile Speed: " + newPComponent.GetProjectileSpeed());
     }
 
-    public bool CanAttack()
-    {
-        int mouseCode = 0; //for left mouse clicks
-
-        if (Input.GetMouseButtonDown(mouseCode))
-        { 
-            triggerAttack = true; 
-        }
-        else if (Input.GetMouseButtonUp(mouseCode)) 
-        { 
-            triggerAttack = false; 
-        }
-
-        return triggerAttack;
-    }
-
     private void ResetProjectileDelay()
     {
         timerDelay = launchDelay + 1f;
