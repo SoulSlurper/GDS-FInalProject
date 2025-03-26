@@ -24,7 +24,7 @@ public class LongRangeWeapon : Weapon
 
     void Update()
     {
-        FaceMouse();
+        WeaponFaceMouse();
 
         if (CanAttack())
         {
@@ -34,12 +34,6 @@ public class LongRangeWeapon : Weapon
         {
             ResetProjectileDelay();
         }
-    }
-
-    private void FaceMouse()
-    {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.right = mousePosition - (Vector2)transform.position;
     }
 
     private void Attack()

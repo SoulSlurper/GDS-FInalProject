@@ -15,6 +15,12 @@ public class Weapon : MonoBehaviour
 
     public void SetDamage(float damage) { this.damage = damage; }
 
+    public void WeaponFaceMouse()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.right = mousePosition - (Vector2)transform.position;
+    }
+
     //public float GetHealthCost() { return healthCost; }
 
     //public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
