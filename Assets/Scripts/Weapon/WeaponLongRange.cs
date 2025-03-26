@@ -24,7 +24,9 @@ public class WeaponLongRange : Weapon
 
     void Update()
     {
-        if (CanAttack(KeyCode.Return))
+        FaceMouse();
+
+        if (CanAttack())
         {
             Attack();
         }
@@ -34,7 +36,13 @@ public class WeaponLongRange : Weapon
         }
     }
 
-    public void Attack()
+    private void FaceMouse()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.right = mousePosition - (Vector2)transform.position;
+    }
+
+    private void Attack()
     {
         if (timerDelay > launchDelay)
         {
@@ -59,13 +67,15 @@ public class WeaponLongRange : Weapon
         Debug.Log("Projectile Speed: " + newPComponent.GetProjectileSpeed());
     }
 
-    public bool CanAttack(KeyCode keycode)
+    public bool CanAttack()
     {
-        if (Input.GetKeyDown(keycode)) 
+        int mouseCode = 0; //for left mouse clicks
+
+        if (Input.GetMouseButtonDown(mouseCode))
         { 
             triggerAttack = true; 
         }
-        else if (Input.GetKeyUp(keycode)) 
+        else if (Input.GetMouseButtonDown(mouseCode)) 
         { 
             triggerAttack = false; 
         }

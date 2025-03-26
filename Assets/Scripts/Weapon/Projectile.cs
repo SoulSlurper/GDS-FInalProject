@@ -11,7 +11,7 @@ public class Projectile : Weapon
 
     void Update()
     {
-        transform.position += -transform.right * speed * Time.deltaTime;
+        transform.position += transform.right * speed * Time.deltaTime;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
