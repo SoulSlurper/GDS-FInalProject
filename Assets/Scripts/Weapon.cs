@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private WeaponType weaponType;
-    [SerializeField] private float weaponDamage;
-    [SerializeField] private float weaponHealthCost;
+    [Header("Weapon Details")]
+    [SerializeField] private WeaponType type;
+    [SerializeField] private float damage;
+    [SerializeField] private float healthCost;
+
+    public WeaponType GetWeaponType() { return type; }
+
+    public float GetDamage() { return damage; }
+
+    public void SetDamage(float damage) { this.damage = damage; }
+
+    public float GetHealthCost() { return healthCost; }
+
+    public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
 
     public virtual void AttackEnemy()
     {
