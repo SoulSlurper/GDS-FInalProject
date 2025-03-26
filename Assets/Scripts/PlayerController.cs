@@ -45,13 +45,13 @@ public class PlayerController : MonoBehaviour
         // Flip sprite direction
         if (moveInput > 0)
         {
-            //sprite.flipX = false;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            //sprite.flipX = true;
+            transform.rotation = Quaternion.identity;
         }
         else if (moveInput < 0)
         {
-            //sprite.flipX = true;
-            transform.rotation = Quaternion.identity;
+            //sprite.flipX = false;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
         UpdateAnimations();
