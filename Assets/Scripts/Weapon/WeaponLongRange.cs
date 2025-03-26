@@ -75,7 +75,7 @@ public class WeaponLongRange : Weapon
         { 
             triggerAttack = true; 
         }
-        else if (Input.GetMouseButtonDown(mouseCode)) 
+        else if (Input.GetMouseButtonUp(mouseCode)) 
         { 
             triggerAttack = false; 
         }

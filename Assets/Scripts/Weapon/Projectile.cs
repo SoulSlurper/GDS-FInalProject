@@ -14,22 +14,24 @@ public class Projectile : Weapon
         transform.position += transform.right * speed * Time.deltaTime;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        Debug.Log("trigger tag: " + collision.gameObject.tag);
+
+        if (collision.CompareTag("Enemy"))
         {
             Attack(collision);
         }
 
-        if (!collision.gameObject.CompareTag("Weapon")) //needs to have a Weapon tag so that it doesn't get destroyed when two projectiles make contact
+        if (!collision.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
         }
     }
 
-    private void Attack(Collision2D collision)
+    private void Attack(Collider2D collision)
     {
-        collision.gameObject.GetComponent<Status>().DecreaseHealth(GetDamage());
+        collision.GetComponent<Status>().DecreaseHealth(GetDamage());
     }
 
     public float GetProjectileSpeed() { return speed; }
