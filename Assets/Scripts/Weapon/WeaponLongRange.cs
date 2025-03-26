@@ -10,7 +10,7 @@ public class WeaponLongRange : Weapon
     [SerializeField] private float launchDelay; //the time taken for the projectile to appear
     [SerializeField] private float speed = 1f;
 
-    private float timeDelay = 0f;
+    private float timerDelay = 0f;
     private bool triggerAttack = false;
 
     void Start()
@@ -24,9 +24,9 @@ public class WeaponLongRange : Weapon
 
     void Update()
     {
-        if (CanAttackEnemy(KeyCode.Return))
+        if (CanAttack(KeyCode.Return))
         {
-            AttackEnemy();
+            Attack();
         }
         else
         {
@@ -34,17 +34,17 @@ public class WeaponLongRange : Weapon
         }
     }
 
-    public override void AttackEnemy()
+    public void Attack()
     {
-        if (timeDelay > launchDelay)
+        if (timerDelay > launchDelay)
         {
             SpawnProjectile();
 
-            timeDelay = 0f;
+            timerDelay = 0f;
         }
         else
         {
-            timeDelay += Time.deltaTime;
+            timerDelay += Time.deltaTime;
         }
     }
 
@@ -59,7 +59,7 @@ public class WeaponLongRange : Weapon
         Debug.Log("Projectile Speed: " + newPComponent.GetProjectileSpeed());
     }
 
-    private bool CanAttackEnemy(KeyCode keycode)
+    public bool CanAttack(KeyCode keycode)
     {
         if (Input.GetKeyDown(keycode)) 
         { 
@@ -75,6 +75,6 @@ public class WeaponLongRange : Weapon
 
     private void ResetProjectileDelay()
     {
-        timeDelay = launchDelay + 1f;
+        timerDelay = launchDelay + 1f;
     }
 }

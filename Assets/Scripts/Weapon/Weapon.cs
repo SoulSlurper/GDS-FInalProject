@@ -7,7 +7,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Details")]
     [SerializeField] private WeaponType type;
     [SerializeField] private float damage;
-    [SerializeField] private float healthCost;
+    //[SerializeField] private float healthCost; //the amount of health taken when the player creates the weapon
 
     public WeaponType GetWeaponType() { return type; }
 
@@ -15,17 +15,7 @@ public class Weapon : MonoBehaviour
 
     public void SetDamage(float damage) { this.damage = damage; }
 
-    public float GetHealthCost() { return healthCost; }
+    //public float GetHealthCost() { return healthCost; }
 
-    public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
-
-    public virtual void AttackEnemy()
-    {
-        Debug.Log("Attack Enemy");
-    }
-
-    public virtual void AttackEnemy(Collider2D collision)
-    {
-        Debug.Log("Attack Enemy");
-    }
+    //public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
 }
