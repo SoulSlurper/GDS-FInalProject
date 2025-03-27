@@ -7,10 +7,12 @@ public class SoundManager : MonoBehaviour
     private AudioSource audioSource; // Audio source for playing sounds
     private GameObject player; // Reference to the player GameObject
     private bool isWalking = false; // To check if the player is walking
+    private bool isGrounded = true; // To check if the player is grounded
+    private bool hasJumped = false; // To ensure the jump sound plays only once
     private float targetVolume = 0.5f; // Reduced volume (half of 1)
     private float maxPlayerSpeed = 5f; // Max speed of the player for volume scaling
     private float speedThreshold = 0.1f; // Speed threshold for movement detection
-    private bool isGrounded = true; // To check if the player is grounded
+    private Rigidbody2D rb; // Reference to the Rigidbody2D of the player
 
     private void Start()
     {
@@ -24,33 +26,33 @@ public class SoundManager : MonoBehaviour
 
         // Get the AudioSource component on the same GameObject
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = 0; // Start with volume off
+        audioSource.volume = targetVolume; // Start with walk sound volume
+
+        // Get the Rigidbody2D component for velocity checking
+        rb = player.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         if (player != null)
         {
-            // Check if the player is moving using their velocity (for smoother detection)
-            float playerSpeed = player.GetComponent<Rigidbody2D>().velocity.magnitude; // Get the speed of the player
+            // Check if the player is moving using WASD (Horizontal and Vertical input)
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            float verticalInput = Input.GetAxisRaw("Vertical");
+            bool isPlayerMoving = Mathf.Abs(horizontalInput) > speedThreshold || Mathf.Abs(verticalInput) > speedThreshold;
 
-            // Check if player is moving and update sound accordingly
-            if (playerSpeed > speedThreshold) // Consider the player is moving if their speed is above the threshold
+            // Handle walking sound based on player's movement
+            if (isPlayerMoving && isGrounded) // Only play walk sound if grounded and moving
             {
                 if (!isWalking)
                 {
                     isWalking = true;
                     PlayWalkSound();
                 }
-                else
-                {
-                    // Adjust sound volume based on player speed
-                    audioSource.volume = Mathf.Lerp(audioSource.volume, targetVolume * Mathf.Clamp01(playerSpeed / maxPlayerSpeed), Time.deltaTime * 5f);
-                }
             }
             else
             {
-                // Stop the walking sound immediately when the player stops moving
+                // Stop the walking sound when the player stops moving
                 if (isWalking)
                 {
                     isWalking = false;
@@ -59,9 +61,10 @@ public class SoundManager : MonoBehaviour
             }
 
             // Check if the player is jumping and is grounded
-            if (Input.GetButtonDown("Jump") && isGrounded) // You can replace this with your jump condition
+            if (Input.GetButtonDown("Jump") && isGrounded && !hasJumped) // Ensure the jump sound plays only once per jump
             {
                 isGrounded = false; // Player is no longer grounded after jumping
+                hasJumped = true; // Mark that the player has jumped
                 StopWalkSound(); // Stop walk sound immediately when jumping
                 PlayJumpSound(); // Play jump sound
             }
@@ -75,7 +78,6 @@ public class SoundManager : MonoBehaviour
         {
             audioSource.clip = walkSound;
             audioSource.loop = true; // Loop the walking sound while player moves
-            audioSource.volume = targetVolume; // Set volume to target immediately
             audioSource.Play();
         }
     }
@@ -83,33 +85,44 @@ public class SoundManager : MonoBehaviour
     // Function to stop the walking sound
     private void StopWalkSound()
     {
-        audioSource.Stop(); // Stop the walking sound immediately
+        if (audioSource.isPlaying && audioSource.clip == walkSound)
+        {
+            audioSource.Stop(); // Stop the walking sound immediately
+        }
     }
 
-    // Function to play the jump sound
+    // Function to play the jump sound (ensure it only plays once per jump)
     private void PlayJumpSound()
     {
-        if (jumpSound != null)
+        if (jumpSound != null && !audioSource.isPlaying)
         {
             audioSource.clip = jumpSound;
-            audioSource.volume = targetVolume; // Set volume to target immediately
+            audioSource.loop = false; // Ensure jump sound does not loop
             audioSource.Play();
         }
     }
 
-    // You should update the ground check based on your own system.
-    // For now, this is a simple check based on the player's vertical velocity.
+    // Check for when the player is grounded and moving with WASD again
     private void FixedUpdate()
     {
         if (player != null)
         {
             // Assuming the player has a Rigidbody2D component and falls under gravity
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-
-            // Check if the player is grounded by looking at the velocity
-            if (rb.velocity.y == 0)
+            if (rb.velocity.y == 0) // Grounded check (no vertical velocity)
             {
                 isGrounded = true; // Player is grounded when vertical velocity is zero
+
+                // Reset the jump flag once grounded, so the jump sound can play again next time
+                if (hasJumped)
+                {
+                    hasJumped = false; // Reset jump flag when player lands
+                }
+
+                // Resume walk sound if the player is grounded and moving
+                if (isWalking && !audioSource.isPlaying && audioSource.clip != walkSound) // If the player is walking and sound is not playing, resume walk sound
+                {
+                    PlayWalkSound();
+                }
             }
             else
             {

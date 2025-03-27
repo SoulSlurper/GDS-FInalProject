@@ -25234,7 +25234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 961719621}
   - component: {fileID: 961719623}
-  - component: {fileID: 961719622}
+  - component: {fileID: 961719624}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -25257,7 +25257,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &961719622
+--- !u!114 &961719623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961719619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fc576fbe4eaf042945e79bf94f0eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSound: {fileID: 8300000, guid: 57b666e5e4e1481499f7ccde08164c1f, type: 3}
+  jumpSound: {fileID: 8300000, guid: 2b5e640f6c7dd0c4cb74d9a087c571bc, type: 3}
+--- !u!82 &961719624
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25267,8 +25281,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: eae93257c2821644e8d643abcb74fc91, type: 3}
-  m_Resource: {fileID: 8300000, guid: eae93257c2821644e8d643abcb74fc91, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -25354,22 +25368,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &961719623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961719619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fc576fbe4eaf042945e79bf94f0eda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 961719622}
-  walkClip: {fileID: 8300000, guid: fabfde925bbaf5e4f9167905e849fbbd, type: 3}
-  jumpClip: {fileID: 8300000, guid: 2b5e640f6c7dd0c4cb74d9a087c571bc, type: 3}
-  walkSoundThreshold: 0.1
 --- !u!1001 &961950837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58637,7 +58635,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!4 &6462264909538255604
 Transform:
