@@ -51311,7 +51311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1868062179
 Transform:
   m_ObjectHideFlags: 0
@@ -51394,7 +51394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908b96fcd28383948a3f13c50431d0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   damage: 10
   attackContinously: 1
   attackDelay: 1
@@ -58985,7 +58985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9a33240c6da62409052e64eb7cc4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 1
+  selectedWeapon: 2
 --- !u!1 &3933571439006127046
 GameObject:
   m_ObjectHideFlags: 0
