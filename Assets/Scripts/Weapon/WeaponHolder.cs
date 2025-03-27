@@ -18,11 +18,16 @@ public class WeaponHolder : MonoBehaviour
 
     void Start()
     {
-        SelectWeapon();
+        SelectWeapon(selectedWeapon);
     }
 
     void Update()
     {
+        if (ScrollWeaponIndex())
+        {
+            Debug.Log("weaponIndex: " + weaponIndex);
+        }
+
         WeaponFacePointer();
     }
 
@@ -42,8 +47,7 @@ public class WeaponHolder : MonoBehaviour
     {
         for (int i = 0; i < weapons.Count; i++)
         {
-            if (i != previousWeaponIndex 
-                && weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
+            if (weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
             {
                 previousWeaponIndex = weaponIndex;
                 weaponIndex = i;
@@ -55,14 +59,54 @@ public class WeaponHolder : MonoBehaviour
         return false;
     }
 
-    private void SelectWeapon()
+    private bool FindWeapon(int index)
     {
-        if (FindWeapon(selectedWeapon))
+        for (int i = 0; i < weapons.Count; i++)
         {
-            weapons[weaponIndex].SetActive(true);
+            if (i != previousWeaponIndex && i == index)
+            {
+                previousWeaponIndex = weaponIndex;
+                weaponIndex = i;
+
+                return true;
+            }
         }
 
-        Debug.Log("yes");
+        return false;
+    }
+
+    private void SelectWeapon(WeaponType type)
+    {
+        if (FindWeapon(type))
+        {
+            weapons[weaponIndex].SetActive(true);
+
+            selectedWeapon = type;
+        }
+    }
+
+    //increases and decreases the weaponIndex int by the mouse scroll, which returns true if the scroll is performed
+    private bool ScrollWeaponIndex()
+    {
+        int maxIndex = weapons.Count - 1;
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        {
+            if (weaponIndex >= maxIndex) weaponIndex = 0;
+            else weaponIndex++;
+
+            return true;
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        {
+            if (weaponIndex <= 0) weaponIndex = maxIndex;
+            else weaponIndex--;
+
+            return true;
+        }
+
+        return false;
     }
 
     private Vector2 FacePointerPosition()
