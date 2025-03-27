@@ -44383,7 +44383,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 5213229242370633579, guid: eecc03900de73c24f9dc6717043370a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -58108,7 +58108,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   smoothMovementTime: 0.05
-  animator: {fileID: 1971949102}
 --- !u!1 &2030965939695923531
 GameObject:
   m_ObjectHideFlags: 0
@@ -58172,7 +58171,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 8865208874398379130, guid: ac0d96665a9503440bdb795d79bdc8ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
