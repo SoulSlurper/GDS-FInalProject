@@ -13,18 +13,6 @@ public class Projectile : Weapon
         transform.position += transform.right * speed * Time.deltaTime;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        //this ensures the the projectile will always be destroyed upon contact
-
-        Debug.Log("collision tag: " + collision.gameObject.tag);
-
-        if (!collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         //this triggers the projectile to attack
