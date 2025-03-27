@@ -50296,8 +50296,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1868062179}
   - component: {fileID: 1868062180}
-  - component: {fileID: 1868062181}
   - component: {fileID: 1868062182}
+  - component: {fileID: 1868062181}
   m_Layer: 0
   m_Name: SlimeKnightSword
   m_TagString: Weapon
@@ -50389,9 +50389,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   damage: 10
-  animator: {fileID: 1868062182}
   attackContinously: 1
   attackDelay: 1
+  animator: {fileID: 1868062182}
   raycastCircleOrigin: {fileID: 1700105202}
   raycastCircleRadius: 0.2
 --- !u!95 &1868062182
@@ -57663,6 +57663,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3418209798168539286}
+  - component: {fileID: 3418209798168539287}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -57693,7 +57694,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2512590788570698447}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.25, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
@@ -57702,6 +57703,18 @@ Transform:
   - {fileID: 622537277}
   m_Father: {fileID: 6462264909538255604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3418209798168539287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512590788570698447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9a33240c6da62409052e64eb7cc4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3933571439006127046
 GameObject:
   m_ObjectHideFlags: 0

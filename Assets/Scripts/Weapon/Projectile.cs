@@ -15,8 +15,6 @@ public class Projectile : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //this triggers the projectile to attack
-
         Debug.Log("trigger tag: " + collision.gameObject.tag);
 
         if (collision.CompareTag("Enemy"))

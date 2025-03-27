@@ -5,6 +5,7 @@ using UnityEngine;
 public class CloseRangeWeapon : Weapon
 {
     [Header("Close Range Details")]
+    [SerializeField] private Animator animator;
     [SerializeField] private Transform raycastCircleOrigin;
     [SerializeField] private float raycastCircleRadius;
 
@@ -15,8 +16,6 @@ public class CloseRangeWeapon : Weapon
 
     void Update()
     {
-        WeaponFaceMouse();
-
         if (CanAttack())
         {
             Attack();
@@ -42,7 +41,7 @@ public class CloseRangeWeapon : Weapon
         {
             MakeDamage();
 
-            GetAnimator().GetComponent<Animator>().SetTrigger("Attack");
+            animator.SetTrigger("Attack");
 
             SetAttackTimer(0f);
         }

@@ -17,8 +17,6 @@ public class LongRangeWeapon : Weapon
 
     void Update()
     {
-        WeaponFaceMouse();
-
         if (CanAttack())
         {
             Attack();

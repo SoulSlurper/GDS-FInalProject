@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Details")]
     [SerializeField] private WeaponType type;
     [SerializeField] private float damage;
-    [SerializeField] private Animator animator;
+    //[SerializeField] private Animator animator;
 
     [Header("Attack Details")]
     [SerializeField] private bool attackContinously = false;
@@ -24,7 +24,7 @@ public class Weapon : MonoBehaviour
 
     public void SetDamage(float damage) { this.damage = damage; }
 
-    public Animator GetAnimator() { return animator; }
+    //public Animator GetAnimator() { return animator; }
 
     // Attack time functions // // // // //
     public float GetAttackDelay() { return attackDelay; }
@@ -62,11 +62,4 @@ public class Weapon : MonoBehaviour
         return isAttacking;
     }
     public bool IsAttacking() { return isAttacking; }
-
-    // Other functions // // // // //
-    public void WeaponFaceMouse()
-    {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.right = mousePosition - (Vector2)transform.position;
-    }
 }
