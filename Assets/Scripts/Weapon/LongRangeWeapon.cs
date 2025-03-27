@@ -11,7 +11,6 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private float speed = 1f;
 
     private float timerDelay = 0f;
-    private bool triggerAttack = false;
 
     void Start()
     {

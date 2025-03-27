@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   damage: 10
+  attackContinously: 1
   projectile: {fileID: 0}
   launchOffLocation: {fileID: 5652273744297220474}
   launchDelay: 1

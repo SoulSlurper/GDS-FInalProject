@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Details")]
     [SerializeField] private WeaponType type;
     [SerializeField] private float damage;
+    [SerializeField] private bool attackContinously = false;
     //[SerializeField] private float healthCost; //the amount of health taken when the player creates the weapon
 
     private bool isAttacking = false;
@@ -38,6 +39,10 @@ public class Weapon : MonoBehaviour
             isAttacking = true;
         }
         else if (Input.GetMouseButtonUp(mouseCode))
+        {
+            isAttacking = false;
+        }
+        else if (isAttacking && !attackContinously)
         {
             isAttacking = false;
         }
