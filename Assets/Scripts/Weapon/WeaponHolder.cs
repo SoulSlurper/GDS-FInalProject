@@ -23,9 +23,10 @@ public class WeaponHolder : MonoBehaviour
 
     void Update()
     {
-        if (ScrollWeaponIndex())
+        if (ChangeWeaponIndex())
         {
-            Debug.Log("weaponIndex: " + weaponIndex);
+            //Debug.Log("weaponIndex: " + weaponIndex);
+            ChangeWeapons();
         }
 
         WeaponFacePointer();
@@ -49,7 +50,6 @@ public class WeaponHolder : MonoBehaviour
         {
             if (weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
             {
-                previousWeaponIndex = weaponIndex;
                 weaponIndex = i;
 
                 return true;
@@ -59,13 +59,12 @@ public class WeaponHolder : MonoBehaviour
         return false;
     }
 
-    private bool FindWeapon(int index)
+    private bool FindDifferentWeapon(int index)
     {
         for (int i = 0; i < weapons.Count; i++)
         {
             if (i != previousWeaponIndex && i == index)
             {
-                previousWeaponIndex = weaponIndex;
                 weaponIndex = i;
 
                 return true;
@@ -73,25 +72,47 @@ public class WeaponHolder : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void SelectWeapon()
+    {
+        weapons[weaponIndex].SetActive(true);
+
+        selectedWeapon = weapons[weaponIndex].GetComponent<Weapon>().GetWeaponType();
     }
 
     private void SelectWeapon(WeaponType type)
     {
         if (FindWeapon(type))
         {
-            weapons[weaponIndex].SetActive(true);
-
-            selectedWeapon = type;
+            SelectWeapon();
         }
     }
 
+    private void SelectWeapon(int index)
+    {
+        if (FindDifferentWeapon(index))
+        {
+            SelectWeapon();
+        }
+    }
+
+    private void DeselectWeapon()
+    {
+        weapons[previousWeaponIndex].SetActive(false);
+
+        selectedWeapon = WeaponType.None;
+    }
+
     //increases and decreases the weaponIndex int by the mouse scroll, which returns true if the scroll is performed
-    private bool ScrollWeaponIndex()
+    private bool ChangeWeaponIndex()
     {
         int maxIndex = weapons.Count - 1;
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
+            previousWeaponIndex = weaponIndex;
+
             if (weaponIndex >= maxIndex) weaponIndex = 0;
             else weaponIndex++;
 
@@ -100,6 +121,8 @@ public class WeaponHolder : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
+            previousWeaponIndex = weaponIndex;
+
             if (weaponIndex <= 0) weaponIndex = maxIndex;
             else weaponIndex--;
 
@@ -107,6 +130,12 @@ public class WeaponHolder : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void ChangeWeapons()
+    {
+        DeselectWeapon();
+        SelectWeapon(weaponIndex);
     }
 
     private Vector2 FacePointerPosition()
