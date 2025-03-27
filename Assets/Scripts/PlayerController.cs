@@ -84,8 +84,15 @@ public class SlimeKnightController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            animator.SetBool(IS_JUMPING, true);
         }
-        
+
+        if (!Input.GetButtonDown("Jump"))
+        {
+            animator.SetBool(IS_JUMPING, false);
+        }
+
+
         // Better jump physics
         if (rb.velocity.y < 0)
         {
@@ -186,7 +193,6 @@ public class SlimeKnightController : MonoBehaviour
         // Set all animation states based on current physics state
         animator.SetBool(IS_GROUNDED, isGrounded);
         animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
-        animator.SetBool(IS_JUMPING, rb.velocity.y > 0.1f && !isGrounded);
         animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
     }
     
