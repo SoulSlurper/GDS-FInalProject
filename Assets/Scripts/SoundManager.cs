@@ -16,38 +16,51 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        // Find the player object in the scene (assuming it has the "Player" tag)
+        // Find the player prefab in the scene (assuming it has the "Player" tag)
         player = GameObject.FindWithTag("Player");
 
         if (player == null)
         {
             Debug.LogWarning("No object with the 'Player' tag found in the scene.");
+            return;
         }
 
-        // Get the AudioSource component on the same GameObject
-        audioSource = GetComponent<AudioSource>();
-        audioSource.volume = targetVolume; // Start with walk sound volume
+        // Get the AudioSource component on the player prefab
+        audioSource = player.GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("No AudioSource component found on the player prefab.");
+            return;
+        }
 
         // Get the Rigidbody2D component for velocity checking
         rb = player.GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            Debug.LogError("No Rigidbody2D component found on the player prefab.");
+            return;
+        }
     }
 
     private void Update()
     {
-        if (player != null)
+        if (player != null && audioSource != null && rb != null)
         {
-            // Check if the player is moving using WASD (Horizontal and Vertical input)
-            float horizontalInput = Input.GetAxisRaw("Horizontal");
-            float verticalInput = Input.GetAxisRaw("Vertical");
-            bool isPlayerMoving = Mathf.Abs(horizontalInput) > speedThreshold || Mathf.Abs(verticalInput) > speedThreshold;
+            // Check if the player is moving using their velocity (for smoother detection)
+            float playerSpeed = rb.velocity.magnitude; // Get the speed of the player
 
             // Handle walking sound based on player's movement
-            if (isPlayerMoving && isGrounded) // Only play walk sound if grounded and moving
+            if (playerSpeed > speedThreshold) // Consider the player is moving if their speed is above the threshold
             {
-                if (!isWalking)
+                if (!isWalking && isGrounded) // Only play walk sound if grounded
                 {
                     isWalking = true;
                     PlayWalkSound();
+                }
+                else
+                {
+                    // Adjust sound volume based on player speed
+                    audioSource.volume = Mathf.Lerp(audioSource.volume, targetVolume * Mathf.Clamp01(playerSpeed / maxPlayerSpeed), Time.deltaTime * 5f);
                 }
             }
             else
@@ -78,6 +91,7 @@ public class SoundManager : MonoBehaviour
         {
             audioSource.clip = walkSound;
             audioSource.loop = true; // Loop the walking sound while player moves
+            audioSource.volume = targetVolume; // Set volume to target immediately
             audioSource.Play();
         }
     }
@@ -91,43 +105,38 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // Function to play the jump sound (ensure it only plays once per jump)
+    // Function to play the jump sound (one-time only)
     private void PlayJumpSound()
     {
         if (jumpSound != null && !audioSource.isPlaying)
         {
             audioSource.clip = jumpSound;
-            audioSource.loop = false; // Ensure jump sound does not loop
+            audioSource.loop = false; // Ensure jump sound doesn't loop
+            audioSource.volume = targetVolume; // Set volume to target immediately
             audioSource.Play();
         }
     }
 
-    // Check for when the player is grounded and moving with WASD again
+    // Check if grounded based on vertical velocity
     private void FixedUpdate()
     {
-        if (player != null)
+        if (rb.velocity.y == 0) // If vertical velocity is zero, player is grounded
         {
-            // Assuming the player has a Rigidbody2D component and falls under gravity
-            if (rb.velocity.y == 0) // Grounded check (no vertical velocity)
+            if (!isGrounded)
             {
-                isGrounded = true; // Player is grounded when vertical velocity is zero
-
-                // Reset the jump flag once grounded, so the jump sound can play again next time
-                if (hasJumped)
-                {
-                    hasJumped = false; // Reset jump flag when player lands
-                }
+                isGrounded = true; // Player is grounded
+                hasJumped = false; // Reset jump flag after landing
 
                 // Resume walk sound if the player is grounded and moving
-                if (isWalking && !audioSource.isPlaying && audioSource.clip != walkSound) // If the player is walking and sound is not playing, resume walk sound
+                if (isWalking && !audioSource.isPlaying) // If the player is walking and sound is not playing, resume walk sound
                 {
                     PlayWalkSound();
                 }
             }
-            else
-            {
-                isGrounded = false; // Player is not grounded when moving vertically
-            }
+        }
+        else
+        {
+            isGrounded = false; // Player is not grounded when moving vertically
         }
     }
 }
