@@ -58108,6 +58108,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   smoothMovementTime: 0.05
+  animator: {fileID: 1971949102}
 --- !u!1 &2030965939695923531
 GameObject:
   m_ObjectHideFlags: 0

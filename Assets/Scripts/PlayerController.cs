@@ -32,7 +32,7 @@ public class SlimeKnightController : MonoBehaviour
     private Vector2 velocity = Vector2.zero;
     private bool facingRight = true;
     private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    public Animator animator;
     
     // Physics materials
     private PhysicsMaterial2D noFriction;
@@ -79,13 +79,23 @@ public class SlimeKnightController : MonoBehaviour
     {
         // Get horizontal input
         horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        animator.SetFloat("IsRunning", Mathf.Abs(horizontalInput));
         
         // Jump input
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            animator.SetBool(IS_JUMPING, true);
         }
-        
+
+        if(isGrounded == true)
+        {
+            animator.SetBool(IS_JUMPING, false);
+        }
+
+
+
         // Better jump physics
         if (rb.velocity.y < 0)
         {
@@ -96,7 +106,6 @@ public class SlimeKnightController : MonoBehaviour
             if (animator != null)
             {
                 animator.SetBool(IS_FALLING, true);
-                animator.SetBool(IS_JUMPING, false);
             }
         }
         else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
@@ -107,7 +116,6 @@ public class SlimeKnightController : MonoBehaviour
             // Set jumping animation
             if (animator != null)
             {
-                animator.SetBool(IS_JUMPING, true);
                 animator.SetBool(IS_FALLING, false);
             }
         }
