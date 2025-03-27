@@ -1,16 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationButton : MonoBehaviour
 {
     [Header("Animation Settings")]
     [SerializeField] private Animator targetAnimator;
-    [SerializeField] private string stateParameter = "On"; // Single boolean parameter
+    [SerializeField] private string stateParameter = "On";
     [SerializeField] private bool toggleMode = true;
+
+    [Header("Collider Settings")]
+    [SerializeField] private Collider2D doorCollider; // Assign the door's collider here
+    private bool originalColliderEnabled; // To remember initial state
 
     private bool isOn = false;
     private int objectsOnButton = 0;
+
+    private void Start()
+    {
+        // Store the initial collider state
+        if (doorCollider != null)
+        {
+            originalColliderEnabled = doorCollider.enabled;
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -58,6 +69,24 @@ public class AnimationButton : MonoBehaviour
         {
             isOn = newState;
             targetAnimator.SetBool(stateParameter, isOn);
+
+            // Handle collider state
+            UpdateColliderState();
         }
+    }
+
+    private void UpdateColliderState()
+    {
+        if (doorCollider != null)
+        {
+            // Disable collider when door is open, restore to original state when closed
+            doorCollider.enabled = !isOn && originalColliderEnabled;
+        }
+    }
+
+    // For external control if needed
+    public void ForceSetState(bool openState)
+    {
+        SetState(openState);
     }
 }

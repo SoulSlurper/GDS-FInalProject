@@ -256,6 +256,7 @@ MonoBehaviour:
   targetAnimator: {fileID: 981140283}
   stateParameter: On
   toggleMode: 1
+  doorCollider: {fileID: 981140286}
 --- !u!212 &109946595
 SpriteRenderer:
   m_ObjectHideFlags: 0
