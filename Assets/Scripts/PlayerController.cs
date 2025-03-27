@@ -1,99 +1,221 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class SlimeKnightController : MonoBehaviour
 {
-    // Movement parameters
+    [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float fallMultiplier = 2.5f;
-
-    // Ground detection
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float wallSlideMultiplier = 0.1f;
+    
+    [Header("Collision Detection")]
+    [SerializeField] private float groundCheckRadius = 0.05f;
+    [SerializeField] private float wallCheckDistance = 0.05f;
     [SerializeField] private LayerMask groundLayer;
-
-    // Component references
+    
+    [Header("Movement Smoothing")]
+    [SerializeField] private float smoothMovementTime = 0.05f;
+    
+    // Collision check positions - calculated automatically from sprite size
+    private Vector2 spriteSize;
+    private Vector2 groundCheckPos;
+    private Vector2 wallCheckLeftPos;
+    private Vector2 wallCheckRightPos;
+    
+    // Core components and state
     private Rigidbody2D rb;
-    private SpriteRenderer sprite;
-    private Animator anim;
-
-    // State variables
-    private float moveInput;
     private bool isGrounded;
-    private bool isJumping;
-
+    private bool isTouchingWallLeft;
+    private bool isTouchingWallRight;
+    private float horizontalInput;
+    private Vector2 velocity = Vector2.zero;
+    private bool facingRight = true;
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
+    
+    // Physics materials
+    private PhysicsMaterial2D noFriction;
+    private PhysicsMaterial2D fullFriction;
+    
+    // Animation parameters
+    private readonly string IS_RUNNING = "IsRunning";
+    private readonly string IS_JUMPING = "IsJumping";
+    private readonly string IS_FALLING = "IsFalling";
+    private readonly string IS_GROUNDED = "IsGrounded";
+    
     private void Awake()
     {
         // Get components
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        
+        // Get sprite bounds
+        if (spriteRenderer != null && spriteRenderer.sprite != null)
+        {
+            spriteSize = new Vector2(
+                spriteRenderer.sprite.bounds.size.x,
+                spriteRenderer.sprite.bounds.size.y
+            );
+        }
+        else
+        {
+            // Default size if sprite not available
+            spriteSize = new Vector2(0.3f, 0.2f);
+        }
+        
+        // Calculate check positions based on sprite size
+        groundCheckPos = new Vector2(0, -spriteSize.y/2f);
+        wallCheckLeftPos = new Vector2(-spriteSize.x/2f, 0);
+        wallCheckRightPos = new Vector2(spriteSize.x/2f, 0);
+        
+        // Create physics materials
+        noFriction = new PhysicsMaterial2D("NoFriction") { friction = 0f, bounciness = 0f };
+        fullFriction = new PhysicsMaterial2D("FullFriction") { friction = 0.4f, bounciness = 0f };
     }
-
+    
     private void Update()
     {
-        // Input handling
-        moveInput = Input.GetAxisRaw("Horizontal");
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        // Get horizontal input
+        horizontalInput = Input.GetAxisRaw("Horizontal");
         
-        // Jump when grounded
+        // Jump input
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            isJumping = true;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
         
-        // Flip sprite direction
-        if (moveInput > 0)
+        // Better jump physics
+        if (rb.velocity.y < 0)
         {
-            //sprite.flipX = true;
-            transform.rotation = Quaternion.identity;
+            // Apply higher gravity when falling
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            
+            // Set falling animation
+            if (animator != null)
+            {
+                animator.SetBool(IS_FALLING, true);
+                animator.SetBool(IS_JUMPING, false);
+            }
         }
-        else if (moveInput < 0)
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
-            //sprite.flipX = false;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            // Apply lower gravity when jumping and button released (for variable jump height)
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            
+            // Set jumping animation
+            if (animator != null)
+            {
+                animator.SetBool(IS_JUMPING, true);
+                animator.SetBool(IS_FALLING, false);
+            }
         }
-
-        UpdateAnimations();
+        
+        // Update animations
+        if (animator != null)
+        {
+            animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
+            animator.SetBool(IS_GROUNDED, isGrounded);
+        }
+        
+        // Flip character based on movement direction
+        if (horizontalInput > 0 && !facingRight)
+        {
+            FlipCharacter();
+        }
+        else if (horizontalInput < 0 && facingRight)
+        {
+            FlipCharacter();
+        }
     }
     
     private void FixedUpdate()
     {
-        // Handle movement
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        // Calculate world positions for checks
+        Vector2 worldGroundCheckPos = (Vector2)transform.position + groundCheckPos;
+        Vector2 worldWallCheckLeftPos = (Vector2)transform.position + wallCheckLeftPos;
+        Vector2 worldWallCheckRightPos = (Vector2)transform.position + wallCheckRightPos;
         
-        // Apply jump force
-        if (isJumping)
+        // Check if grounded
+        isGrounded = Physics2D.OverlapCircle(worldGroundCheckPos, groundCheckRadius, groundLayer);
+        
+        // Check for wall collisions
+        isTouchingWallLeft = Physics2D.Raycast(worldWallCheckLeftPos, Vector2.left, wallCheckDistance, groundLayer);
+        isTouchingWallRight = Physics2D.Raycast(worldWallCheckRightPos, Vector2.right, wallCheckDistance, groundLayer);
+        
+        // Adjust physics material based on collision
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isJumping = false;
+            // Use no friction when in air or moving against a wall
+            if (!isGrounded || (isTouchingWallLeft && horizontalInput < 0) || (isTouchingWallRight && horizontalInput > 0))
+            {
+                collider.sharedMaterial = noFriction;
+            }
+            else
+            {
+                collider.sharedMaterial = fullFriction;
+            }
         }
         
-        // Apply higher gravity when falling for better jump feel
-        if (rb.velocity.y < 0)
+        // Calculate target velocity
+        float targetVelocityX = horizontalInput * moveSpeed;
+        
+        // Prevent "sticking" to walls
+        if ((isTouchingWallLeft && horizontalInput < 0) || (isTouchingWallRight && horizontalInput > 0))
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+            // Apply wall slide when against walls in air
+            if (!isGrounded && rb.velocity.y < 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * wallSlideMultiplier);
+            }
+            
+            // Don't apply horizontal force against the wall
+            targetVelocityX = 0;
         }
+        
+        Vector2 targetVelocity = new Vector2(targetVelocityX, rb.velocity.y);
+        
+        // Smoothly move towards the target velocity
+        rb.velocity = Vector2.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothMovementTime);
     }
     
-    private void UpdateAnimations()
+    private void FlipCharacter()
     {
-        if (anim != null)
+        facingRight = !facingRight;
+        
+        // Flip using sprite renderer
+        if (spriteRenderer != null)
         {
-            // Set animation parameters - adapt these to your actual animator parameters
-            anim.SetFloat("Speed", Mathf.Abs(moveInput));
-            anim.SetBool("IsGrounded", isGrounded);
-            anim.SetFloat("VerticalSpeed", rb.velocity.y);
+            spriteRenderer.flipX = !facingRight;
         }
+        // Alternative: Flip using transform.localScale
+        // transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
     
+    // Visualize check points in editor
     private void OnDrawGizmosSelected()
     {
-        // Visualize ground check area
-        if (groundCheck != null)
+        if (spriteRenderer == null || !Application.isPlaying)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            // Use default size when not in play mode
+            spriteSize = new Vector2(0.3f, 0.2f);
+            groundCheckPos = new Vector2(0, -spriteSize.y/2f);
+            wallCheckLeftPos = new Vector2(-spriteSize.x/2f, 0);
+            wallCheckRightPos = new Vector2(spriteSize.x/2f, 0);
         }
+        
+        // Draw ground check
+        Gizmos.color = Color.green;
+        Vector2 worldGroundCheckPos = (Vector2)transform.position + groundCheckPos;
+        Gizmos.DrawWireSphere(worldGroundCheckPos, groundCheckRadius);
+        
+        // Draw wall checks
+        Gizmos.color = Color.blue;
+        Vector2 worldWallCheckLeftPos = (Vector2)transform.position + wallCheckLeftPos;
+        Vector2 worldWallCheckRightPos = (Vector2)transform.position + wallCheckRightPos;
+        Gizmos.DrawRay(worldWallCheckLeftPos, Vector2.left * wallCheckDistance);
+        Gizmos.DrawRay(worldWallCheckRightPos, Vector2.right * wallCheckDistance);
     }
 }

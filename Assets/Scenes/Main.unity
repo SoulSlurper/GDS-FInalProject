@@ -57368,11 +57368,17 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 7.5
   fallMultiplier: 2.5
-  groundCheck: {fileID: 3302677976315573797}
+  lowJumpMultiplier: 2
+  wallSlideMultiplier: 0.1
+  groundCheck: {fileID: 0}
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  wallCheckLeft: {fileID: 0}
+  wallCheckRight: {fileID: 0}
+  wallCheckDistance: 0.1
+  smoothMovementTime: 0.05
 --- !u!1 &2030965939695923531
 GameObject:
   m_ObjectHideFlags: 0
@@ -57464,21 +57470,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3302677976315573797
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3933571439006127046}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6462264909538255604}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3418209798168539286
 Transform:
   m_ObjectHideFlags: 0
@@ -57494,22 +57485,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462264909538255604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3933571439006127046
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3302677976315573797}
-  m_Layer: 0
-  m_Name: GroundCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!50 &6132601650754771617
 Rigidbody2D:
   serializedVersion: 4
@@ -57550,7 +57525,6 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3302677976315573797}
   - {fileID: 3418209798168539286}
   - {fileID: 1669772783}
   m_Father: {fileID: 0}
