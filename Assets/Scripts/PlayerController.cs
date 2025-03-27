@@ -166,16 +166,17 @@ public class SlimeKnightController : MonoBehaviour
     private void FlipCharacter()
     {
         facingRight = !facingRight;
-        
+
         // Flip using sprite renderer
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = !facingRight;
         }
+
         // Alternative: Flip using transform.localScale
-        // transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
-    
+
     // Simple and clear animation state management
     private void UpdateAnimationState()
     {
