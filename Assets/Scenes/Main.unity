@@ -8056,11 +8056,10 @@ GameObject:
   - component: {fileID: 297538212}
   - component: {fileID: 297538211}
   - component: {fileID: 297538210}
-  - component: {fileID: 297538209}
   - component: {fileID: 297538208}
   m_Layer: 0
-  m_Name: DoorButton_0 (1)
-  m_TagString: Untagged
+  m_Name: 'DoorButton_0 '
+  m_TagString: DoorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8095,7 +8094,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -8111,33 +8110,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &297538209
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297538207}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &297538210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8153,7 +8125,7 @@ MonoBehaviour:
   targetAnimator: {fileID: 1636135824}
   stateParameter: On
   toggleMode: 1
-  doorCollider: {fileID: 0}
+  doorCollider: {fileID: 1636135827}
 --- !u!212 &297538211
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44760,7 +44732,7 @@ GameObject:
   - component: {fileID: 1636135827}
   m_Layer: 0
   m_Name: Door_0
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58878,6 +58850,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1554260181763405561, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5566176409633086406, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_BodyType
       value: 0

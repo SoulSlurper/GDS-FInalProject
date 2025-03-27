@@ -8,6 +8,8 @@ TagManager:
   - Weapon
   - Enemy
   - Switch
+  - DoorButton
+  - Door
   layers:
   - Default
   - TransparentFX
