@@ -50298,7 +50298,7 @@ GameObject:
   - component: {fileID: 1868062180}
   - component: {fileID: 1868062181}
   m_Layer: 0
-  m_Name: SlimeKnightSword_0
+  m_Name: SlimeKnightSword
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
