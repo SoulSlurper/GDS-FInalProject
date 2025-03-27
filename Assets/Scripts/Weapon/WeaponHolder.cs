@@ -8,7 +8,7 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField] private WeaponType selectedWeapon;
 
     private List<GameObject> weapons = new List<GameObject>();
-    private int weaponIndex = -1;
+    private int currentWeaponIndex = -1;
     private int previousWeaponIndex = -1;
 
     void Awake()
@@ -23,15 +23,16 @@ public class WeaponHolder : MonoBehaviour
 
     void Update()
     {
-        if (ChangeWeaponIndex())
+        if (ChangeCurrentWeaponIndex())
         {
-            //Debug.Log("weaponIndex: " + weaponIndex);
+            //Debug.Log("currentWeaponIndex: " + currentWeaponIndex);
             ChangeWeapons();
         }
 
         WeaponFacePointer();
     }
 
+    //gets all the children gameobjects that have the Weapon component
     private void GetAvailableWeapons()
     {
         foreach (Transform child in transform)
@@ -44,28 +45,14 @@ public class WeaponHolder : MonoBehaviour
         }
     }
 
-    private bool FindWeapon(WeaponType type)
+    //changes the currentWeaponIndex when the WeaponType is found, which will return a true
+    private bool FindWeaponIndex(WeaponType type)
     {
         for (int i = 0; i < weapons.Count; i++)
         {
             if (weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
             {
-                weaponIndex = i;
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private bool FindDifferentWeapon(int index)
-    {
-        for (int i = 0; i < weapons.Count; i++)
-        {
-            if (i != previousWeaponIndex && i == index)
-            {
-                weaponIndex = i;
+                currentWeaponIndex = i;
 
                 return true;
             }
@@ -76,14 +63,14 @@ public class WeaponHolder : MonoBehaviour
 
     private void SelectWeapon()
     {
-        weapons[weaponIndex].SetActive(true);
+        weapons[currentWeaponIndex].SetActive(true);
 
-        selectedWeapon = weapons[weaponIndex].GetComponent<Weapon>().GetWeaponType();
+        selectedWeapon = weapons[currentWeaponIndex].GetComponent<Weapon>().GetWeaponType();
     }
 
     private void SelectWeapon(WeaponType type)
     {
-        if (FindWeapon(type))
+        if (FindWeaponIndex(type))
         {
             SelectWeapon();
         }
@@ -91,40 +78,33 @@ public class WeaponHolder : MonoBehaviour
 
     private void SelectWeapon(int index)
     {
-        if (FindDifferentWeapon(index))
+        if (FindDifferentWeaponIndex(index))
         {
             SelectWeapon();
         }
     }
 
-    private void DeselectWeapon()
-    {
-        weapons[previousWeaponIndex].SetActive(false);
-
-        selectedWeapon = WeaponType.None;
-    }
-
-    //increases and decreases the weaponIndex int by the mouse scroll, which returns true if the scroll is performed
-    private bool ChangeWeaponIndex()
+    //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
+    private bool ChangeCurrentWeaponIndex()
     {
         int maxIndex = weapons.Count - 1;
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
-            previousWeaponIndex = weaponIndex;
+            previousWeaponIndex = currentWeaponIndex;
 
-            if (weaponIndex >= maxIndex) weaponIndex = 0;
-            else weaponIndex++;
+            if (currentWeaponIndex >= maxIndex) currentWeaponIndex = 0;
+            else currentWeaponIndex++;
 
             return true;
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            previousWeaponIndex = weaponIndex;
+            previousWeaponIndex = currentWeaponIndex;
 
-            if (weaponIndex <= 0) weaponIndex = maxIndex;
-            else weaponIndex--;
+            if (currentWeaponIndex <= 0) currentWeaponIndex = maxIndex;
+            else currentWeaponIndex--;
 
             return true;
         }
@@ -132,10 +112,36 @@ public class WeaponHolder : MonoBehaviour
         return false;
     }
 
+    //changes the currentWeaponIndex when the index is found, which will return a true
+    //it only works if the previousWeaponIndex has been updated before the currentWeaponIndex changed
+    private bool FindDifferentWeaponIndex(int index)
+    {
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            if (i != previousWeaponIndex && i == index)
+            {
+                currentWeaponIndex = i;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //deactivates the current weapon that was selected
+    //it only works if the previousWeaponIndex has been updated before the currentWeaponIndex changed
+    private void DeselectWeapon()
+    {
+        weapons[previousWeaponIndex].SetActive(false);
+
+        selectedWeapon = WeaponType.None;
+    }
+
     private void ChangeWeapons()
     {
         DeselectWeapon();
-        SelectWeapon(weaponIndex);
+        SelectWeapon(currentWeaponIndex);
     }
 
     private Vector2 FacePointerPosition()
