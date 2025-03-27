@@ -5,11 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Weapon
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
@@ -39,6 +41,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Space
+    uniqueID: 1364328145
+    locked: 0
+  - name: 1Background
+    uniqueID: 3514842885
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
