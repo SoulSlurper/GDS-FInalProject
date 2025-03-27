@@ -91,33 +91,15 @@ public class SlimeKnightController : MonoBehaviour
         {
             // Apply higher gravity when falling
             rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            
-            // Set falling animation
-            if (animator != null)
-            {
-                animator.SetBool(IS_FALLING, true);
-                animator.SetBool(IS_JUMPING, false);
-            }
         }
         else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
             // Apply lower gravity when jumping and button released (for variable jump height)
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-            
-            // Set jumping animation
-            if (animator != null)
-            {
-                animator.SetBool(IS_JUMPING, true);
-                animator.SetBool(IS_FALLING, false);
-            }
         }
         
-        // Update animations
-        if (animator != null)
-        {
-            animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
-            animator.SetBool(IS_GROUNDED, isGrounded);
-        }
+        // Update animation parameters
+        UpdateAnimationState();
         
         // Flip character based on movement direction
         if (horizontalInput > 0 && !facingRight)
@@ -192,6 +174,19 @@ public class SlimeKnightController : MonoBehaviour
         }
         // Alternative: Flip using transform.localScale
         // transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+    }
+    
+    // Simple and clear animation state management
+    private void UpdateAnimationState()
+    {
+        if (animator == null)
+            return;
+            
+        // Set all animation states based on current physics state
+        animator.SetBool(IS_GROUNDED, isGrounded);
+        animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
+        animator.SetBool(IS_JUMPING, rb.velocity.y > 0.1f && !isGrounded);
+        animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
     }
     
     // Visualize check points in editor
