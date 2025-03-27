@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class Projectile : Weapon
 {
-    //there's no need to set the damamge for the projectile if it is used by a long-range weapon
-
-    private float speed = 1f; //the speed the projectile is traveling
+    [Header("Projectile Details")]
+    [SerializeField] private float speed = 1f; //the speed the projectile is traveling
 
     void Update()
     {

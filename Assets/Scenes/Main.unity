@@ -16185,17 +16185,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8925498235984864066, guid: 873f150c969731d40af6f36e905281d8, type: 3}
-      propertyPath: projectile
-      value: 
-      objectReference: {fileID: 8640387466140483046, guid: c36279eecd5b83a41807d8dd6568b405, type: 3}
     - target: {fileID: 9141430891721096324, guid: 873f150c969731d40af6f36e905281d8, type: 3}
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
     - target: {fileID: 9141430891721096324, guid: 873f150c969731d40af6f36e905281d8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -50307,7 +50303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1868062179
 Transform:
   m_ObjectHideFlags: 0
@@ -50393,9 +50389,9 @@ MonoBehaviour:
   type: 0
   damage: 10
   attackContinously: 1
+  attackDelay: 1
   raycastCircleOrigin: {fileID: 1700105202}
   raycastCircleRadius: 0.2
-  attackDelay: 1
 --- !u!1001 &1869537862
 PrefabInstance:
   m_ObjectHideFlags: 0

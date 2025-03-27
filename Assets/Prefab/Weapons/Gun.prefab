@@ -134,7 +134,7 @@ MonoBehaviour:
   type: 1
   damage: 10
   attackContinously: 1
-  projectile: {fileID: 0}
+  attackDelay: 1
+  projectile: {fileID: 8640387466140483046, guid: c36279eecd5b83a41807d8dd6568b405, type: 3}
   launchOffLocation: {fileID: 5652273744297220474}
-  launchDelay: 1
   speed: 1

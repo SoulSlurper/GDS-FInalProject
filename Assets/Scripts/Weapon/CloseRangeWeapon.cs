@@ -7,13 +7,10 @@ public class CloseRangeWeapon : Weapon
     [Header("Close Range Details")]
     [SerializeField] private Transform raycastCircleOrigin;
     [SerializeField] private float raycastCircleRadius;
-    [SerializeField] private float attackDelay;
-
-    private float attackTimer = 0f;
 
     void Start()
     {
-        ResetAttackTimer();
+        SetAttackTimer(GetAttackDelay());
     }
 
     void Update()
@@ -26,7 +23,7 @@ public class CloseRangeWeapon : Weapon
         }
         else
         {
-            ResetAttackTimer();
+            SetAttackTimer(GetAttackDelay());
         }
     }
 
@@ -41,15 +38,15 @@ public class CloseRangeWeapon : Weapon
 
     private void Attack()
     {
-        if (attackTimer > attackDelay)
+        if (AttackTimerReachDelay())
         {
             MakeDamage();
 
-            attackTimer = 0f;
+            SetAttackTimer(0f);
         }
         else
         {
-            attackTimer += Time.deltaTime;
+            IncreaseAttackTimer();
         }
     }
 
@@ -65,10 +62,5 @@ public class CloseRangeWeapon : Weapon
                 status.DecreaseHealth(GetDamage());
             }
         }
-    }
-
-    private void ResetAttackTimer()
-    {
-        attackTimer = attackDelay + 1f;
     }
 }

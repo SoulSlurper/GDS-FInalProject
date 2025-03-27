@@ -7,29 +7,37 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Details")]
     [SerializeField] private WeaponType type;
     [SerializeField] private float damage;
+
+    [Header("Attack Details")]
     [SerializeField] private bool attackContinously = false;
-    //[SerializeField] private float healthCost; //the amount of health taken when the player creates the weapon
+    [SerializeField] private float attackDelay = 1f; //time taken for the attack to be performed
 
     private bool isAttacking = false;
+    private float attackTimer = 0f;
 
+    // Weapon details functions // // // // //
     public WeaponType GetWeaponType() { return type; }
 
     public float GetDamage() { return damage; }
 
     public void SetDamage(float damage) { this.damage = damage; }
 
-    //public float GetHealthCost() { return healthCost; }
+    // Attack time functions // // // // //
+    public float GetAttackDelay() { return attackDelay; }
 
-    //public void SetHealthCost(float healthCost) { this.healthCost = healthCost; }
+    public void SetAttackDelay(float attackDelay) { this.attackDelay = attackDelay; }
 
-    public bool IsAttacking() { return isAttacking; }
+    public float GetAttackTimer() { return attackTimer; }
 
-    public void WeaponFaceMouse()
-    {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.right = mousePosition - (Vector2)transform.position;
-    }
+    public void SetAttackTimer(float attackTimer) { this.attackTimer = attackTimer; }
 
+    public void IncreaseAttackTimer() { attackTimer += Time.deltaTime; }
+
+    public void DecreaseAttackTimer() { attackTimer -= Time.deltaTime; }
+
+    public bool AttackTimerReachDelay() { return attackTimer >= attackDelay; }
+
+    // Attack performance functions // // // // //
     public bool CanAttack()
     {
         int mouseCode = 0; //for left mouse clicks
@@ -49,5 +57,12 @@ public class Weapon : MonoBehaviour
 
         return isAttacking;
     }
+    public bool IsAttacking() { return isAttacking; }
 
+    // Other functions // // // // //
+    public void WeaponFaceMouse()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.right = mousePosition - (Vector2)transform.position;
+    }
 }
