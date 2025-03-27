@@ -50297,6 +50297,7 @@ GameObject:
   - component: {fileID: 1868062179}
   - component: {fileID: 1868062180}
   - component: {fileID: 1868062181}
+  - component: {fileID: 1868062182}
   m_Layer: 0
   m_Name: SlimeKnightSword
   m_TagString: Weapon
@@ -50388,10 +50389,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   damage: 10
+  animator: {fileID: 1868062182}
   attackContinously: 1
   attackDelay: 1
   raycastCircleOrigin: {fileID: 1700105202}
   raycastCircleRadius: 0.2
+--- !u!95 &1868062182
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868062178}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 428f7e015de990a47a9c0f4fb9ceeb4b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1869537862
 PrefabInstance:
   m_ObjectHideFlags: 0

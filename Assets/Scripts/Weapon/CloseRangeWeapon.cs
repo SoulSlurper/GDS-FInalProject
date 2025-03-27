@@ -42,6 +42,8 @@ public class CloseRangeWeapon : Weapon
         {
             MakeDamage();
 
+            GetAnimator().GetComponent<Animator>().SetTrigger("Attack");
+
             SetAttackTimer(0f);
         }
         else
