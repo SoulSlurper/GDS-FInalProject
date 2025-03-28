@@ -22,7 +22,7 @@ public class Projectile : Weapon
             Attack(collision);
         }
 
-        if (!collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
         {
             Destroy(gameObject);
         }

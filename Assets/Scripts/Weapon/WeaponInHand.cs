@@ -92,22 +92,32 @@ public class WeaponInHand : MonoBehaviour
         }
     }
 
-    private void SelectWeaponByIndex(int index)
+    private void SelectWeaponByIndex(int index, bool confirm = true)
     {
         if (index > -1) //if the weapon has been found
         {
-            if (index > -1)
+            if (index > -1) //if a weapon is currently being held already
             {
-                DeselectWeapon(currentWeaponIndex); //if a weapon is currently being held already
+                DeselectWeapon(currentWeaponIndex);
+                DeselectWeapon(tempWeaponIndex);
             }
 
-            currentWeaponIndex = index;
+            if (confirm)
+            {
+                currentWeaponIndex = index;
 
-            SelectWeapon(currentWeaponIndex);
+                SelectWeapon(currentWeaponIndex);
+            }
+            else
+            {
+                tempWeaponIndex = index;
+
+                SelectWeapon(tempWeaponIndex);
+            }
         }
     }
 
-    private void SelectWeaponByType(WeaponType type)
+    private void SelectWeaponByType(WeaponType type, bool confirm = true)
     {
         SelectWeapon(GetWeaponIndex(type));
     }
@@ -153,9 +163,7 @@ public class WeaponInHand : MonoBehaviour
             }
             else
             {
-                DeselectWeapon(tempWeaponIndex, false);
-
-                SelectWeapon(currentWeaponIndex);
+                SelectWeaponByIndex(currentWeaponIndex);
             }
         }
 
@@ -167,9 +175,7 @@ public class WeaponInHand : MonoBehaviour
             {
                 isSelecting = false;
 
-                DeselectWeapon(tempWeaponIndex, false);
-
-                SelectWeapon(tempWeaponIndex);
+                SelectWeaponByIndex(tempWeaponIndex);
             }
         }
     }
