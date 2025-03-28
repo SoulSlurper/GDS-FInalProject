@@ -31,14 +31,14 @@ public class Status : MonoBehaviour
         {
             if (_statusAmount.TimerAboveDelay())
             {
-                if (isPassiveHealth && health < _statusAmount.maxAmount)
+                _statusAmount.ResetTimer();
+
+                if (_statusAmount.amount < _statusAmount.maxAmount)
                 {
                     _statusAmount.IncreaseAmount(_statusAmount.passiveAmount);
 
                     if (_statusAmount.amount > _statusAmount.maxAmount) _statusAmount.SetAmount(_statusAmount.maxAmount);
                 }
-
-                _statusAmount.ResetTimer();
             }
 
             _statusAmount.IncreaseTimer(Time.deltaTime);
