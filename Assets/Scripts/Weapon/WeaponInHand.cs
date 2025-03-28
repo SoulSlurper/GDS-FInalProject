@@ -72,8 +72,6 @@ public class WeaponInHand : MonoBehaviour
 
             wDetails.enabled = true;
             selectedWeapon = wDetails.GetWeaponType();
-
-            playerStatus.DecreaseHealth(wDetails.GetCost());
         }
         else
         {
@@ -160,7 +158,7 @@ public class WeaponInHand : MonoBehaviour
             if (isSelecting)
             {
                 tempWeaponIndex = currentWeaponIndex;
-                Debug.Log("tempWeaponIndex: " + tempWeaponIndex);
+                Debug.Log("Weapon Menu opened");
 
                 SelectWeapon(tempWeaponIndex, false);
             }
@@ -174,11 +172,13 @@ public class WeaponInHand : MonoBehaviour
         {
             ScrollForWeapon();
 
-            if (Input.GetMouseButtonDown(1)) //confirms selection by clicking the right mouse
+            if (Input.GetMouseButtonDown(1)) //confirms the selection by clicking the right mouse
             {
                 isSelecting = false;
 
                 SelectWeaponByIndex(tempWeaponIndex);
+
+                playerStatus.DecreaseHealth(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
             }
         }
     }
