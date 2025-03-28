@@ -10,6 +10,8 @@ public class WeaponInHand : MonoBehaviour
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
 
+    private bool isSelecting = false;
+
     void Awake()
     {
         GetAvailableWeapons();
@@ -53,11 +55,26 @@ public class WeaponInHand : MonoBehaviour
         return -1;
     }
 
-    private void SelectWeapon()
+    private void SelectWeapon(bool confirm = true)
     {
-        weapons[currentWeaponIndex].SetActive(true);
+        GameObject weapon = weapons[currentWeaponIndex];
+        Weapon wDetails = weapon.GetComponent<Weapon>();
 
-        selectedWeapon = weapons[currentWeaponIndex].GetComponent<Weapon>().GetWeaponType();
+        weapon.SetActive(true);
+
+        if (confirm)
+        {
+            weapon.GetComponent<SpriteRenderer>().color = Color.white;
+
+            wDetails.enabled = true;
+            selectedWeapon = wDetails.GetWeaponType();
+        }
+        else
+        {
+            weapon.GetComponent<SpriteRenderer>().color = Color.gray;
+
+            wDetails.enabled = false;
+        }
     }
 
     private void DeselectWeapon()
@@ -88,7 +105,7 @@ public class WeaponInHand : MonoBehaviour
     }
 
     //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
-    private bool ChangeWeapon()
+    private void ScrollForWeapon()
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f)
         {
@@ -109,12 +126,20 @@ public class WeaponInHand : MonoBehaviour
                 else currentWeaponIndex--;
             }
 
-            SelectWeapon();
-
-            return true;
+            SelectWeapon(false);
         }
+    }
 
-        return false;
+    private bool SelectForWeapon()
+    {
+        isSelecting = !isSelecting;
+
+        return isSelecting;
+    }
+
+    private void ChangeWeapon()
+    {
+        ScrollForWeapon();
     }
 
     private Vector2 PointerPosition()
