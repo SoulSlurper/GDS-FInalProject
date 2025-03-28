@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WeaponInHand : MonoBehaviour
 {
+    [SerializeField] private Status playerStatus;
     [SerializeField] private WeaponType selectedWeapon;
 
     private List<GameObject> weapons = new List<GameObject>();
@@ -71,6 +72,8 @@ public class WeaponInHand : MonoBehaviour
 
             wDetails.enabled = true;
             selectedWeapon = wDetails.GetWeaponType();
+
+            playerStatus.DecreaseHealth(wDetails.GetCost());
         }
         else
         {
@@ -171,7 +174,7 @@ public class WeaponInHand : MonoBehaviour
         {
             ScrollForWeapon();
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)) //confirms selection by clicking the right mouse
             {
                 isSelecting = false;
 

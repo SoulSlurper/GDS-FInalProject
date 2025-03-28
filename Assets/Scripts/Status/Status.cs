@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    [SerializeField] private float health;
+    [SerializeField] private float health = 100f;
+    //[SerializeField] private float stamina = 100f;
 
     public float GetHealth() { return health; }
 
