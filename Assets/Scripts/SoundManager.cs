@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
@@ -96,13 +95,12 @@ public class SoundManager : MonoBehaviour
         {
             isSplattering = true;
             audioSource.clip = splatterSound;
-            audioSource.loop = true;
+            audioSource.loop = false;
             audioSource.volume = targetVolume;
             audioSource.Play();
             StartCoroutine(WaitForSplatterToEnd());
         }
     }
-
     public bool IsSplattering()
     {
         return isSplattering;
@@ -110,9 +108,17 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator WaitForSplatterToEnd()
     {
-        // Wait until the splatter sound finishes its loop, then resume the walk sound
         yield return new WaitForSeconds(splatterSound.length);
         isSplattering = false;
-        PlayWalkSound();  // Resume walk sound after splatter
+
+        if (GameObject.FindWithTag("Player") != null)
+        {
+            SlimeKnightController playerController = GameObject.FindWithTag("Player").GetComponent<SlimeKnightController>();
+            if (playerController != null && playerController.IsMoving())
+            {
+                PlayWalkSound();  // Resume walking only if the player is still moving
+            }
+        }
     }
+
 }

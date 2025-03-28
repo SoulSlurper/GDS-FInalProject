@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
-
 public class SlimeKnightController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -118,9 +116,12 @@ public class SlimeKnightController : MonoBehaviour
         Vector2 worldGroundCheckPos = (Vector2)transform.position + groundCheckPos;
         Vector2 worldWallCheckLeftPos = (Vector2)transform.position + wallCheckLeftPos;
         Vector2 worldWallCheckRightPos = (Vector2)transform.position + wallCheckRightPos;
+
+        bool wasGrounded = isGrounded;  // Track previous grounded state
         isGrounded = Physics2D.OverlapCircle(worldGroundCheckPos, groundCheckRadius, groundLayer);
         isTouchingWallLeft = Physics2D.Raycast(worldWallCheckLeftPos, Vector2.left, wallCheckDistance, groundLayer);
         isTouchingWallRight = Physics2D.Raycast(worldWallCheckRightPos, Vector2.right, wallCheckDistance, groundLayer);
+
         Collider2D collider = GetComponent<Collider2D>();
         if (collider != null)
         {
@@ -133,15 +134,18 @@ public class SlimeKnightController : MonoBehaviour
                 collider.sharedMaterial = fullFriction;
             }
         }
-        if (isGrounded && Mathf.Abs(rb.velocity.y) < 0.1f && hasJumped)
+
+        // **Play splatter sound only when falling and then landing**
+        if (!wasGrounded && isGrounded && rb.velocity.y < -0.1f)
         {
-            hasJumped = false;
             if (soundManager != null)
             {
-                soundManager.PlaySplatterSound();  // Play splatter sound when landing
+                soundManager.PlaySplatterSound();
             }
         }
+
         float targetVelocityX = horizontalInput * moveSpeed;
+
         if ((isTouchingWallLeft && horizontalInput < 0) || (isTouchingWallRight && horizontalInput > 0))
         {
             if (!isGrounded && rb.velocity.y < 0)
@@ -154,6 +158,7 @@ public class SlimeKnightController : MonoBehaviour
         Vector2 targetVelocity = new Vector2(targetVelocityX, rb.velocity.y);
         rb.velocity = Vector2.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothMovementTime);
     }
+
 
     private void FlipCharacter()
     {
@@ -177,21 +182,27 @@ public class SlimeKnightController : MonoBehaviour
     private void HandleWalkingSound()
     {
         bool isMoving = Mathf.Abs(horizontalInput) > 0.1f && isGrounded;
-        if (isMoving && !isWalking)
+
+        if (isMoving)
         {
-            isWalking = true;
-            if (!soundManager.IsSplattering())
+            if (!isWalking)
             {
+                isWalking = true;
                 soundManager.PlayWalkSound();
             }
         }
-        else if (!isMoving && isWalking)
+        else
         {
-            isWalking = false;
-            if (soundManager != null)
+            if (isWalking)
             {
+                isWalking = false;
                 soundManager.StopWalkSound();
             }
         }
     }
+    public bool IsMoving()
+    {
+        return Mathf.Abs(horizontalInput) > 0.1f && isGrounded;
+    }
+
 }
