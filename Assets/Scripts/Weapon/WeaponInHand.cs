@@ -162,6 +162,15 @@ public class WeaponInHand : MonoBehaviour
         if (isSelecting)
         {
             ScrollForWeapon();
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                isSelecting = false;
+
+                DeselectWeapon(tempWeaponIndex, false);
+
+                SelectWeapon(tempWeaponIndex);
+            }
         }
     }
 
