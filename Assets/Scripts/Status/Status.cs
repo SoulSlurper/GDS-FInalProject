@@ -12,60 +12,44 @@ public class Status : MonoBehaviour
     [SerializeField] private float passiveHealthAmount = 1f;
     [SerializeField] private float passiveHealthDelay = 1f;
 
-    private float maxHealth = -1;
-    private float healthTimer = 0f;
+    public StatusAmount healthStatus { get; private set; }
 
     void Start()
     {
-        maxHealth = health;
+        healthStatus = new StatusAmount(health, isPassiveHealth, passiveHealthAmount, passiveHealthDelay);
     }
 
     void Update()
     {
-        if (healthTimer > passiveHealthDelay)
-        {
-            if (isPassiveHealth && health < maxHealth)
-            {
-                health += passiveHealthAmount;
+        RegainStatusAmount(healthStatus);
+        MaintainHealthStatusVariables(healthStatus);
+    }
 
-                if (health > maxHealth) health = maxHealth;
+    private void RegainStatusAmount(StatusAmount _statusAmount)
+    {
+        if (_statusAmount.isPassive)
+        {
+            if (_statusAmount.TimerAboveDelay())
+            {
+                if (isPassiveHealth && health < _statusAmount.maxAmount)
+                {
+                    _statusAmount.IncreaseAmount(_statusAmount.passiveAmount);
+
+                    if (_statusAmount.amount > _statusAmount.maxAmount) _statusAmount.SetAmount(_statusAmount.maxAmount);
+                }
+
+                _statusAmount.ResetTimer();
             }
 
-            healthTimer = 0f;
+            _statusAmount.IncreaseTimer(Time.deltaTime);
         }
-
-        healthTimer += Time.deltaTime;
     }
 
-    public float GetHealth() { return health; }
-
-    public float GetMaxHealth() { return maxHealth; }
-
-    public void SetNewHealth(float health) { this.health = maxHealth = health; }
-
-    public bool GetIsPassiveHealth() { return isPassiveHealth; }
-
-    public void SetIsPassiveHealth(bool isPassiveHealth) { this.isPassiveHealth = isPassiveHealth; }
-
-    public float GetPassiveHealthAmount() { return passiveHealthAmount; }
-
-    public void SetPassiveHealthAmount(float passiveHealthAmount) { this.passiveHealthAmount = passiveHealthAmount; }
-
-    public float GetPassiveHealthDelay() { return passiveHealthDelay; }
-
-    public void SetPassiveHealthDelay(float passiveHealthDelay) { this.passiveHealthDelay = passiveHealthDelay; }
-
-    public void DecreaseHealth(float amount)
+    private void MaintainHealthStatusVariables(StatusAmount _statusAmount)
     {
-        health -= amount;
-
-        Debug.Log(gameObject.name + " Health: " + health);
-    }
-
-    public void IncreaseHealth(float amount)
-    {
-        health += amount;
-
-        Debug.Log(gameObject.name + " Health: " + health);
+        if (health != _statusAmount.amount) health = _statusAmount.amount;
+        if (isPassiveHealth != _statusAmount.isPassive) isPassiveHealth = _statusAmount.isPassive;
+        if (passiveHealthAmount != _statusAmount.passiveAmount) passiveHealthAmount = _statusAmount.passiveAmount;
+        if (passiveHealthDelay != _statusAmount.passiveDelay) health = passiveHealthDelay = _statusAmount.passiveDelay;
     }
 }

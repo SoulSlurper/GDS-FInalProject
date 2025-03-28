@@ -58897,6 +58897,7 @@ MonoBehaviour:
   health: 100
   isPassiveHealth: 1
   passiveHealthAmount: 1
+  passiveHealthDelay: 1
 --- !u!4 &8924178338178467486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4202302289588770663, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}

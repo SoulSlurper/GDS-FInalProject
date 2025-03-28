@@ -30,7 +30,7 @@ public class Projectile : Weapon
 
     private void Attack(Collider2D collision)
     {
-        collision.GetComponent<Status>().DecreaseHealth(GetDamage());
+        collision.GetComponent<Status>().healthStatus.DecreaseAmount(GetDamage());
     }
 
     public float GetProjectileSpeed() { return speed; }

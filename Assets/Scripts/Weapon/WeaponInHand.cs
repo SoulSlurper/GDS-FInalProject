@@ -178,7 +178,7 @@ public class WeaponInHand : MonoBehaviour
 
                 SelectWeaponByIndex(tempWeaponIndex);
 
-                playerStatus.DecreaseHealth(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
+                playerStatus.healthStatus.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
             }
         }
     }
