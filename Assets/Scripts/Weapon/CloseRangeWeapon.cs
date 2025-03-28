@@ -62,7 +62,7 @@ public class CloseRangeWeapon : Weapon
                 Status status;
                 if (status = collider.GetComponent<Status>())
                 {
-                    status.healthStatus.DecreaseAmount(GetDamage());
+                    status.health.DecreaseAmount(GetDamage());
                 }
             }
         }

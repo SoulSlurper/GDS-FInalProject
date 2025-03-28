@@ -4,52 +4,41 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    [SerializeField] private float health = 100f;
-    //[SerializeField] private float stamina = 100f;
+    [SerializeField] private StatusAmount _health;
 
-    [Header("Passive Regain")]
-    [SerializeField] private bool isPassiveHealth = false;
-    [SerializeField] private float passiveHealthAmount = 1f;
-    [SerializeField] private float passiveHealthDelay = 1f;
-
-    public StatusAmount healthStatus { get; private set; }
+    public StatusAmount health 
+    { 
+        get { return _health; }
+        private set { }
+    }
 
     void Start()
     {
-        healthStatus = new StatusAmount(health, isPassiveHealth, passiveHealthAmount, passiveHealthDelay);
     }
 
     void Update()
     {
-        RegainStatusAmount(healthStatus);
-        MaintainHealthStatusVariables(healthStatus);
+        RegainStatusAmount(_health);
+
+        Debug.LogWarning(gameObject.name);
+        Debug.Log("_health.amount: " + _health.amount);
+        Debug.Log("_health.max: " + _health.max);
     }
 
-    private void RegainStatusAmount(StatusAmount _statusAmount)
+    private void RegainStatusAmount(StatusAmount sAmount)
     {
-        if (_statusAmount.isPassive)
+        if (sAmount.isPassive && sAmount.amount < sAmount.max)
         {
-            if (_statusAmount.TimerAboveDelay())
+            if (sAmount.TimerAboveDelay())
             {
-                _statusAmount.ResetTimer();
+                sAmount.ResetTimer();
 
-                if (_statusAmount.amount < _statusAmount.maxAmount)
-                {
-                    _statusAmount.IncreaseAmount(_statusAmount.passiveAmount);
+                sAmount.IncreaseAmount(sAmount.passiveAmount);
 
-                    if (_statusAmount.amount > _statusAmount.maxAmount) _statusAmount.SetAmount(_statusAmount.maxAmount);
-                }
+                if (sAmount.amount > sAmount.max) sAmount.SetAmount(sAmount.max);
             }
 
-            _statusAmount.IncreaseTimer(Time.deltaTime);
+            sAmount.IncreaseTimer(Time.deltaTime);
         }
-    }
-
-    private void MaintainHealthStatusVariables(StatusAmount _statusAmount)
-    {
-        if (health != _statusAmount.amount) health = _statusAmount.amount;
-        if (isPassiveHealth != _statusAmount.isPassive) isPassiveHealth = _statusAmount.isPassive;
-        if (passiveHealthAmount != _statusAmount.passiveAmount) passiveHealthAmount = _statusAmount.passiveAmount;
-        if (passiveHealthDelay != _statusAmount.passiveDelay) health = passiveHealthDelay = _statusAmount.passiveDelay;
     }
 }

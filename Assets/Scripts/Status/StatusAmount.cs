@@ -1,69 +1,103 @@
+using System;
+using UnityEngine;
+
+[Serializable]
 public class StatusAmount
 {
-    public float amount { get; private set; }
+    [SerializeField] private float _amount = 100f;
 
-    public bool isPassive { get; private set; }
-    public float passiveAmount { get; private set; }
-    public float passiveDelay { get; private set; }
+    [SerializeField] private bool _isPassive = false;
+    [SerializeField] private float _passiveAmount = 1f;
+    [SerializeField] private float _passiveDelay = 1f;
 
-    public float maxAmount { get; private set; }
-    public float timer { get; private set; }
+    private float _max;
+    private float _timer;
 
-    public StatusAmount()
-    {
-        this.amount = 100f;
+    private bool isMaxSet = false;
 
-        this.isPassive = false;
-        this.passiveAmount = 1f;
-        this.passiveDelay = 1f;
+    public float amount 
+    { 
+        get 
+        {
+            SetMax(_amount);
 
-        this.maxAmount = this.amount;
-
-        this.timer = 0f;
+            return _amount; 
+        }
+        private set { _amount = value; }
     }
 
-    public StatusAmount(float Amount, bool isPassive = false, float passiveAmount = 1f, float passiveDelay = 1f)
-    {
-        this.amount = Amount;
-
-        this.isPassive = isPassive;
-        this.passiveAmount = passiveAmount;
-        this.passiveDelay = passiveDelay;
-
-        this.maxAmount = this.amount;
-
-        this.timer = 0f;
+    public bool isPassive
+    { 
+        get { return _isPassive; }
+        set { _isPassive = value; }
     }
+    public float passiveAmount
+    { 
+        get { return _passiveAmount; }
+        private set { _passiveAmount = value; }
+    }
+    public float passiveDelay
+    {
+        get { return _passiveDelay; }
+        private set { _passiveDelay = value; }
+    }
+
+    public float max
+    {
+        get
+        {
+            SetMax(_amount);
+
+            return _max;
+        }
+        private set { _max = value; }
+    }
+    public float timer
+    { 
+        get { return _timer; }
+        private set { _timer = value; }
+    }
+
 
 
 
     // Amount // // // //
-    public void SetAmount(float amount) { this.amount = amount >= 0 && amount <= maxAmount ? amount : this.amount; }
+    public void SetAmount(float amount) { _amount = amount >= 0 && amount <= _max ? amount : _amount; }
 
-    public void SetNewAmount(float amount) { this.amount = maxAmount = amount; }
+    public void SetNewAmount(float amount) { _amount = _max = amount; }
 
-    public void IncreaseAmount(float amount) { this.amount += amount; }
+    public void IncreaseAmount(float amount) { _amount += amount; }
 
-    public void DecreaseAmount(float amount) { this.amount -= amount; }
+    public void DecreaseAmount(float amount) { _amount -= amount; }
+
+    private void SetMax(float amount) 
+    { 
+        if (!isMaxSet)
+        {
+            _max = amount;
+
+            isMaxSet = true;
+        }
+    }
 
 
 
 
     // Passive // // // //
-    public void SetIsPassive(bool isPassiveAmount) { this.isPassive = isPassiveAmount; }
+    public void SetIsPassive(bool isPassiveAmount) { _isPassive = isPassiveAmount; }
 
-    public void SetPassiveAmount(float passiveAmount) { this.passiveAmount = passiveAmount; }
+    public void SetPassiveAmount(float passiveAmount) { _passiveAmount = passiveAmount; }
 
-    public void SetPassiveDelay(float passiveDelay) { this.passiveDelay = passiveDelay; }
+    public void SetPassiveDelay(float passiveDelay) { _passiveDelay = passiveDelay; }
 
 
 
     // Timer // // // //
-    public void IncreaseTimer(float seconds) { timer += seconds; }
+    public void IncreaseTimer(float seconds) { _timer += seconds; }
 
-    public void DecreaseTimer(float seconds) { timer -= seconds; }
+    public void DecreaseTimer(float seconds) { _timer -= seconds; }
 
-    public void ResetTimer() { timer = 0f; }
+    public void ResetTimer() { _timer = 0f; }
 
-    public bool TimerAboveDelay() { return timer > passiveDelay; }
+    public bool TimerAboveDelay() { return _timer > _passiveDelay; }
 }
