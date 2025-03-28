@@ -9,6 +9,7 @@ public class WeaponInHand : MonoBehaviour
 
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
+    private int tempWeaponIndex = -1;
 
     private bool isSelecting = false;
 
@@ -19,7 +20,7 @@ public class WeaponInHand : MonoBehaviour
 
     void Start()
     {
-        SelectWeapon(selectedWeapon);
+        SelectWeaponByType(selectedWeapon);
     }
 
     void Update()
@@ -55,15 +56,17 @@ public class WeaponInHand : MonoBehaviour
         return -1;
     }
 
-    private void SelectWeapon(bool confirm = true)
+    private void SelectWeapon(int index, bool confirm = true)
     {
-        GameObject weapon = weapons[currentWeaponIndex];
+        GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
 
         weapon.SetActive(true);
 
         if (confirm)
         {
+            currentWeaponIndex = index;
+
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
 
             wDetails.enabled = true;
@@ -71,35 +74,40 @@ public class WeaponInHand : MonoBehaviour
         }
         else
         {
+            tempWeaponIndex = index;
+
             weapon.GetComponent<SpriteRenderer>().color = Color.gray;
 
             wDetails.enabled = false;
         }
     }
 
-    private void DeselectWeapon()
+    private void DeselectWeapon(int index, bool confirm = true)
     {
-        weapons[currentWeaponIndex].SetActive(false);
+        weapons[index].SetActive(false);
 
-        selectedWeapon = WeaponType.None;
+        if (confirm)
+        {
+            selectedWeapon = WeaponType.None;
+        }
     }
 
-    private void SelectWeapon(int index)
+    private void SelectWeaponByIndex(int index)
     {
         if (index > -1) //if the weapon has been found
         {
-            if (currentWeaponIndex > -1)
+            if (index > -1)
             {
-                DeselectWeapon(); //if a weapon is currently being held already
+                DeselectWeapon(currentWeaponIndex); //if a weapon is currently being held already
             }
 
             currentWeaponIndex = index;
 
-            SelectWeapon();
+            SelectWeapon(currentWeaponIndex);
         }
     }
 
-    private void SelectWeapon(WeaponType type)
+    private void SelectWeaponByType(WeaponType type)
     {
         SelectWeapon(GetWeaponIndex(type));
     }
@@ -111,35 +119,50 @@ public class WeaponInHand : MonoBehaviour
         {
             int maxIndex = weapons.Count - 1;
 
-            DeselectWeapon();
+            DeselectWeapon(tempWeaponIndex);
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
-                if (currentWeaponIndex >= maxIndex) currentWeaponIndex = 0;
-                else currentWeaponIndex++;
+                if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
+                else tempWeaponIndex++;
 
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
-                if (currentWeaponIndex <= 0) currentWeaponIndex = maxIndex;
-                else currentWeaponIndex--;
+                if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
+                else tempWeaponIndex--;
             }
 
-            SelectWeapon(false);
+            SelectWeapon(tempWeaponIndex, false);
         }
-    }
-
-    private bool SelectForWeapon()
-    {
-        isSelecting = !isSelecting;
-
-        return isSelecting;
     }
 
     private void ChangeWeapon()
     {
-        ScrollForWeapon();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            isSelecting = !isSelecting;
+
+            if (isSelecting)
+            {
+                tempWeaponIndex = currentWeaponIndex;
+                Debug.Log("tempWeaponIndex: " + tempWeaponIndex);
+
+                SelectWeapon(tempWeaponIndex, false);
+            }
+            else
+            {
+                DeselectWeapon(tempWeaponIndex, false);
+
+                SelectWeapon(currentWeaponIndex);
+            }
+        }
+
+        if (isSelecting)
+        {
+            ScrollForWeapon();
+        }
     }
 
     private Vector2 PointerPosition()
