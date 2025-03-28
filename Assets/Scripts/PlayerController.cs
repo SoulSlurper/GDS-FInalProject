@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+
 
 public class SlimeKnightController : MonoBehaviour
 {
@@ -134,6 +136,10 @@ public class SlimeKnightController : MonoBehaviour
         if (isGrounded && Mathf.Abs(rb.velocity.y) < 0.1f && hasJumped)
         {
             hasJumped = false;
+            if (soundManager != null)
+            {
+                soundManager.PlaySplatterSound();  // Play splatter sound when landing
+            }
         }
         float targetVelocityX = horizontalInput * moveSpeed;
         if ((isTouchingWallLeft && horizontalInput < 0) || (isTouchingWallRight && horizontalInput > 0))
@@ -167,14 +173,14 @@ public class SlimeKnightController : MonoBehaviour
         animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
         animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
     }
-    
+
     private void HandleWalkingSound()
     {
         bool isMoving = Mathf.Abs(horizontalInput) > 0.1f && isGrounded;
         if (isMoving && !isWalking)
         {
             isWalking = true;
-            if (soundManager != null)
+            if (!soundManager.IsSplattering())
             {
                 soundManager.PlayWalkSound();
             }
@@ -187,26 +193,5 @@ public class SlimeKnightController : MonoBehaviour
                 soundManager.StopWalkSound();
             }
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (spriteRenderer == null || !Application.isPlaying)
-        {
-            spriteSize = new Vector2(0.3f, 0.2f);
-            groundCheckPos = new Vector2(0, -spriteSize.y / 2f);
-            wallCheckLeftPos = new Vector2(-spriteSize.x / 2f, 0);
-            wallCheckRightPos = new Vector2(spriteSize.x / 2f, 0);
-        }
-
-        Gizmos.color = Color.green;
-        Vector2 worldGroundCheckPos = (Vector2)transform.position + groundCheckPos;
-        Gizmos.DrawWireSphere(worldGroundCheckPos, groundCheckRadius);
-
-        Gizmos.color = Color.blue;
-        Vector2 worldWallCheckLeftPos = (Vector2)transform.position + wallCheckLeftPos;
-        Vector2 worldWallCheckRightPos = (Vector2)transform.position + wallCheckRightPos;
-        Gizmos.DrawRay(worldWallCheckLeftPos, Vector2.left * wallCheckDistance);
-        Gizmos.DrawRay(worldWallCheckRightPos, Vector2.right * wallCheckDistance);
     }
 }
