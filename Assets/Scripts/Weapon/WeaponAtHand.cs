@@ -39,6 +39,7 @@ public class WeaponAtHand : MonoBehaviour
     void Update()
     {
         ChangeWeapon();
+        if (Input.GetKeyDown(KeyCode.DownArrow)) { Debug.Log("yes"); }
 
         WeaponFacePointer();
     }
@@ -145,13 +146,13 @@ public class WeaponAtHand : MonoBehaviour
     //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
     private void ScrollForWeapon()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             int maxIndex = weapons.Count - 1;
 
             DeselectWeapon(tempWeaponIndex);
 
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (skipOnMenu)
                 {
@@ -168,7 +169,7 @@ public class WeaponAtHand : MonoBehaviour
                 }
             }
 
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (skipOnMenu)
                 {
