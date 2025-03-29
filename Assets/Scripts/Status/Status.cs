@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Status : MonoBehaviour
@@ -22,5 +23,10 @@ public class Status : MonoBehaviour
     void Update()
     {
         health.RegainingAmount(Time.deltaTime);
+
+        if (health.amount < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
