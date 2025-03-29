@@ -8,19 +8,21 @@ public class AnimationButton : MonoBehaviour
     [SerializeField] private bool toggleMode = true;
 
     [Header("Collider Settings")]
-    [SerializeField] private Collider2D doorCollider; // Assign the door's collider here
-    private bool originalColliderEnabled; // To remember initial state
+    [SerializeField] private Collider2D doorCollider;
+    private bool originalColliderEnabled;
 
     private bool isOn = false;
     private int objectsOnButton = 0;
+    private SoundManager soundManager;
 
     private void Start()
     {
-        // Store the initial collider state
         if (doorCollider != null)
         {
             originalColliderEnabled = doorCollider.enabled;
         }
+
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -45,7 +47,6 @@ public class AnimationButton : MonoBehaviour
         if (IsValidTrigger(other))
         {
             objectsOnButton--;
-
             if (!toggleMode && objectsOnButton <= 0)
             {
                 SetState(false);
@@ -69,9 +70,15 @@ public class AnimationButton : MonoBehaviour
         {
             isOn = newState;
             targetAnimator.SetBool(stateParameter, isOn);
-
-            // Handle collider state
             UpdateColliderState();
+            if (soundManager != null)
+            {
+                soundManager.PlayButtonSound();
+                if (isOn)
+                    soundManager.PlayDoorOpenSound();
+                else
+                    soundManager.PlayDoorCloseSound();
+            }
         }
     }
 
@@ -79,12 +86,10 @@ public class AnimationButton : MonoBehaviour
     {
         if (doorCollider != null)
         {
-            // Disable collider when door is open, restore to original state when closed
             doorCollider.enabled = !isOn && originalColliderEnabled;
         }
     }
 
-    // For external control if needed
     public void ForceSetState(bool openState)
     {
         SetState(openState);
