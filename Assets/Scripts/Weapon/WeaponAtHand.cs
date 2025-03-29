@@ -53,6 +53,8 @@ public class WeaponAtHand : MonoBehaviour
                 //Debug.Log(child.name);
                 weapons.Add(child.gameObject);
             }
+
+            child.gameObject.SetActive(false);
         }
     }
 

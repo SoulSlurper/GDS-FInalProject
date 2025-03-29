@@ -31,8 +31,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3168918344338728207}
-  - {fileID: 1308203892469153500}
-  - {fileID: 8012270305134079240}
+  - {fileID: 7522520596024924028}
+  - {fileID: 5576901718290045083}
   m_Father: {fileID: 5680072701811430040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9147381770472217210
@@ -49,10 +49,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 8328409611633574170}
   areWeaponsCosting: 0
-  selectedWeapon: 2
+  selectedWeapon: 1
   colorSelection: {r: 0, g: 0, b: 1, a: 1}
   skipOnMenu: 0
-  skipOnMenuEnter: 0
+  skipOnMenuEnter: 1
 --- !u!1 &8328409611633574170
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +369,7 @@ MonoBehaviour:
     _isPassive: 1
     _passiveAmount: 1
     _passiveDelay: 1
---- !u!1001 &3481875368807117492
+--- !u!1001 &2130452132651272313
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -377,68 +377,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4202302289588770663}
     m_Modifications:
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+    - target: {fileID: 5652273744297220474, guid: 873f150c969731d40af6f36e905281d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6611453119622905346, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-      propertyPath: m_Name
-      value: SlimeKnightSword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e94a39212564a254b8ee38dc36338665, type: 3}
---- !u!4 &1308203892469153500 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
-  m_PrefabInstance: {fileID: 3481875368807117492}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4594952661521661418
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4202302289588770663}
-    m_Modifications:
     - target: {fileID: 5833780539598213346, guid: 873f150c969731d40af6f36e905281d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -488,10 +430,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 873f150c969731d40af6f36e905281d8, type: 3}
---- !u!4 &8012270305134079240 stripped
+--- !u!4 &5576901718290045083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5833780539598213346, guid: 873f150c969731d40af6f36e905281d8, type: 3}
-  m_PrefabInstance: {fileID: 4594952661521661418}
+  m_PrefabInstance: {fileID: 2130452132651272313}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4870771817234891045
 PrefabInstance:
@@ -558,4 +500,66 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7521635180919022634, guid: 668c0ef6d34110b4081e9885bef73330, type: 3}
   m_PrefabInstance: {fileID: 4870771817234891045}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5337024017354595092
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4202302289588770663}
+    m_Modifications:
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611453119622905346, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+      propertyPath: m_Name
+      value: SlimeKnightSword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+--- !u!4 &7522520596024924028 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2483092742239292520, guid: e94a39212564a254b8ee38dc36338665, type: 3}
+  m_PrefabInstance: {fileID: 5337024017354595092}
   m_PrefabAsset: {fileID: 0}
