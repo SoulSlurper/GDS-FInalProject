@@ -87,8 +87,8 @@ public class WeaponAtHand : MonoBehaviour
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
 
             wDetails.enabled = true;
-            
-            wDetails.SetStateTextDetails(false);
+
+            wDetails.ShowAllTextDetails(false);
 
             selectedWeapon = wDetails.GetWeaponType();
         }
@@ -100,7 +100,12 @@ public class WeaponAtHand : MonoBehaviour
 
             weapon.GetComponent<SpriteRenderer>().color = colorSelection;
 
-            wDetails.SetStateTextDetails(true);
+            if (areWeaponsCosting)
+            {
+                if (wDetails.GetWeaponType() == WeaponType.None) wDetails.ShowTextDetails(true, false);
+                else wDetails.ShowTextDetails(true, true);
+            }
+            else wDetails.ShowTextDetails(true, false);
             
             wDetails.enabled = false;
         }

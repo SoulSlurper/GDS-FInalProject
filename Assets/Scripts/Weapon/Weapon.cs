@@ -13,10 +13,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
-    [Header("Text Details")]
-    public bool showTextDetails = false;
-    [SerializeField] private TMP_Text typeText;
-    [SerializeField] private TMP_Text costText;
+    private List<GameObject> textDetails = new List<GameObject>();
+    private enum textDetailsIndex { type, cost };
 
     [Header("Attack Details")]
     [SerializeField] private bool attackContinously = false;
@@ -27,8 +25,11 @@ public class Weapon : MonoBehaviour
 
     void Awake()
     {
-        SetTexts();
-        SetStateTextDetails(showTextDetails);
+        GetTextDetailGameObjects();
+
+        SetAllTextDetails();
+
+        ShowAllTextDetails(false);
     }
 
     // Weapon details functions // // // // //
@@ -45,19 +46,51 @@ public class Weapon : MonoBehaviour
     //public Animator GetAnimator() { return animator; }
 
     // Text functions // // // // //
-    public void SetTexts()
+    private void GetTextDetailGameObjects()
     {
-        typeText.text = type.ToString();
-        costText.text = cost.ToString();
+        foreach(Transform child in transform.Find("LabelCanvas").Find("Image"))
+        {
+            textDetails.Add(child.gameObject);
+        }
     }
 
-    public void SetStateTextDetails(bool state)
+    private void SetTextDetail(int index, string text)
     {
-        GameObject labelCanvas;
-        if (labelCanvas = transform.Find("LabelCanvas").gameObject) //finds the LabelCanvas child gameobject
+        Transform textDetail = textDetails[index].transform;
+
+        TMP_Text detail = textDetail.GetComponent<TMP_Text>();
+        if (detail == null)
         {
-            labelCanvas.SetActive(state);
+            Debug.LogWarning(textDetail);
+            foreach (Transform child in textDetail) Debug.Log(child);
+
+            detail = textDetail.Find("ValueText").GetComponent<TMP_Text>();
         }
+
+        detail.text = text;
+    }
+
+    private void SetAllTextDetails()
+    {
+        SetTextDetail((int)textDetailsIndex.type, type.ToString());
+        SetTextDetail((int)textDetailsIndex.cost, cost.ToString());
+    }
+
+    private void SetActiveTextDetail(int index, bool active)
+    {
+        textDetails[index].SetActive(active);
+    }
+
+    public void ShowTextDetails(bool showType, bool showCost)
+    {
+        SetActiveTextDetail((int)textDetailsIndex.type, showType);
+        SetActiveTextDetail((int)textDetailsIndex.cost, showCost);
+    }
+
+    public void ShowAllTextDetails(bool show)
+    {
+        SetActiveTextDetail((int)textDetailsIndex.type, show);
+        SetActiveTextDetail((int)textDetailsIndex.cost, show);
     }
 
     // Attack time functions // // // // //
