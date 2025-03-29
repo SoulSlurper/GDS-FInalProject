@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class LongRangeWeapon : Weapon
 {
-    //Note: Does not set the damage or speed of the projectile
-
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchOffLocation; //where the projectile will appear
+
+    [Header("Projectile Details")]
+    [SerializeField] private float speed = 1f;
 
     void Start()
     {
@@ -45,6 +46,9 @@ public class LongRangeWeapon : Weapon
     {
         GameObject projectileObject = Instantiate(projectile.gameObject, launchOffLocation.position, transform.rotation);
         ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
+
+        wDetails.SetSpeed(speed);
+        wDetails.SetDamage(GetDamage());
 
         wDetails.LaunchProjectile();
 

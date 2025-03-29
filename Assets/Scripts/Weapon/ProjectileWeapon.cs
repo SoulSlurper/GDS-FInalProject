@@ -6,7 +6,7 @@ using UnityEngine;
 public class ProjectileWeapon : Weapon
 {
     [Header("Projectile Details")]
-    [SerializeField] private bool canLaunch = true;
+    [SerializeField] private bool canLaunch = false;
     [SerializeField] private float speed = 1f; //the speed the projectile is traveling
 
     void Update()
@@ -34,9 +34,9 @@ public class ProjectileWeapon : Weapon
         collision.GetComponent<Status>().health.DecreaseAmount(GetDamage());
     }
 
-    public float GetProjectileSpeed() { return speed; }
+    public float GetSpeed() { return speed; }
 
-    public void SetProjectileSpeed(float speed) { this.speed = speed; }
+    public void SetSpeed(float speed) { this.speed = speed; }
 
     public void LaunchProjectile() { canLaunch = true; }
 }
