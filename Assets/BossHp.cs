@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossTrigger : MonoBehaviour
+public class BossHp : MonoBehaviour
 {
     [SerializeField]
-    public GameObject boss;
-    public static bool hasSpawnedBoss = false;
+    public int hp;
     // Start is called before the first frame update
     void Start()
     {
-       
+        
     }
 
     // Update is called once per frame
@@ -21,10 +20,15 @@ public class BossTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasSpawnedBoss)
+        if (collision.CompareTag("Weapon"))
         {
-            Instantiate(boss);
-            hasSpawnedBoss = true;
+            hp -= 1;
+            
         }
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+
     }
 }
