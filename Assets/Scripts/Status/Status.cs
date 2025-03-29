@@ -14,9 +14,9 @@ public class Status : MonoBehaviour
         private set { }
     }
 
-    public bool isAlive 
+    public bool isDead
     { 
-        get { return _health.amount > 0f; }
+        get { return health.amount <= 0f; }
         private set { }
     }
 
@@ -24,7 +24,7 @@ public class Status : MonoBehaviour
     {
         health.RegainingAmount(Time.deltaTime);
 
-        if (health.amount < 0)
+        if (isDead)
         {
             Destroy(gameObject);
         }
