@@ -42,6 +42,15 @@ public class CloseRangeWeapon : Weapon
             MakeDamage();
 
             animator.SetTrigger("Attack");
+            if (SoundManager.Instance != null)
+            {
+                Debug.Log("Attempting to play sword sound");
+                SoundManager.Instance.PlaySwordSound();
+            }
+            else
+            {
+                Debug.LogWarning("SoungManager instance is null");
+            }
 
             SetAttackTimer(0f);
         }
