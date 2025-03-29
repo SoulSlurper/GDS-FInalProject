@@ -7,7 +7,7 @@ public class LongRangeWeapon : Weapon
     //Note: Does not set the damage or speed of the projectile
 
     [Header("Long Range Details")]
-    [SerializeField] private GameObject projectile;
+    [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchOffLocation; //where the projectile will appear
 
     void Start()
@@ -43,7 +43,11 @@ public class LongRangeWeapon : Weapon
 
     private void SpawnProjectile()
     {
-        Instantiate(projectile, launchOffLocation.position, transform.rotation);
+        GameObject projectileObject = Instantiate(projectile.gameObject, launchOffLocation.position, transform.rotation);
+        ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
+
+        wDetails.LaunchProjectile();
+
         if (SoundManager.Instance != null)
         {
             SoundManager.Instance.PlayShootSound();

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Projectile : Weapon
+public class ProjectileWeapon : Weapon
 {
     [Header("Projectile Details")]
+    [SerializeField] private bool canLaunch = true;
     [SerializeField] private float speed = 1f; //the speed the projectile is traveling
 
     void Update()
     {
-        transform.position += transform.right * speed * Time.deltaTime;
+        if (canLaunch) transform.position += transform.right * speed * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -36,4 +37,6 @@ public class Projectile : Weapon
     public float GetProjectileSpeed() { return speed; }
 
     public void SetProjectileSpeed(float speed) { this.speed = speed; }
+
+    public void LaunchProjectile() { canLaunch = true; }
 }
