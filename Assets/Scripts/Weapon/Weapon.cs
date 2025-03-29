@@ -7,20 +7,63 @@ using TMPro;
 public class Weapon : MonoBehaviour
 {
     [Header("Weapon Details")]
-    [SerializeField] private WeaponType type;
-    [SerializeField] private float damage;
-    [SerializeField] private float cost; //amount needed to get the weapon
+    [SerializeField] private WeaponType _type;
+    [SerializeField] private float _damage;
+    [SerializeField] private float _cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
+    [Header("Attack Details")]
+    public bool isAttackContinuous = false;
+    [SerializeField] private float _attackDelay = 1f; //time taken for the attack to be performed
+
+    private bool _isAttacking = false;
+    private float _attackTimer = 0f;
+
+
+    //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
     private enum textDetailsIndex { type, cost };
 
-    [Header("Attack Details")]
-    [SerializeField] private bool attackContinously = false;
-    [SerializeField] private float attackDelay = 1f; //time taken for the attack to be performed
 
-    private bool isAttacking = false;
-    private float attackTimer = 0f;
+
+    // Getter and Setters // // // //
+    public WeaponType type
+    {
+        get { return _type; }
+        private set { _type = value; }
+    }
+
+    public float damage
+    {
+        get { return _damage; }
+        private set { _damage = value; }
+    }
+
+    public float cost
+    {
+        get { return _cost; }
+        private set { _cost = value; }
+    }
+
+    public float attackDelay
+    {
+        get { return _attackDelay; }
+        private set { _attackDelay = value; }
+    }
+
+    public float attackTimer
+    {
+        get { return _attackTimer; }
+        set { _attackTimer = value; }
+    }
+    public bool isAttacking
+    {
+        get { return _isAttacking; }
+        private set { _isAttacking = value; }
+    }
+
+
+    // Unity // // // // //
 
     void Awake()
     {
@@ -29,20 +72,21 @@ public class Weapon : MonoBehaviour
         SetAllTextDetails();
 
         ShowAllTextDetails(false);
+
+        attackTimer = attackDelay + 1f;
     }
 
-    // Weapon details functions // // // // //
-    public WeaponType GetWeaponType() { return type; }
 
-    public float GetDamage() { return damage; }
+
+
+    // Weapon details functions // // // // //
 
     public void SetDamage(float damage) { this.damage = damage; }
 
-    public float GetCost() { return cost; }
-
     public void SetCost(float cost) { this.cost = cost; }
 
-    //public Animator GetAnimator() { return animator; }
+
+
 
     // Text functions // // // // //
     private void GetTextDetailGameObjects()
@@ -90,21 +134,30 @@ public class Weapon : MonoBehaviour
     }
 
     // Attack time functions // // // // //
-    public float GetAttackDelay() { return attackDelay; }
-
     public void SetAttackDelay(float attackDelay) { this.attackDelay = attackDelay; }
-
-    public float GetAttackTimer() { return attackTimer; }
 
     public void SetAttackTimer(float attackTimer) { this.attackTimer = attackTimer; }
 
-    public void IncreaseAttackTimer() { attackTimer += Time.deltaTime; }
-
-    public void DecreaseAttackTimer() { attackTimer -= Time.deltaTime; }
-
-    public bool AttackTimerReachDelay() { return attackTimer >= attackDelay; }
 
     // Attack performance functions // // // // //
+
+    public virtual void Attack(Collider2D collider = null)
+    {
+        Debug.Log("Attack");
+    }
+
+    public void ContinousAttack(Collider2D collider = null)
+    {
+        if (attackTimer > attackDelay)
+        {
+            Attack(collider);
+
+            attackTimer = 0f;
+        }
+
+        attackTimer += Time.deltaTime;
+    }
+
     public bool CanAttack()
     {
         int mouseCode = 0; //for left mouse clicks
@@ -113,16 +166,21 @@ public class Weapon : MonoBehaviour
         {
             isAttacking = true;
         }
-        else if (Input.GetMouseButtonUp(mouseCode))
+        else if (Input.GetMouseButtonUp(mouseCode) || (isAttacking && !isAttackContinuous))
         {
             isAttacking = false;
-        }
-        else if (isAttacking && !attackContinously)
-        {
-            isAttacking = false;
+            attackTimer = attackDelay + 1f;
         }
 
         return isAttacking;
     }
-    public bool IsAttacking() { return isAttacking; }
+
+    public void PerformAttack(Collider2D collider = null)
+    {
+        if (CanAttack())
+        {
+            if (isAttackContinuous) ContinousAttack(collider);
+            else Attack(collider);
+        }
+    }
 }

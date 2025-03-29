@@ -6,24 +6,22 @@ public class CloseRangeWeapon : Weapon
 {
     [Header("Close Range Details")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Transform raycastCircleOrigin;
-    [SerializeField] private float raycastCircleRadius;
+    [SerializeField] private Transform raycastOrigin;
+    [SerializeField] private float _raycastRadius = 1f;
 
-    void Start()
+
+    // Getter and Setters // // // //
+    public float raycastRadius
     {
-        SetAttackTimer(GetAttackDelay());
+        get { return _raycastRadius; }
+        private set { _raycastRadius = value; }
     }
 
+
+    // Unity // // // // //
     void Update()
     {
-        if (CanAttack())
-        {
-            Attack();
-        }
-        else
-        {
-            SetAttackTimer(GetAttackDelay());
-        }
+        PerformAttack();
     }
 
     void OnDrawGizmosSelected()
@@ -31,38 +29,38 @@ public class CloseRangeWeapon : Weapon
         //shows the raycast range when the gizmos is selected in the scene
 
         Gizmos.color = Color.blue;
-        Vector3 position = raycastCircleOrigin == null ? Vector3.zero : raycastCircleOrigin.position;
-        Gizmos.DrawWireSphere(position, raycastCircleRadius);
+        Vector3 position = raycastOrigin == null ? Vector3.zero : raycastOrigin.position;
+        Gizmos.DrawWireSphere(position, raycastRadius);
     }
 
-    private void Attack()
+
+
+    // Close Range Details // // // // //
+    public void SetRaycastRadius(float radius) { raycastRadius =  radius; }
+
+
+
+    // Attack Details // // // // //
+    public override void Attack(Collider2D collider = null)
     {
-        if (AttackTimerReachDelay())
+        MakeDamage();
+
+        animator.SetTrigger("Attack");
+
+        if (SoundManager.Instance != null)
         {
-            MakeDamage();
-
-            animator.SetTrigger("Attack");
-            if (SoundManager.Instance != null)
-            {
-                Debug.Log("Attempting to play sword sound");
-                SoundManager.Instance.PlaySwordSound();
-            }
-            else
-            {
-                Debug.LogWarning("SoungManager instance is null");
-            }
-
-            SetAttackTimer(0f);
+            Debug.Log("Attempting to play sword sound");
+            SoundManager.Instance.PlaySwordSound();
         }
         else
         {
-            IncreaseAttackTimer();
+            Debug.LogWarning("SoungManager instance is null");
         }
     }
 
     private void MakeDamage()
     {
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(raycastCircleOrigin.position, raycastCircleRadius))
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(raycastOrigin.position, raycastRadius))
         {
             Debug.Log(collider.name + " - " + collider.tag);
 
@@ -71,7 +69,7 @@ public class CloseRangeWeapon : Weapon
                 Status status;
                 if (status = collider.GetComponent<Status>())
                 {
-                    status.health.DecreaseAmount(GetDamage());
+                    status.health.DecreaseAmount(damage);
                 }
             }
         }

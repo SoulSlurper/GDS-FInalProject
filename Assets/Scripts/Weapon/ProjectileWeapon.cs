@@ -6,12 +6,20 @@ using UnityEngine;
 public class ProjectileWeapon : Weapon
 {
     [Header("Projectile Details")]
-    [SerializeField] private bool canLaunch = false;
-    [SerializeField] private float speed = 1f; //the speed the projectile is traveling
+    [SerializeField] private bool isLaunched = false;
+    [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
 
+    // Getter and Setters // // // //
+    public float speed
+    {
+        get { return _speed; }
+        private set { _speed = value; }
+    }
+
+    // Unity // // // //
     void Update()
     {
-        if (canLaunch) transform.position += transform.right * speed * Time.deltaTime;
+        if (isLaunched) transform.position += transform.right * speed * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -29,14 +37,18 @@ public class ProjectileWeapon : Weapon
         }
     }
 
-    private void Attack(Collider2D collision)
-    {
-        collision.GetComponent<Status>().health.DecreaseAmount(GetDamage());
-    }
 
-    public float GetSpeed() { return speed; }
 
+    // Projectile Details // // // // //
     public void SetSpeed(float speed) { this.speed = speed; }
 
-    public void LaunchProjectile() { canLaunch = true; }
+    public void LaunchProjectile() { isLaunched = true; }
+
+
+
+    // Attack Details // // // // //
+    public override void Attack(Collider2D collider = null)
+    {
+        collider.GetComponent<Status>().health.DecreaseAmount(damage);
+    }
 }

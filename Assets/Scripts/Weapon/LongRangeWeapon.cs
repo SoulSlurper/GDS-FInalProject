@@ -6,10 +6,10 @@ public class LongRangeWeapon : Weapon
 {
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
-    [SerializeField] private Transform launchOffLocation; //where the projectile will appear
+    [SerializeField] private Transform launchLocation; //where the projectile will appear
 
     [Header("Projectile Details")]
-    [SerializeField] private float speed = 1f;
+    [SerializeField] private float _speed = 1f;
     //[SerializeField] private bool infiniteAmount = false;
     //[SerializeField] private int amount = 10;
     //[SerializeField] private float reloadDelay = 1f;
@@ -17,46 +17,33 @@ public class LongRangeWeapon : Weapon
     //private int maxAmount;
     //private float reloadTimer;
 
-    void Start()
+    // Getter and Setters // // // //
+    public float speed
     {
-        SetAttackTimer(GetAttackDelay());
+        get { return _speed; }
+        private set { _speed = value; }
     }
 
+
+
+    // Unity // // // // //
     void Update()
     {
-        if (CanAttack())
-        {
-            Attack();
-        }
-        else
-        {
-            SetAttackTimer(GetAttackDelay());
-        }
+        PerformAttack();
     }
 
-    private void Attack()
+
+
+    // Long Range Details // // // // //
+    public void SetSpeed(float speed) { this.speed = speed; }
+
+
+
+    // Attack Details // // // // //
+    public override void Attack(Collider2D collider = null)
     {
-        if (AttackTimerReachDelay())
-        {
-            SpawnProjectile();
+        SpawnProjectile();
 
-            SetAttackTimer(0f);
-        }
-        else
-        {
-            IncreaseAttackTimer();
-        }
-    }
-
-    private void SpawnProjectile()
-    {
-        GameObject projectileObject = Instantiate(projectile.gameObject, launchOffLocation.position, transform.rotation);
-        ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
-
-        wDetails.SetSpeed(speed);
-        wDetails.SetDamage(GetDamage());
-
-        wDetails.LaunchProjectile();
 
         if (SoundManager.Instance != null)
         {
@@ -66,5 +53,16 @@ public class LongRangeWeapon : Weapon
         {
             Debug.LogWarning("SoundManager instance is null! Shoot sound won't play.");
         }
+    }
+
+    private void SpawnProjectile()
+    {
+        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, transform.rotation);
+        ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
+
+        wDetails.SetSpeed(speed);
+        wDetails.SetDamage(damage);
+
+        wDetails.LaunchProjectile();
     }
 }

@@ -22,7 +22,7 @@ public class BreakableWall : MonoBehaviour
             Weapon weapon = other.GetComponent<Weapon>();
             if (weapon != null)
             {
-                TakeDamage(weapon.GetDamage());
+                TakeDamage(weapon.damage);
             }
         }
     }

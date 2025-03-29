@@ -62,7 +62,7 @@ public class WeaponAtHand : MonoBehaviour
     {
         for (int i = 0; i < weapons.Count; i++)
         {
-            if (weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
+            if (weapons[i].GetComponent<Weapon>().type == type)
             {
                 return i;
             }
@@ -90,7 +90,7 @@ public class WeaponAtHand : MonoBehaviour
 
             wDetails.ShowAllTextDetails(false);
 
-            selectedWeapon = wDetails.GetWeaponType();
+            selectedWeapon = wDetails.type;
         }
         else
         {
@@ -102,7 +102,7 @@ public class WeaponAtHand : MonoBehaviour
 
             if (areWeaponsCosting)
             {
-                if (wDetails.GetWeaponType() == WeaponType.None) wDetails.ShowTextDetails(true, false);
+                if (wDetails.type == WeaponType.None) wDetails.ShowTextDetails(true, false);
                 else wDetails.ShowTextDetails(true, true);
             }
             else wDetails.ShowTextDetails(true, false);
@@ -219,7 +219,7 @@ public class WeaponAtHand : MonoBehaviour
                     SelectWeaponByIndex(tempWeaponIndex);
 
                     if (areWeaponsCosting)
-                        playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
+                        playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
                 }
             }
         }
@@ -240,7 +240,7 @@ public class WeaponAtHand : MonoBehaviour
 
                     if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
 
-                    if (weapons[tempWeaponIndex].GetComponent<Weapon>().GetWeaponType() == WeaponType.None && weapons.Count > 2)
+                    if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
                     {
                         tempWeaponIndex++;
                     }
