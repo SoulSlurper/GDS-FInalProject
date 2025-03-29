@@ -12,6 +12,7 @@ TagManager:
   - Door
   - BossProjectile
   - Boss
+  - MovableObject
   layers:
   - Default
   - TransparentFX
