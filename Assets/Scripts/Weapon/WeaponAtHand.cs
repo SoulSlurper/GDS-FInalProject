@@ -280,6 +280,17 @@ public class WeaponAtHand : MonoBehaviour
         if ((direction.x < 0 && scale.y > 0) || (direction.x > 0 && scale.y < 0))
         {
             scale.y *= -1;
+
+            foreach (Transform child in transform)
+            {
+                Transform labelCanvas = child.Find("LabelCanvas");
+
+                Vector2 scaleLabel = labelCanvas.localScale;
+
+                scaleLabel.x *= -1;
+
+                labelCanvas.localScale = scaleLabel;
+            }
         }
 
         transform.localScale = scale;

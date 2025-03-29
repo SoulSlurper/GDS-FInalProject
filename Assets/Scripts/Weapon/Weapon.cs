@@ -48,7 +48,7 @@ public class Weapon : MonoBehaviour
     // Text functions // // // // //
     private void GetTextDetailGameObjects()
     {
-        foreach(Transform child in transform.Find("LabelCanvas").Find("Image"))
+        foreach(Transform child in transform.Find("LabelCanvas").Find("BackgroundImage"))
         {
             textDetails.Add(child.gameObject);
         }
@@ -61,9 +61,6 @@ public class Weapon : MonoBehaviour
         TMP_Text detail = textDetail.GetComponent<TMP_Text>();
         if (detail == null)
         {
-            Debug.LogWarning(textDetail);
-            foreach (Transform child in textDetail) Debug.Log(child);
-
             detail = textDetail.Find("ValueText").GetComponent<TMP_Text>();
         }
 
