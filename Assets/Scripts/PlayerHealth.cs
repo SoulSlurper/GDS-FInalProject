@@ -35,6 +35,11 @@ public class PlayerHealth : MonoBehaviour
             hp -= 1;
             respawn();
         }
+        if (collision.collider.CompareTag("Enemy"))
+        {
+            hp -= 1;
+            respawn();
+        }
     }
 
     public void respawn()
