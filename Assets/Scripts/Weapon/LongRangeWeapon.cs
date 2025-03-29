@@ -10,6 +10,12 @@ public class LongRangeWeapon : Weapon
 
     [Header("Projectile Details")]
     [SerializeField] private float speed = 1f;
+    //[SerializeField] private bool infiniteAmount = false;
+    //[SerializeField] private int amount = 10;
+    //[SerializeField] private float reloadDelay = 1f;
+
+    //private int maxAmount;
+    //private float reloadTimer;
 
     void Start()
     {

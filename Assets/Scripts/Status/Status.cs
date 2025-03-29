@@ -8,13 +8,13 @@ public class Status : MonoBehaviour
     [SerializeField] private StatusAmount _health;
     //[SerializeField] private StatusAmount _stamina;
 
-    public StatusAmount health 
+    public StatusAmount health
     { 
         get { return _health; }
         private set { }
     }
 
-    public bool isDead
+    public bool noHealth
     { 
         get { return health.amount <= 0f; }
         private set { }
@@ -24,7 +24,7 @@ public class Status : MonoBehaviour
     {
         health.RegainingAmount(Time.deltaTime);
 
-        if (isDead)
+        if (noHealth)
         {
             Destroy(gameObject);
         }
