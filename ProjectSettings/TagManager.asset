@@ -10,6 +10,8 @@ TagManager:
   - Switch
   - DoorButton
   - Door
+  - BossProjectile
+  - Boss
   layers:
   - Default
   - TransparentFX
