@@ -145,15 +145,14 @@ public class WeaponAtHand : MonoBehaviour
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
-                if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
-                else tempWeaponIndex++;
-
+                if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
+                else tempWeaponIndex--;
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
-                if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
-                else tempWeaponIndex--;
+                if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
+                else tempWeaponIndex++;
             }
 
             SelectWeapon(tempWeaponIndex, false);
@@ -187,9 +186,16 @@ public class WeaponAtHand : MonoBehaviour
             {
                 isSelecting = false;
 
-                SelectWeaponByIndex(tempWeaponIndex);
+                if (tempWeaponIndex == currentWeaponIndex)
+                {
+                    SelectWeaponByIndex(currentWeaponIndex);
+                }
+                else
+                {
+                    SelectWeaponByIndex(tempWeaponIndex);
 
-                playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
+                    playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
+                }
             }
         }
     }

@@ -13,6 +13,12 @@ public class Status : MonoBehaviour
         private set { }
     }
 
+    public bool isAlive 
+    { 
+        get { return _health.amount > 0f; }
+        private set { }
+    }
+
     void Update()
     {
         health.RegainingAmount(Time.deltaTime);
