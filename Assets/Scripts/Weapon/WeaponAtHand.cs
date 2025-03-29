@@ -87,6 +87,9 @@ public class WeaponAtHand : MonoBehaviour
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
 
             wDetails.enabled = true;
+            
+            wDetails.SetStateTextDetails(false);
+
             selectedWeapon = wDetails.GetWeaponType();
         }
         else
@@ -97,6 +100,8 @@ public class WeaponAtHand : MonoBehaviour
 
             weapon.GetComponent<SpriteRenderer>().color = colorSelection;
 
+            wDetails.SetStateTextDetails(true);
+            
             wDetails.enabled = false;
         }
     }

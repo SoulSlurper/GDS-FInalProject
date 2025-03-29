@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour
     //[SerializeField] private Animator animator;
 
     [Header("Text Details")]
+    public bool showTextDetails = false;
     [SerializeField] private TMP_Text typeText;
     [SerializeField] private TMP_Text costText;
 
@@ -26,7 +27,8 @@ public class Weapon : MonoBehaviour
 
     void Awake()
     {
-        SetText();
+        SetTexts();
+        SetStateTextDetails(showTextDetails);
     }
 
     // Weapon details functions // // // // //
@@ -43,10 +45,19 @@ public class Weapon : MonoBehaviour
     //public Animator GetAnimator() { return animator; }
 
     // Text functions // // // // //
-    public void SetText()
+    public void SetTexts()
     {
         typeText.text = type.ToString();
         costText.text = cost.ToString();
+    }
+
+    public void SetStateTextDetails(bool state)
+    {
+        GameObject labelCanvas;
+        if (labelCanvas = transform.Find("LabelCanvas").gameObject) //finds the LabelCanvas child gameobject
+        {
+            labelCanvas.SetActive(state);
+        }
     }
 
     // Attack time functions // // // // //

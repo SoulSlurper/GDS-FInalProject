@@ -240,6 +240,28 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 591676030938052933}
   m_SourcePrefab: {fileID: 100100000, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+--- !u!114 &1821365887872538104 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3460269358282191012, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+  m_PrefabInstance: {fileID: 2973380733046629724}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4595823710276732205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1622482605890920561, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+  m_PrefabInstance: {fileID: 2973380733046629724}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7833399809102214345 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5041288964348727701, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
@@ -260,5 +282,8 @@ MonoBehaviour:
   type: 0
   damage: 0
   cost: 0
+  showTextDetails: 0
+  typeText: {fileID: 4595823710276732205}
+  costText: {fileID: 1821365887872538104}
   attackContinously: 0
   attackDelay: 1
