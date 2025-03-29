@@ -87,6 +87,9 @@ public class WeaponAtHand : MonoBehaviour
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
 
             wDetails.enabled = true;
+
+            wDetails.ShowAllTextDetails(false);
+
             selectedWeapon = wDetails.GetWeaponType();
         }
         else
@@ -97,6 +100,13 @@ public class WeaponAtHand : MonoBehaviour
 
             weapon.GetComponent<SpriteRenderer>().color = colorSelection;
 
+            if (areWeaponsCosting)
+            {
+                if (wDetails.GetWeaponType() == WeaponType.None) wDetails.ShowTextDetails(true, false);
+                else wDetails.ShowTextDetails(true, true);
+            }
+            else wDetails.ShowTextDetails(true, false);
+            
             wDetails.enabled = false;
         }
     }
@@ -142,16 +152,16 @@ public class WeaponAtHand : MonoBehaviour
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
     }
 
-    //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
+    //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
     private void ScrollForWeapon()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             int maxIndex = weapons.Count - 1;
 
             DeselectWeapon(tempWeaponIndex);
 
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (skipOnMenu)
                 {
@@ -168,7 +178,7 @@ public class WeaponAtHand : MonoBehaviour
                 }
             }
 
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (skipOnMenu)
                 {
@@ -270,6 +280,17 @@ public class WeaponAtHand : MonoBehaviour
         if ((direction.x < 0 && scale.y > 0) || (direction.x > 0 && scale.y < 0))
         {
             scale.y *= -1;
+
+            foreach (Transform child in transform)
+            {
+                Transform labelCanvas = child.Find("LabelCanvas");
+
+                Vector2 scaleLabel = labelCanvas.localScale;
+
+                scaleLabel.x *= -1;
+
+                labelCanvas.localScale = scaleLabel;
+            }
         }
 
         transform.localScale = scale;
