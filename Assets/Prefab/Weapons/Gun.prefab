@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 9141430891721096324}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -131,8 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365d981f5b07bb0448944f6f6ddc7bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 2
   damage: 0
+  cost: 25
   attackContinously: 1
   attackDelay: 1
   projectile: {fileID: 8640387466140483046, guid: c36279eecd5b83a41807d8dd6568b405, type: 3}

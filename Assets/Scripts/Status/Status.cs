@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    [SerializeField] private float health;
+    [SerializeField] private StatusAmount _health;
+    //[SerializeField] private StatusAmount _stamina;
 
-    public float GetHealth() { return health; }
-
-    public void SetHealth(float health) { this.health = health; }
-
-    public void DecreaseHealth(float amount)
-    {
-        health -= amount;
-
-        Debug.Log(gameObject.name + " Health: " + health);
+    public StatusAmount health 
+    { 
+        get { return _health; }
+        private set { }
     }
 
-    public void IncreaseHealth(float amount)
-    {
-        health += amount;
+    public bool isAlive 
+    { 
+        get { return _health.amount > 0f; }
+        private set { }
+    }
 
-        Debug.Log(gameObject.name + " Health: " + health);
+    void Update()
+    {
+        health.RegainingAmount(Time.deltaTime);
     }
 }

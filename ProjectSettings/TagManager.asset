@@ -7,7 +7,9 @@ TagManager:
   - Wall
   - Weapon
   - Enemy
-  - BossProjectile
+  - Switch
+  - DoorButton
+  - Door
   layers:
   - Default
   - TransparentFX

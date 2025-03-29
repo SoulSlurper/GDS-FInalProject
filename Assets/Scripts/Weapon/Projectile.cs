@@ -22,7 +22,7 @@ public class Projectile : Weapon
             Attack(collision);
         }
 
-        if (!collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
         {
             Destroy(gameObject);
         }
@@ -30,7 +30,7 @@ public class Projectile : Weapon
 
     private void Attack(Collider2D collision)
     {
-        collision.GetComponent<Status>().DecreaseHealth(GetDamage());
+        collision.GetComponent<Status>().health.DecreaseAmount(GetDamage());
     }
 
     public float GetProjectileSpeed() { return speed; }

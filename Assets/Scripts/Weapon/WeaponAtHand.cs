@@ -1,0 +1,277 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class WeaponAtHand : MonoBehaviour
+{
+    [SerializeField] private GameObject player;
+    [SerializeField] private bool areWeaponsCosting = false;
+
+    [Header("Selection")]
+    [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
+    [SerializeField] private Color colorSelection = Color.grey;
+    [SerializeField] private bool skipOnMenu = false;
+    [SerializeField] private bool skipOnMenuEnter = false;
+
+    private List<GameObject> weapons = new List<GameObject>();
+    private int currentWeaponIndex = -1;
+    private int tempWeaponIndex = -1;
+
+    private Status playerStatus;
+    private SpriteRenderer playerSpriteRenderer;
+
+    private bool isSelecting = false;
+
+    void Awake()
+    {
+        GetAvailableWeapons();
+    }
+
+    void Start()
+    {
+        playerStatus = player.GetComponent<Status>();
+        playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        
+        SelectWeaponByType(selectedWeapon);
+    }
+
+    void Update()
+    {
+        ChangeWeapon();
+
+        WeaponFacePointer();
+    }
+
+    //gets all the children gameobjects that have the Weapon component
+    private void GetAvailableWeapons()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Weapon>())
+            {
+                //Debug.Log(child.name);
+                weapons.Add(child.gameObject);
+            }
+
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    private int GetWeaponIndex(WeaponType type)
+    {
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            if (weapons[i].GetComponent<Weapon>().GetWeaponType() == type)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private void SelectWeapon(int index, bool confirm = true)
+    {
+        GameObject weapon = weapons[index];
+        Weapon wDetails = weapon.GetComponent<Weapon>();
+
+        weapon.SetActive(true);
+
+        if (confirm)
+        {
+            playerSpriteRenderer.color = Color.white;
+
+            currentWeaponIndex = index;
+
+            weapon.GetComponent<SpriteRenderer>().color = Color.white;
+
+            wDetails.enabled = true;
+            selectedWeapon = wDetails.GetWeaponType();
+        }
+        else
+        {
+            playerSpriteRenderer.color = colorSelection;
+
+            tempWeaponIndex = index;
+
+            weapon.GetComponent<SpriteRenderer>().color = colorSelection;
+
+            wDetails.enabled = false;
+        }
+    }
+
+    private void DeselectWeapon(int index, bool confirm = true)
+    {
+        weapons[index].SetActive(false);
+
+        if (confirm)
+        {
+            selectedWeapon = WeaponType.None;
+        }
+    }
+
+    private void SelectWeaponByIndex(int index, bool confirm = true)
+    {
+        //if a weapon is currently being held already
+        if (currentWeaponIndex > -1) DeselectWeapon(currentWeaponIndex);
+        if (tempWeaponIndex > -1) DeselectWeapon(tempWeaponIndex);
+
+        int i;
+        if (index > -1) //if the weapon has been found
+        {
+            if (confirm)
+            {
+                i = currentWeaponIndex = index;
+            }
+            else
+            {
+                i = tempWeaponIndex = index;
+            }
+
+            SelectWeapon(i, confirm);
+        }
+        else // if weapon has not been found
+        {
+            SelectWeaponByIndex(GetWeaponIndex(WeaponType.None), confirm);
+        }
+    }
+
+    private void SelectWeaponByType(WeaponType type, bool confirm = true)
+    {
+        SelectWeaponByIndex(GetWeaponIndex(type), confirm);
+    }
+
+    //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
+    private void ScrollForWeapon()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+        {
+            int maxIndex = weapons.Count - 1;
+
+            DeselectWeapon(tempWeaponIndex);
+
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            {
+                if (skipOnMenu)
+                {
+                    tempWeaponIndex--;
+                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
+
+                    if (tempWeaponIndex < 0) tempWeaponIndex = maxIndex;
+                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
+                }
+                else
+                {
+                    if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
+                    else tempWeaponIndex--;
+                }
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            {
+                if (skipOnMenu)
+                {
+                    tempWeaponIndex++;
+                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
+
+                    if (tempWeaponIndex > maxIndex) tempWeaponIndex = 0;
+                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
+
+                }
+                else
+                {
+                    if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
+                    else tempWeaponIndex++;
+                }
+            }
+
+            SelectWeapon(tempWeaponIndex, false);
+        }
+    }
+
+    private void SwitchingWeapons()
+    {
+        if (isSelecting)
+        {
+            ScrollForWeapon();
+
+            if (Input.GetMouseButtonDown(1)) //confirms the selection by clicking the right mouse
+            {
+                isSelecting = false;
+
+                if (tempWeaponIndex == currentWeaponIndex)
+                {
+                    SelectWeaponByIndex(currentWeaponIndex);
+                }
+                else
+                {
+                    SelectWeaponByIndex(tempWeaponIndex);
+
+                    if (areWeaponsCosting)
+                        playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().GetCost());
+                }
+            }
+        }
+    }
+
+    private void ChangeWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && weapons.Count > 1)
+        {
+            isSelecting = !isSelecting;
+
+            if (isSelecting)
+            {
+                tempWeaponIndex = currentWeaponIndex;
+                if (skipOnMenuEnter || skipOnMenu)
+                {
+                    tempWeaponIndex++;
+
+                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
+
+                    if (weapons[tempWeaponIndex].GetComponent<Weapon>().GetWeaponType() == WeaponType.None && weapons.Count > 2)
+                    {
+                        tempWeaponIndex++;
+                    }
+
+                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
+
+                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
+                }
+
+                SelectWeaponByIndex(tempWeaponIndex, false);
+
+                Debug.Log("Weapon Menu opened");
+            }
+            else
+            {
+                SelectWeaponByIndex(currentWeaponIndex);
+            }
+        }
+
+        SwitchingWeapons();
+    }
+
+    private Vector2 PointerPosition()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        return (mousePosition - (Vector2)transform.position).normalized;
+    }
+
+    private void WeaponFacePointer()
+    {
+        Vector2 direction = PointerPosition();
+
+        transform.right = direction;
+
+        Vector2 scale = transform.localScale;
+        if ((direction.x < 0 && scale.y > 0) || (direction.x > 0 && scale.y < 0))
+        {
+            scale.y *= -1;
+        }
+
+        transform.localScale = scale;
+    }
+}

@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon Details")]
     [SerializeField] private WeaponType type;
     [SerializeField] private float damage;
+    [SerializeField] private float cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
     [Header("Attack Details")]
@@ -23,6 +24,10 @@ public class Weapon : MonoBehaviour
     public float GetDamage() { return damage; }
 
     public void SetDamage(float damage) { this.damage = damage; }
+
+    public float GetCost() { return cost; }
+
+    public void SetCost(float cost) { this.cost = cost; }
 
     //public Animator GetAnimator() { return animator; }
 
