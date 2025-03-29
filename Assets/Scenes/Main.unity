@@ -58748,18 +58748,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2912672443726484765, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
-      propertyPath: _health._amount
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2912672443726484765, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
-      propertyPath: isPassiveHealth
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2912672443726484765, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
-      propertyPath: _health._isPassive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.153297
@@ -58803,6 +58791,18 @@ PrefabInstance:
     - target: {fileID: 8328409611633574170, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_Name
       value: SlimeKnight_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147381770472217210, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: colorSelection.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147381770472217210, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: colorSelection.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147381770472217210, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: colorSelection.r
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

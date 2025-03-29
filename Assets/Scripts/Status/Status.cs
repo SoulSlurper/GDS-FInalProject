@@ -5,6 +5,7 @@ using UnityEngine;
 public class Status : MonoBehaviour
 {
     [SerializeField] private StatusAmount _health;
+    //[SerializeField] private StatusAmount _stamina;
 
     public StatusAmount health 
     { 
@@ -12,33 +13,8 @@ public class Status : MonoBehaviour
         private set { }
     }
 
-    void Start()
-    {
-    }
-
     void Update()
     {
-        RegainStatusAmount(_health);
-
-        Debug.LogWarning(gameObject.name);
-        Debug.Log("_health.amount: " + _health.amount);
-        Debug.Log("_health.max: " + _health.max);
-    }
-
-    private void RegainStatusAmount(StatusAmount sAmount)
-    {
-        if (sAmount.isPassive && sAmount.amount < sAmount.max)
-        {
-            if (sAmount.TimerAboveDelay())
-            {
-                sAmount.ResetTimer();
-
-                sAmount.IncreaseAmount(sAmount.passiveAmount);
-
-                if (sAmount.amount > sAmount.max) sAmount.SetAmount(sAmount.max);
-            }
-
-            sAmount.IncreaseTimer(Time.deltaTime);
-        }
+        health.RegainingAmount(Time.deltaTime);
     }
 }

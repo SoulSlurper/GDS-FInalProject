@@ -62,21 +62,39 @@ public class StatusAmount
 
 
     // Amount // // // //
-    public void SetAmount(float amount) { _amount = amount >= 0 && amount <= _max ? amount : _amount; }
+    public void SetAmount(float amount) { this.amount = amount >= 0 && amount <= max ? amount : this.amount; }
 
-    public void SetNewAmount(float amount) { _amount = _max = amount; }
+    public void SetNewAmount(float amount) { this.amount = max = amount; }
 
-    public void IncreaseAmount(float amount) { _amount += amount; }
+    public void IncreaseAmount(float amount) { this.amount += amount; }
 
-    public void DecreaseAmount(float amount) { _amount -= amount; }
+    public void DecreaseAmount(float amount) { this.amount -= amount; }
 
     private void SetMax(float amount) 
     { 
         if (!isMaxSet)
         {
-            _max = amount;
+            max = amount;
 
             isMaxSet = true;
+        }
+    }
+
+    //this is to be placed in the Update unity function
+    public void RegainingAmount(float seconds)
+    {
+        if (isPassive && amount < max)
+        {
+            if (timer > passiveDelay)
+            {
+                ResetTimer();
+
+                IncreaseAmount(passiveAmount);
+
+                if (amount > max) SetAmount(max);
+            }
+
+            IncreaseTimer(seconds);
         }
     }
 
@@ -84,20 +102,18 @@ public class StatusAmount
 
 
     // Passive // // // //
-    public void SetIsPassive(bool isPassiveAmount) { _isPassive = isPassiveAmount; }
+    public void SetPassiveAmount(float passiveAmount) { this.passiveAmount = passiveAmount; }
 
-    public void SetPassiveAmount(float passiveAmount) { _passiveAmount = passiveAmount; }
-
-    public void SetPassiveDelay(float passiveDelay) { _passiveDelay = passiveDelay; }
+    public void SetPassiveDelay(float passiveDelay) { this.passiveDelay = passiveDelay; }
 
 
 
     // Timer // // // //
-    public void IncreaseTimer(float seconds) { _timer += seconds; }
+    public void IncreaseTimer(float seconds) { timer += seconds; }
 
-    public void DecreaseTimer(float seconds) { _timer -= seconds; }
+    public void DecreaseTimer(float seconds) { timer -= seconds; }
 
-    public void ResetTimer() { _timer = 0f; }
+    public void ResetTimer() { timer = 0f; }
 
-    public bool TimerAboveDelay() { return _timer > _passiveDelay; }
+    public bool TimerAboveDelay() { return timer > passiveDelay; }
 }

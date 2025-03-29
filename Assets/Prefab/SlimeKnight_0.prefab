@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9a33240c6da62409052e64eb7cc4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStatus: {fileID: 2912672443726484765}
+  player: {fileID: 8328409611633574170}
   selectedWeapon: 0
+  colorSelection: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &8328409611633574170
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,10 +361,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab0109cb3161c04ba15b82795ce1ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  isPassiveHealth: 1
-  passiveHealthAmount: 1
-  passiveHealthDelay: 1
+  _health:
+    _amount: 100
+    _isPassive: 1
+    _passiveAmount: 1
+    _passiveDelay: 1
 --- !u!1001 &3484597791455303254
 PrefabInstance:
   m_ObjectHideFlags: 0

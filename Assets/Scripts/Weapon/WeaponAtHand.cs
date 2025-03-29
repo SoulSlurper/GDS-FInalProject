@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponInHand : MonoBehaviour
+public class WeaponAtHand : MonoBehaviour
 {
-    [SerializeField] private Status playerStatus;
-    [SerializeField] private WeaponType selectedWeapon;
+    [SerializeField] private GameObject player;
+    [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
+    [SerializeField] private Color colorSelection = Color.grey;
 
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
     private int tempWeaponIndex = -1;
+
+    private Status playerStatus;
+    private SpriteRenderer playerSpriteRenderer;
 
     private bool isSelecting = false;
 
@@ -21,6 +25,9 @@ public class WeaponInHand : MonoBehaviour
 
     void Start()
     {
+        playerStatus = player.GetComponent<Status>();
+        playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        
         SelectWeaponByType(selectedWeapon);
     }
 
@@ -66,6 +73,8 @@ public class WeaponInHand : MonoBehaviour
 
         if (confirm)
         {
+            playerSpriteRenderer.color = Color.white;
+
             currentWeaponIndex = index;
 
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
@@ -75,9 +84,11 @@ public class WeaponInHand : MonoBehaviour
         }
         else
         {
+            playerSpriteRenderer.color = colorSelection;
+
             tempWeaponIndex = index;
 
-            weapon.GetComponent<SpriteRenderer>().color = Color.gray;
+            weapon.GetComponent<SpriteRenderer>().color = colorSelection;
 
             wDetails.enabled = false;
         }
