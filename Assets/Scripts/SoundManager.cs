@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip doorCloseSound;
     public AudioClip splatterSound;
     public AudioClip swordSound;
+    public AudioClip shootSound;
 
     private AudioSource audioSource;
     private GameObject player;
@@ -126,12 +127,14 @@ public class SoundManager : MonoBehaviour
     {
         if (swordSound != null)
         {
-            Debug.Log("Playing sword sound");
-            audioSource.PlayOneShot(swordSound, targetVolume);
+            audioSource.PlayOneShot(swordSound, targetVolume * 2f);
         }
-        else
+    }
+    public void PlayShootSound()
+    {
+        if (swordSound != null)
         {
-            Debug.LogWarning("Sword sound clip is missing");
+            audioSource.PlayOneShot(shootSound, targetVolume * 6f / 10f);
         }
     }
 

@@ -49346,6 +49346,7 @@ MonoBehaviour:
   doorCloseSound: {fileID: 8300000, guid: 850790de690910a4cb125355dea9a8ee, type: 3}
   splatterSound: {fileID: 8300000, guid: 4fe99dd7b095366499505c503961fb0d, type: 3}
   swordSound: {fileID: 8300000, guid: 5875e228b401d1344a0db2334a3c008e, type: 3}
+  shootSound: {fileID: 8300000, guid: 7e3de9846943a6e4eb4b01ea5d6a760a, type: 3}
 --- !u!4 &1345745466
 Transform:
   m_ObjectHideFlags: 0
