@@ -50,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_SizeDelta.x
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 0.34
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1610013534000091794, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.51
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: cost
@@ -134,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Name
-      value: Sword Variant
+      value: Sword
       objectReference: {fileID: 0}
     - target: {fileID: 5975837197817639905, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Controller

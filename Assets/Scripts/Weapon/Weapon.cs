@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Weapon : MonoBehaviour
 {
@@ -11,12 +13,21 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
+    [Header("Text Details")]
+    [SerializeField] private TMP_Text typeText;
+    [SerializeField] private TMP_Text costText;
+
     [Header("Attack Details")]
     [SerializeField] private bool attackContinously = false;
     [SerializeField] private float attackDelay = 1f; //time taken for the attack to be performed
 
     private bool isAttacking = false;
     private float attackTimer = 0f;
+
+    void Awake()
+    {
+        SetText();
+    }
 
     // Weapon details functions // // // // //
     public WeaponType GetWeaponType() { return type; }
@@ -30,6 +41,13 @@ public class Weapon : MonoBehaviour
     public void SetCost(float cost) { this.cost = cost; }
 
     //public Animator GetAnimator() { return animator; }
+
+    // Text functions // // // // //
+    public void SetText()
+    {
+        typeText.text = type.ToString();
+        costText.text = cost.ToString();
+    }
 
     // Attack time functions // // // // //
     public float GetAttackDelay() { return attackDelay; }

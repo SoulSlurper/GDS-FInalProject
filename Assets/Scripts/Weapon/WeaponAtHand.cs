@@ -39,7 +39,6 @@ public class WeaponAtHand : MonoBehaviour
     void Update()
     {
         ChangeWeapon();
-        if (Input.GetKeyDown(KeyCode.DownArrow)) { Debug.Log("yes"); }
 
         WeaponFacePointer();
     }
@@ -143,7 +142,7 @@ public class WeaponAtHand : MonoBehaviour
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
     }
 
-    //increases and decreases the currentWeaponIndex int by the mouse scroll, which returns true if the scroll is performed
+    //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
     private void ScrollForWeapon()
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
