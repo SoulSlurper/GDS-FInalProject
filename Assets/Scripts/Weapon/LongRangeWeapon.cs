@@ -44,5 +44,13 @@ public class LongRangeWeapon : Weapon
     private void SpawnProjectile()
     {
         Instantiate(projectile, launchOffLocation.position, transform.rotation);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayShootSound();
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager instance is null! Shoot sound won't play.");
+        }
     }
 }

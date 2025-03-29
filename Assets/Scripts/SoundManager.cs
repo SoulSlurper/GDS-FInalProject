@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 public class SoundManager : MonoBehaviour
@@ -9,13 +10,29 @@ public class SoundManager : MonoBehaviour
     public AudioClip buttonSound;
     public AudioClip doorOpenSound;
     public AudioClip doorCloseSound;
-    public AudioClip splatterSound;  // New splatter sound
+    public AudioClip splatterSound;
+    public AudioClip swordSound;
+    public AudioClip shootSound;
 
     private AudioSource audioSource;
     private GameObject player;
-    private float targetVolume = 0.5f;
+    private float targetVolume = 1f;
     private bool isWalking = false;
-    private bool isSplattering = false;  // Flag to track splatter sound
+    private bool isSplattering = false;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple SoundManager instances found! Destroying the duplicate.");
+            Destroy(gameObject); // Prevent multiple SoundManagers
+            return;
+        }
+    }
 
     private void Start()
     {
@@ -96,7 +113,7 @@ public class SoundManager : MonoBehaviour
             isSplattering = true;
             audioSource.clip = splatterSound;
             audioSource.loop = false;
-            audioSource.volume = targetVolume;
+            audioSource.volume = targetVolume/2;
             audioSource.Play();
             StartCoroutine(WaitForSplatterToEnd());
         }
@@ -104,6 +121,21 @@ public class SoundManager : MonoBehaviour
     public bool IsSplattering()
     {
         return isSplattering;
+    }
+
+    public void PlaySwordSound()
+    {
+        if (swordSound != null)
+        {
+            audioSource.PlayOneShot(swordSound, targetVolume * 2f);
+        }
+    }
+    public void PlayShootSound()
+    {
+        if (swordSound != null)
+        {
+            audioSource.PlayOneShot(shootSound, targetVolume * 6f / 10f);
+        }
     }
 
     private IEnumerator WaitForSplatterToEnd()
