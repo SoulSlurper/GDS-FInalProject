@@ -80768,6 +80768,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9147381770472217210, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: selectedWeapon
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9169130846810581999, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: _reloadDelay
       value: 2
