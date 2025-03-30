@@ -73,7 +73,7 @@ public class Weapon : MonoBehaviour
 
         ShowAllTextDetails(false);
 
-        attackTimer = attackDelay + 1f;
+        InitiateAttackTimer();
     }
 
 
@@ -88,10 +88,18 @@ public class Weapon : MonoBehaviour
 
 
 
+    // Attack time functions // // // // //
+    public void SetAttackDelay(float attackDelay) { this.attackDelay = attackDelay; }
+
+    public void SetAttackTimer(float attackTimer) { this.attackTimer = attackTimer; }
+
+    public void InitiateAttackTimer() {  this.attackTimer = attackDelay + 1f; }
+
+
     // Text functions // // // // //
     private void GetTextDetailGameObjects()
     {
-        foreach(Transform child in transform.Find("LabelCanvas").Find("BackgroundImage"))
+        foreach (Transform child in transform.Find("LabelCanvas").Find("BackgroundImage"))
         {
             textDetails.Add(child.gameObject);
         }
@@ -133,32 +141,33 @@ public class Weapon : MonoBehaviour
         SetActiveTextDetail((int)textDetailsIndex.cost, show);
     }
 
-    // Attack time functions // // // // //
-    public void SetAttackDelay(float attackDelay) { this.attackDelay = attackDelay; }
-
-    public void SetAttackTimer(float attackTimer) { this.attackTimer = attackTimer; }
-
-
     // Attack performance functions // // // // //
+
+    public void SetIsAttacking(bool isAttacking) { this.isAttacking = isAttacking; }
 
     public virtual void Attack(Collider2D collider = null)
     {
         Debug.Log("Attack");
     }
 
-    public void ContinousAttack(Collider2D collider = null)
+    //return a true if an attack is being made
+    private bool ContinousAttack(Collider2D collider = null)
     {
         if (attackTimer > attackDelay)
         {
             Attack(collider);
 
             attackTimer = 0f;
+
+            return true;
         }
 
         attackTimer += Time.deltaTime;
+
+        return false;
     }
 
-    public bool CanAttack()
+    private bool CanAttack()
     {
         int mouseCode = 0; //for left mouse clicks
 
@@ -169,18 +178,24 @@ public class Weapon : MonoBehaviour
         else if (Input.GetMouseButtonUp(mouseCode) || (isAttacking && !isAttackContinuous))
         {
             isAttacking = false;
-            attackTimer = attackDelay + 1f;
+            InitiateAttackTimer();
         }
 
         return isAttacking;
     }
 
-    public void PerformAttack(Collider2D collider = null)
+    //return a true if an attack is being made
+    public bool PerformAttack(Collider2D collider = null)
     {
         if (CanAttack())
         {
-            if (isAttackContinuous) ContinousAttack(collider);
-            else Attack(collider);
+            if (isAttackContinuous) return ContinousAttack(collider);
+            
+            Attack(collider);
+
+            return true;
         }
+
+        return false;
     }
 }

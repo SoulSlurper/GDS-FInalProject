@@ -141,6 +141,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
+      propertyPath: _ammo
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
+      propertyPath: _cost
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
       propertyPath: _type
       value: 2
       objectReference: {fileID: 0}
@@ -160,6 +168,14 @@ PrefabInstance:
       propertyPath: projectile
       value: 
       objectReference: {fileID: 1195623902715786577, guid: ddef150485b131e45962ec0892b636fe, type: 3}
+    - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
+      propertyPath: _attackDelay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
+      propertyPath: _reloadDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8990777200340076907, guid: e75f4dffa6c69ee43be524c94e8b0a81, type: 3}
       propertyPath: launchLocation
       value: 
