@@ -27,9 +27,12 @@ public class ProjectileWeapon : Weapon
         Debug.Log("trigger tag: " + collision.gameObject.tag);
 
         Status status = collision.GetComponent<Status>();
-        if (!status.GetStatusType().Equals(StatusType.Player))
-        { 
-            Attack(collision); 
+        if (status != null)
+        {
+            if (!status.GetStatusType().Equals(StatusType.Player))
+            {
+                Attack(collision);
+            }
         }
 
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
@@ -41,9 +44,12 @@ public class ProjectileWeapon : Weapon
     void OnCollisionEnter2D(Collision2D collision)
     {
         Status status = collision.gameObject.GetComponent<Status>();
-        if (!status.GetStatusType().Equals(StatusType.Player))
+        if (status != null)
         {
-            Attack(collision.collider);
+            if (!status.GetStatusType().Equals(StatusType.Player))
+            {
+                Attack(collision.collider);
+            }
         }
 
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
