@@ -66,13 +66,18 @@ public class CloseRangeWeapon : Weapon
 
             if (!collider.CompareTag("Player"))
             {
-                Status status = collider.GetComponent<Status>();
-                if (status != null)
+                Status status;
+                if (status = collider.GetComponent<BossHp>())
                 {
-                    if (!status.GetStatusType().Equals(StatusType.Player))
-                    {
-                        status.health.DecreaseAmount(damage);
-                    }
+                    status.health.DecreaseAmount(damage);
+                }
+                else if (status = collider.GetComponent<EnemyStatus>())
+                {
+                    status.health.DecreaseAmount(damage);
+                }
+                else if (status = collider.GetComponent<BreakableWall>())
+                {
+                    status.health.DecreaseAmount(damage);
                 }
             }
         }

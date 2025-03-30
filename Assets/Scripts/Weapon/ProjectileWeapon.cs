@@ -26,13 +26,18 @@ public class ProjectileWeapon : Weapon
     {
         Debug.Log("trigger tag: " + collision.gameObject.tag);
 
-        Status status = collision.GetComponent<Status>();
-        if (status != null)
+        Status status;
+        if (status = collision.GetComponent<BossHp>())
         {
-            if (!status.GetStatusType().Equals(StatusType.Player))
-            {
-                Attack(collision);
-            }
+            Attack(collision);
+        }
+        else if (status = collision.GetComponent<EnemyStatus>())
+        {
+            Attack(collision);
+        }
+        else if (status = collision.GetComponent<BreakableWall>())
+        {
+            Attack(collision);
         }
 
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
@@ -43,13 +48,18 @@ public class ProjectileWeapon : Weapon
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Status status = collision.gameObject.GetComponent<Status>();
-        if (status != null)
+        Status status;
+        if (status = collision.gameObject.GetComponent<BossHp>())
         {
-            if (!status.GetStatusType().Equals(StatusType.Player))
-            {
-                Attack(collision.collider);
-            }
+            Attack(collision.collider);
+        }
+        else if (status = collision.gameObject.GetComponent<EnemyStatus>())
+        {
+            Attack(collision.collider);
+        }
+        else if (status = collision.gameObject.GetComponent<BreakableWall>())
+        {
+            Attack(collision.collider);
         }
 
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))

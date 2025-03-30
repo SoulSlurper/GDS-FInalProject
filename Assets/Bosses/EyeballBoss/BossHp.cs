@@ -16,6 +16,7 @@ public class BossHp : Status
     void Update()
     {
         if (noHealth) Destroy(gameObject);
+        hp = (int)health.amount;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
