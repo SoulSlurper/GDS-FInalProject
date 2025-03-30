@@ -26,7 +26,9 @@ public class ProjectileWeapon : Weapon
     {
         Debug.Log("trigger tag: " + collision.gameObject.tag);
 
-        if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
+        Status status;
+        if (status = collision.GetComponent<Status>()) { Attack(collision); }
+        else if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
         {
             Attack(collision);
         }
