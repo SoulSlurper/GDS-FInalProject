@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 653725662618578795}
   - component: {fileID: 5511930415188735557}
   - component: {fileID: 1982229188712187744}
-  - component: {fileID: 7226491819070260577}
   - component: {fileID: -3628963085372766023}
   m_Layer: 0
   m_Name: EyeballBoss
@@ -195,7 +194,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7226491819070260577
+--- !u!114 &-3628963085372766023
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,27 +203,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5192570966487986778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cab0109cb3161c04ba15b82795ce1ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health:
-    _amount: 300
-    _isPassive: 0
-    _passiveAmount: 1
-    _passiveDelay: 1
---- !u!114 &-3628963085372766023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5192570966487986778}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fab44b15a1fda845b49de58c8c1a3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
+  hp: 300
 --- !u!1 &5227132904207629026
 GameObject:
   m_ObjectHideFlags: 0

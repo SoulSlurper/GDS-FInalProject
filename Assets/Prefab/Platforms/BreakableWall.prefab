@@ -146,4 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 20
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 20

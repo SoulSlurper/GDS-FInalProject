@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossHp : MonoBehaviour
+public class BossHp : Status
 {
     [SerializeField]
     public int hp;
@@ -15,20 +15,22 @@ public class BossHp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (noHealth) Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Weapon"))
-        {
-            hp -= 1;
+        //if (collision.CompareTag("Weapon"))
+        //{
+        //    hp -= 1;
             
-        }
-        if (hp <= 0)
-        {
-            Destroy(gameObject);
-        }
+        //}
+        //if (hp <= 0)
+        //{
+        //    Destroy(gameObject);
+        //}
 
     }
+
+    public override StatusType GetStatusType() { return StatusType.Boss; }
 }

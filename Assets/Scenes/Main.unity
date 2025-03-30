@@ -20309,6 +20309,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 20
 --- !u!1001 &546579812
 PrefabInstance:
@@ -21782,6 +21787,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 30
 --- !u!1001 &585496140
 PrefabInstance:
@@ -38074,6 +38084,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 20
 --- !u!1001 &1018789922
 PrefabInstance:
@@ -49532,6 +49547,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 30
 --- !u!1001 &1322677023
 PrefabInstance:
@@ -63335,6 +63355,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 30
 --- !u!1001 &1683394506
 PrefabInstance:
@@ -76047,6 +76072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adecc58628ffb241bd6f255c2926eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   maxHealth: 20
 --- !u!1001 &2027717713
 PrefabInstance:
@@ -80491,6 +80521,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5a563e3ad59b4f8460b449584a8e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _amount: 100
+    _isPassive: 0
+    _passiveAmount: 1
+    _passiveDelay: 1
   hp: 3
 --- !u!1001 &6661748984531749561
 PrefabInstance:
@@ -80729,11 +80764,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlimeKnight_0
       objectReference: {fileID: 0}
+    - target: {fileID: 8328409611633574170, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9169130846810581999, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: _reloadDelay
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2912672443726484765, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

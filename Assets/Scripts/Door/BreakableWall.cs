@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BreakableWall : MonoBehaviour
+public class BreakableWall : Status
 {
     [Header("Wall Properties")]
     [SerializeField] private float maxHealth = 100f;
@@ -14,17 +14,22 @@ public class BreakableWall : MonoBehaviour
         wallCollider = GetComponent<Collider2D>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    // Check if hit by a weapon projectile
+    //    if (other.CompareTag("Weapon") || other.CompareTag("Projectile"))
+    //    {
+    //        Weapon weapon = other.GetComponent<Weapon>();
+    //        if (weapon != null)
+    //        {
+    //            TakeDamage(weapon.damage);
+    //        }
+    //    }
+    //}
+
+    private void Update()
     {
-        // Check if hit by a weapon projectile
-        if (other.CompareTag("Weapon") || other.CompareTag("Projectile"))
-        {
-            Weapon weapon = other.GetComponent<Weapon>();
-            if (weapon != null)
-            {
-                TakeDamage(weapon.damage);
-            }
-        }
+        if (noHealth) BreakWall();
     }
 
     public void TakeDamage(float amount)
@@ -67,4 +72,6 @@ public class BreakableWall : MonoBehaviour
             }
         }
     }
+
+    public override StatusType GetStatusType() { return StatusType.Object; }
 }

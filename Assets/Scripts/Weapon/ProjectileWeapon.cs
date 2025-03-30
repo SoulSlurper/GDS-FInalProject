@@ -26,11 +26,24 @@ public class ProjectileWeapon : Weapon
     {
         Debug.Log("trigger tag: " + collision.gameObject.tag);
 
-        Status status;
-        if (status = collision.GetComponent<Status>()) { Attack(collision); }
-        else if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
+        Status status = collision.GetComponent<Status>();
+        if (!status.GetStatusType().Equals(StatusType.Player))
+        { 
+            Attack(collision); 
+        }
+
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
         {
-            Attack(collision);
+            Destroy(gameObject);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Status status = collision.gameObject.GetComponent<Status>();
+        if (!status.GetStatusType().Equals(StatusType.Player))
+        {
+            Attack(collision.collider);
         }
 
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
