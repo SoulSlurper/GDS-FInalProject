@@ -37,7 +37,7 @@ public class WeaponAtHand : MonoBehaviour
 
     void Update()
     {
-        ChangeWeapon();
+        ChangingWeapon();
 
         WeaponFacePointer();
     }
@@ -150,22 +150,32 @@ public class WeaponAtHand : MonoBehaviour
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
     }
 
+    //checks and returns an index that is in the range of the weapons list, where it will be continously used until the newIndex is in range and is not the same as the indexSkip variable
+    private int GetIndexInRange(int index, bool isNextCheckIncrement = true, int indexSkip = -1)
+    {
+        if (index > -1 && index < weapons.Count && !index.Equals(indexSkip)) return index;
+
+        int newIndex = index;
+
+        if (newIndex >= weapons.Count) newIndex = 0;
+        else if (newIndex < 0) newIndex = weapons.Count - 1;
+        
+        if (newIndex.Equals(indexSkip))
+        {
+            if (isNextCheckIncrement) newIndex++;
+            else newIndex--;
+        }
+
+        return GetIndexInRange(newIndex, isNextCheckIncrement, indexSkip);
+    }
+
     //when the player enters the weapon selection
     private void OnWeaponMenuEnter()
     {
         tempWeaponIndex = currentWeaponIndex;
         if (skipOnMenuEnter)
         {
-            tempWeaponIndex++;
-            if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-            if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
-            {
-                tempWeaponIndex++;
-                if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-                if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-                if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-            }
+            tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1, true, GetWeaponIndex(WeaponType.None));
         }
 
         SelectWeaponByIndex(tempWeaponIndex, false);
@@ -178,20 +188,16 @@ public class WeaponAtHand : MonoBehaviour
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            int maxIndex = weapons.Count - 1;
-
             DeselectWeapon(tempWeaponIndex);
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
-                else tempWeaponIndex--;
+                tempWeaponIndex = GetIndexInRange(tempWeaponIndex - 1, false);
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
-                else tempWeaponIndex++;
+                tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1);
             }
 
             SelectWeapon(tempWeaponIndex, false);
@@ -214,12 +220,12 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
-    private void ChangeWeapon()
+    private void ChangingWeapon()
     {
         //enters selection by mouse right click
-        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
+        if (Input.GetMouseButtonDown(1) && !isSelecting && weapons.Count > 1)
         {
-            isSelecting = !isSelecting;
+            isSelecting = true;
 
             OnWeaponMenuEnter();
         }
