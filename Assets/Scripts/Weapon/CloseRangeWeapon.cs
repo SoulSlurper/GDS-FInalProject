@@ -32,8 +32,6 @@ public class CloseRangeWeapon : Weapon
         col.enabled = false;
     }
 
-
-
     // Attack Details // // // // //
     public override void Attack()
     {

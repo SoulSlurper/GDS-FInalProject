@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
 
     //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
-    private enum textDetailsIndex { type, cost };
+    private enum TDIndex { type, cost };
 
     // Getter and Setters // // // //
     public WeaponType type
@@ -81,8 +81,8 @@ public class Weapon : MonoBehaviour
 
     private void SetAllTextDetails()
     {
-        SetTextDetail((int)textDetailsIndex.type, type.ToString());
-        SetTextDetail((int)textDetailsIndex.cost, cost.ToString());
+        SetTextDetail((int)TDIndex.type, type.ToString());
+        SetTextDetail((int)TDIndex.cost, cost.ToString());
     }
 
     private void SetActiveTextDetail(int index, bool active)
@@ -92,18 +92,19 @@ public class Weapon : MonoBehaviour
 
     public void ShowTextDetails(bool showType, bool showCost)
     {
-        SetActiveTextDetail((int)textDetailsIndex.type, showType);
-        SetActiveTextDetail((int)textDetailsIndex.cost, showCost);
+        SetActiveTextDetail((int)TDIndex.type, showType);
+        SetActiveTextDetail((int)TDIndex.cost, showCost);
     }
 
     public void ShowAllTextDetails(bool show)
     {
-        SetActiveTextDetail((int)textDetailsIndex.type, show);
-        SetActiveTextDetail((int)textDetailsIndex.cost, show);
+        SetActiveTextDetail((int)TDIndex.type, show);
+        SetActiveTextDetail((int)TDIndex.cost, show);
     }
 
     // Attack performance functions // // // // //
 
+    //describes how the weapon will attack, including sounds
     public virtual void Attack()
     {
         Debug.Log("Attack");
