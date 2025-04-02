@@ -157,17 +157,15 @@ public class WeaponAtHand : MonoBehaviour
         if (skipOnMenuEnter)
         {
             tempWeaponIndex++;
-
             if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
 
             if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
             {
                 tempWeaponIndex++;
+                if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
+                if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
+                if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
             }
-
-            if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-            if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
         }
 
         SelectWeaponByIndex(tempWeaponIndex, false);
@@ -200,6 +198,7 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
+    //when the player exits the weapon selection
     private void OnWeaponMenuExit()
     {
         if (tempWeaponIndex == currentWeaponIndex)
@@ -215,38 +214,28 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
-    private void SwitchingWeapons()
+    private void ChangeWeapon()
     {
+        //enters selection by mouse right click
+        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
+        {
+            isSelecting = !isSelecting;
+
+            OnWeaponMenuEnter();
+        }
+
         if (isSelecting)
         {
             OnWeaponMenu();
 
-            if (Input.GetMouseButtonDown(1)) //confirms the selection by clicking the right mouse
+            //exit selection by mouse left click
+            if (Input.GetMouseButtonDown(0))
             {
                 isSelecting = false;
 
                 OnWeaponMenuExit();
             }
         }
-    }
-
-    private void ChangeWeapon()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && weapons.Count > 1)
-        {
-            isSelecting = !isSelecting;
-
-            if (isSelecting)
-            {
-                OnWeaponMenuEnter();
-            }
-            else
-            {
-                SelectWeaponByIndex(currentWeaponIndex);
-            }
-        }
-
-        SwitchingWeapons();
     }
 
     private Vector2 PointerPosition()
