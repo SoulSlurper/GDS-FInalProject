@@ -11,7 +11,6 @@ public class WeaponAtHand : MonoBehaviour
     [Header("Selection")]
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
     [SerializeField] private Color colorSelection = Color.grey;
-    [SerializeField] private bool skipOnMenu = false;
     [SerializeField] private bool skipOnMenuEnter = false;
 
     private List<GameObject> weapons = new List<GameObject>();
@@ -75,6 +74,7 @@ public class WeaponAtHand : MonoBehaviour
     {
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
+        wDetails.enabled = true;
 
         weapon.SetActive(true);
 
@@ -85,8 +85,6 @@ public class WeaponAtHand : MonoBehaviour
             currentWeaponIndex = index;
 
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
-
-            wDetails.enabled = true;
 
             wDetails.ShowAllTextDetails(false);
 
@@ -127,9 +125,9 @@ public class WeaponAtHand : MonoBehaviour
         if (currentWeaponIndex > -1) DeselectWeapon(currentWeaponIndex);
         if (tempWeaponIndex > -1) DeselectWeapon(tempWeaponIndex);
 
-        int i;
-        if (index > -1) //if the weapon has been found
+        if (index > -1 && index < weapons.Count) //if the weapon can exist
         {
+            int i;
             if (confirm)
             {
                 i = currentWeaponIndex = index;
@@ -141,7 +139,7 @@ public class WeaponAtHand : MonoBehaviour
 
             SelectWeapon(i, confirm);
         }
-        else // if weapon has not been found
+        else // if weapon cannot exist
         {
             SelectWeaponByIndex(GetWeaponIndex(WeaponType.None), confirm);
         }
@@ -163,37 +161,14 @@ public class WeaponAtHand : MonoBehaviour
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (skipOnMenu)
-                {
-                    tempWeaponIndex--;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
-
-                    if (tempWeaponIndex < 0) tempWeaponIndex = maxIndex;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
-                }
-                else
-                {
-                    if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
-                    else tempWeaponIndex--;
-                }
+                if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
+                else tempWeaponIndex--;
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (skipOnMenu)
-                {
-                    tempWeaponIndex++;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-
-                    if (tempWeaponIndex > maxIndex) tempWeaponIndex = 0;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-
-                }
-                else
-                {
-                    if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
-                    else tempWeaponIndex++;
-                }
+                if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
+                else tempWeaponIndex++;
             }
 
             SelectWeapon(tempWeaponIndex, false);
@@ -234,7 +209,7 @@ public class WeaponAtHand : MonoBehaviour
             if (isSelecting)
             {
                 tempWeaponIndex = currentWeaponIndex;
-                if (skipOnMenuEnter || skipOnMenu)
+                if (skipOnMenuEnter)
                 {
                     tempWeaponIndex++;
 
