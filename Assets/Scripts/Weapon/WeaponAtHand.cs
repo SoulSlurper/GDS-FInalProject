@@ -150,8 +150,33 @@ public class WeaponAtHand : MonoBehaviour
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
     }
 
+    //when the player enters the weapon selection
+    private void OnWeaponMenuEnter()
+    {
+        tempWeaponIndex = currentWeaponIndex;
+        if (skipOnMenuEnter)
+        {
+            tempWeaponIndex++;
+
+            if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
+
+            if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
+            {
+                tempWeaponIndex++;
+            }
+
+            if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
+
+            if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
+        }
+
+        SelectWeaponByIndex(tempWeaponIndex, false);
+
+        Debug.Log("Weapon Menu opened");
+    }
+
     //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
-    private void ScrollForWeapon()
+    private void OnWeaponMenu()
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -175,27 +200,32 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
+    private void OnWeaponMenuExit()
+    {
+        if (tempWeaponIndex == currentWeaponIndex)
+        {
+            SelectWeaponByIndex(currentWeaponIndex);
+        }
+        else
+        {
+            SelectWeaponByIndex(tempWeaponIndex);
+
+            if (areWeaponsCosting)
+                playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
+        }
+    }
+
     private void SwitchingWeapons()
     {
         if (isSelecting)
         {
-            ScrollForWeapon();
+            OnWeaponMenu();
 
             if (Input.GetMouseButtonDown(1)) //confirms the selection by clicking the right mouse
             {
                 isSelecting = false;
 
-                if (tempWeaponIndex == currentWeaponIndex)
-                {
-                    SelectWeaponByIndex(currentWeaponIndex);
-                }
-                else
-                {
-                    SelectWeaponByIndex(tempWeaponIndex);
-
-                    if (areWeaponsCosting)
-                        playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
-                }
+                OnWeaponMenuExit();
             }
         }
     }
@@ -208,26 +238,7 @@ public class WeaponAtHand : MonoBehaviour
 
             if (isSelecting)
             {
-                tempWeaponIndex = currentWeaponIndex;
-                if (skipOnMenuEnter)
-                {
-                    tempWeaponIndex++;
-
-                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-                    if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
-                    {
-                        tempWeaponIndex++;
-                    }
-
-                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-                }
-
-                SelectWeaponByIndex(tempWeaponIndex, false);
-
-                Debug.Log("Weapon Menu opened");
+                OnWeaponMenuEnter();
             }
             else
             {
