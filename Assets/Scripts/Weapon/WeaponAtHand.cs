@@ -180,6 +180,8 @@ public class WeaponAtHand : MonoBehaviour
 
         SelectWeaponByIndex(tempWeaponIndex, false);
 
+        isSelecting = true;
+
         Debug.Log("Weapon Menu opened");
     }
 
@@ -207,7 +209,7 @@ public class WeaponAtHand : MonoBehaviour
     //when the player exits the weapon selection
     private void OnWeaponMenuExit()
     {
-        if (tempWeaponIndex == currentWeaponIndex)
+        if (tempWeaponIndex == currentWeaponIndex || !isSelecting)
         {
             SelectWeaponByIndex(currentWeaponIndex);
         }
@@ -218,29 +220,29 @@ public class WeaponAtHand : MonoBehaviour
             if (areWeaponsCosting)
                 playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
         }
+
+        isSelecting = false;
+
+        Debug.Log("Weapon Menu exit");
     }
 
     private void ChangingWeapon()
     {
-        //enters selection by mouse right click
-        if (Input.GetMouseButtonDown(1) && !isSelecting && weapons.Count > 1)
+        //enters selection and exit with the current weapon by mouse right click
+        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
         {
-            isSelecting = true;
+            isSelecting = !isSelecting;
 
-            OnWeaponMenuEnter();
+            if (isSelecting) OnWeaponMenuEnter();
+            else OnWeaponMenuExit();
         }
 
         if (isSelecting)
         {
             OnWeaponMenu();
 
-            //exit selection by mouse left click
-            if (Input.GetMouseButtonDown(0))
-            {
-                isSelecting = false;
-
-                OnWeaponMenuExit();
-            }
+            //exit selection with the selected weapon by mouse left click
+            if (Input.GetMouseButtonDown(0)) OnWeaponMenuExit();
         }
     }
 
