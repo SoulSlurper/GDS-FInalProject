@@ -136,7 +136,7 @@ public class Weapon : MonoBehaviour
     //affects the health of the collided object
     public void MakeDamage(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && collision.gameObject.CompareTag("Weapon")) return;
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
 
         Status status;
         if (status = collision.GetComponent<Status>())
