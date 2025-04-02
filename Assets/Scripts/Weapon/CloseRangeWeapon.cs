@@ -6,44 +6,41 @@ public class CloseRangeWeapon : Weapon
 {
     [Header("Close Range Details")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Transform raycastOrigin;
-    [SerializeField] private float _raycastRadius = 1f;
+    [SerializeField] private Collider2D col;
 
 
     // Getter and Setters // // // //
-    public float raycastRadius
-    {
-        get { return _raycastRadius; }
-        private set { _raycastRadius = value; }
-    }
 
 
     // Unity // // // // //
+    void Start()
+    {
+        col.enabled = false;
+    }
+
     void Update()
     {
         PerformAttack();
     }
 
-    void OnDrawGizmosSelected()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        //shows the raycast range when the gizmos is selected in the scene
+        Debug.Log("trigger detects: " + collision.gameObject.tag);
 
-        Gizmos.color = Color.blue;
-        Vector3 position = raycastOrigin == null ? Vector3.zero : raycastOrigin.position;
-        Gizmos.DrawWireSphere(position, raycastRadius);
+        MakeDamage(collision);
+
+        col.enabled = false;
     }
 
 
-
     // Close Range Details // // // // //
-    public void SetRaycastRadius(float radius) { raycastRadius =  radius; }
 
 
 
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
-        MakeDamage();
+        col.enabled = true;
 
         animator.SetTrigger("Attack");
 
@@ -55,23 +52,6 @@ public class CloseRangeWeapon : Weapon
         else
         {
             Debug.LogWarning("SoungManager instance is null");
-        }
-    }
-
-    private void MakeDamage()
-    {
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(raycastOrigin.position, raycastRadius))
-        {
-            Debug.Log(collider.name + " - " + collider.tag);
-
-            if (!collider.CompareTag("Player"))
-            {
-                Status status;
-                if (status = collider.GetComponent<Status>())
-                {
-                    status.health.DecreaseAmount(damage);
-                }
-            }
         }
     }
 }

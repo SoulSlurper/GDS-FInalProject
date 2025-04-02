@@ -24,33 +24,22 @@ public class ProjectileWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger tag: " + collision.gameObject.tag);
+        Debug.Log("trigger detects: " + collision.gameObject.tag);
 
-        Status status;
-        if (status = collision.GetComponent<Status>()) { Attack(collision); }
-        else if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
-        {
-            Attack(collision);
-        }
+        MakeDamage(collision);
 
-        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
-
-
 
     // Projectile Details // // // // //
     public void SetSpeed(float speed) { this.speed = speed; }
 
-    public void LaunchProjectile() { isLaunched = true; }
 
 
 
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
-        collider.GetComponent<Status>().health.DecreaseAmount(damage);
+        isLaunched = true;
     }
 }

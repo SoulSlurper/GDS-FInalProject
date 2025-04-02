@@ -120,10 +120,9 @@ public class LongRangeWeapon : Weapon
 
 
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
         SpawnProjectile();
-
 
         if (SoundManager.Instance != null)
         {
@@ -143,6 +142,6 @@ public class LongRangeWeapon : Weapon
         wDetails.SetSpeed(speed);
         wDetails.SetDamage(damage);
 
-        wDetails.LaunchProjectile();
+        wDetails.Attack();
     }
 }

@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      slime-bullet_0: 252734232774764597
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pixilart-sword_0: -4011336669146267590
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

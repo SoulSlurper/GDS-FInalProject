@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour
     //[SerializeField] private Animator animator;
 
     [Header("Attack Details")]
+    public bool isBreakable = false;
     public bool isAttackContinuous = false;
     [SerializeField] private float _attackDelay = 1f; //time taken for the attack to be performed
 
@@ -75,7 +76,6 @@ public class Weapon : MonoBehaviour
 
         InitiateAttackTimer();
     }
-
 
 
 
@@ -145,17 +145,17 @@ public class Weapon : MonoBehaviour
 
     public void SetIsAttacking(bool isAttacking) { this.isAttacking = isAttacking; }
 
-    public virtual void Attack(Collider2D collider = null)
+    public virtual void Attack()
     {
         Debug.Log("Attack");
     }
 
     //return a true if an attack is being made
-    private bool ContinousAttack(Collider2D collider = null)
+    private bool ContinousAttack()
     {
         if (attackTimer > attackDelay)
         {
-            Attack(collider);
+            Attack();
 
             attackTimer = 0f;
 
@@ -189,13 +189,25 @@ public class Weapon : MonoBehaviour
     {
         if (CanAttack())
         {
-            if (isAttackContinuous) return ContinousAttack(collider);
+            if (isAttackContinuous) return ContinousAttack();
             
-            Attack(collider);
+            Attack();
 
             return true;
         }
 
         return false;
+    }
+
+    //affects the health of the collided object
+    public void MakeDamage(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.CompareTag("Weapon")) return;
+
+        Status status;
+        if (status = collision.GetComponent<Status>())
+        {
+            collision.GetComponent<Status>().health.DecreaseAmount(damage);
+        }
     }
 }
