@@ -25,15 +25,12 @@ public class CloseRangeWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger detects: " + collision.gameObject.tag);
+        Debug.Log("trigger detects: " + collision.gameObject.name);
 
         MakeDamage(collision);
 
         col.enabled = false;
     }
-
-
-    // Close Range Details // // // // //
 
 
 

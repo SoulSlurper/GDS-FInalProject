@@ -12,20 +12,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
-    [Header("Attack Details")]
-    public bool isBreakable = false;
-    public bool isAttackContinuous = false;
-    [SerializeField] private float _attackDelay = 1f; //time taken for the attack to be performed
-
-    private bool _isAttacking = false;
-    private float _attackTimer = 0f;
-
-
     //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
     private enum textDetailsIndex { type, cost };
-
-
 
     // Getter and Setters // // // //
     public WeaponType type
@@ -46,24 +35,6 @@ public class Weapon : MonoBehaviour
         private set { _cost = value; }
     }
 
-    public float attackDelay
-    {
-        get { return _attackDelay; }
-        private set { _attackDelay = value; }
-    }
-
-    public float attackTimer
-    {
-        get { return _attackTimer; }
-        set { _attackTimer = value; }
-    }
-    public bool isAttacking
-    {
-        get { return _isAttacking; }
-        private set { _isAttacking = value; }
-    }
-
-
     // Unity // // // // //
 
     void Awake()
@@ -73,8 +44,6 @@ public class Weapon : MonoBehaviour
         SetAllTextDetails();
 
         ShowAllTextDetails(false);
-
-        InitiateAttackTimer();
     }
 
 
@@ -86,14 +55,6 @@ public class Weapon : MonoBehaviour
     public void SetCost(float cost) { this.cost = cost; }
 
 
-
-
-    // Attack time functions // // // // //
-    public void SetAttackDelay(float attackDelay) { this.attackDelay = attackDelay; }
-
-    public void SetAttackTimer(float attackTimer) { this.attackTimer = attackTimer; }
-
-    public void InitiateAttackTimer() {  this.attackTimer = attackDelay + 1f; }
 
 
     // Text functions // // // // //
@@ -143,54 +104,26 @@ public class Weapon : MonoBehaviour
 
     // Attack performance functions // // // // //
 
-    public void SetIsAttacking(bool isAttacking) { this.isAttacking = isAttacking; }
-
     public virtual void Attack()
     {
         Debug.Log("Attack");
     }
 
     //return a true if an attack is being made
-    private bool ContinousAttack()
-    {
-        if (attackTimer > attackDelay)
-        {
-            Attack();
-
-            attackTimer = 0f;
-
-            return true;
-        }
-
-        attackTimer += Time.deltaTime;
-
-        return false;
-    }
-
     private bool CanAttack()
     {
         int mouseCode = 0; //for left mouse clicks
 
-        if (Input.GetMouseButtonDown(mouseCode))
-        {
-            isAttacking = true;
-        }
-        else if (Input.GetMouseButtonUp(mouseCode) || (isAttacking && !isAttackContinuous))
-        {
-            isAttacking = false;
-            InitiateAttackTimer();
-        }
+        if (Input.GetMouseButtonDown(mouseCode)) return true;
 
-        return isAttacking;
+        return false;
     }
 
     //return a true if an attack is being made
-    public bool PerformAttack(Collider2D collider = null)
+    public bool PerformAttack()
     {
         if (CanAttack())
         {
-            if (isAttackContinuous) return ContinousAttack();
-            
             Attack();
 
             return true;
