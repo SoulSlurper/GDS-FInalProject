@@ -5,7 +5,7 @@ using UnityEngine;
 public class CloseRangeWeapon : Weapon
 {
     [Header("Close Range Details")]
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
     [SerializeField] private Collider2D col;
 
 
@@ -37,7 +37,23 @@ public class CloseRangeWeapon : Weapon
     {
         col.enabled = true;
 
-        animator.SetTrigger("Attack");
+        int randomAttack = Random.Range(1, 5);
+
+        switch (randomAttack)
+        {
+            case 1:
+                animator.SetTrigger("Attack1");
+                break;
+            case 2:
+                animator.SetTrigger("Attack2");
+                break;
+            case 3:
+                animator.SetTrigger("Attack3");
+                break;
+            case 4:
+                animator.SetTrigger("Attack4");
+                break;
+        }
 
         if (SoundManager.Instance != null)
         {
