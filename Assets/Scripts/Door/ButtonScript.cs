@@ -14,6 +14,7 @@ public class AnimationButton : MonoBehaviour
     private bool isOn = false;
     private int objectsOnButton = 0;
     private SoundManager soundManager;
+    private bool hasBeenActivated = false; // New flag to track activation
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class AnimationButton : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (IsValidTrigger(other))
+        if (!hasBeenActivated && IsValidTrigger(other)) // Check if not activated yet
         {
             objectsOnButton++;
 
@@ -44,7 +45,7 @@ public class AnimationButton : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (IsValidTrigger(other))
+        if (!hasBeenActivated && IsValidTrigger(other)) // Check if not activated yet
         {
             objectsOnButton--;
             if (!toggleMode && objectsOnButton <= 0)
@@ -66,7 +67,7 @@ public class AnimationButton : MonoBehaviour
 
     private void SetState(bool newState)
     {
-        if (isOn != newState && targetAnimator != null)
+        if (!hasBeenActivated && isOn != newState && targetAnimator != null) // Check if not activated yet
         {
             isOn = newState;
             targetAnimator.SetBool(stateParameter, isOn);
@@ -79,6 +80,9 @@ public class AnimationButton : MonoBehaviour
                 else
                     soundManager.PlayDoorCloseSound();
             }
+
+            // Set the flag to true after first activation
+            hasBeenActivated = true;
         }
     }
 
@@ -92,6 +96,9 @@ public class AnimationButton : MonoBehaviour
 
     public void ForceSetState(bool openState)
     {
-        SetState(openState);
+        if (!hasBeenActivated) // Check if not activated yet
+        {
+            SetState(openState);
+        }
     }
 }

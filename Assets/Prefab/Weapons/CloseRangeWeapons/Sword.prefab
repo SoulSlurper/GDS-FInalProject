@@ -73,6 +73,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: col
+      value: 
+      objectReference: {fileID: 6056271198288960248}
+    - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: cost
       value: 10
       objectReference: {fileID: 0}
@@ -209,7 +213,53 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 473883779726186868, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 6056271198288960248}
   m_SourcePrefab: {fileID: 100100000, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+--- !u!1 &6297764118068575802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+  m_PrefabInstance: {fileID: 1481985086702787764}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &6056271198288960248
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297764118068575802}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.19, y: 0.35}
+  m_Direction: 0

@@ -175,7 +175,7 @@ public class SlimeKnightController : MonoBehaviour
             return;
 
         animator.SetBool(IS_GROUNDED, isGrounded);
-        animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f && isGrounded);
+        animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f);
         animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
     }
 
@@ -202,7 +202,7 @@ public class SlimeKnightController : MonoBehaviour
     }
     public bool IsMoving()
     {
-        return Mathf.Abs(horizontalInput) > 0.1f && isGrounded;
+        return Mathf.Abs(horizontalInput) > 0.1f;
     }
 
 }

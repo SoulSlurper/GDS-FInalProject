@@ -5,47 +5,55 @@ using UnityEngine;
 public class CloseRangeWeapon : Weapon
 {
     [Header("Close Range Details")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private Transform raycastOrigin;
-    [SerializeField] private float _raycastRadius = 1f;
+    [SerializeField] public Animator animator;
+    [SerializeField] private Collider2D col;
 
 
     // Getter and Setters // // // //
-    public float raycastRadius
-    {
-        get { return _raycastRadius; }
-        private set { _raycastRadius = value; }
-    }
 
 
     // Unity // // // // //
+    void Start()
+    {
+        col.enabled = false;
+    }
+
     void Update()
     {
         PerformAttack();
     }
 
-    void OnDrawGizmosSelected()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        //shows the raycast range when the gizmos is selected in the scene
+        Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        Gizmos.color = Color.blue;
-        Vector3 position = raycastOrigin == null ? Vector3.zero : raycastOrigin.position;
-        Gizmos.DrawWireSphere(position, raycastRadius);
+        MakeDamage(collision);
+
+        col.enabled = false;
     }
 
-
-
-    // Close Range Details // // // // //
-    public void SetRaycastRadius(float radius) { raycastRadius =  radius; }
-
-
-
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
-        MakeDamage();
+        col.enabled = true;
 
-        animator.SetTrigger("Attack");
+        int randomAttack = Random.Range(1, 5);
+
+        switch (randomAttack)
+        {
+            case 1:
+                animator.SetTrigger("Attack1");
+                break;
+            case 2:
+                animator.SetTrigger("Attack2");
+                break;
+            case 3:
+                animator.SetTrigger("Attack3");
+                break;
+            case 4:
+                animator.SetTrigger("Attack4");
+                break;
+        }
 
         if (SoundManager.Instance != null)
         {
