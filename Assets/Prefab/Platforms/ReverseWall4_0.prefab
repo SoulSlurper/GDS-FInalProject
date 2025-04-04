@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8797619628706696435}
   - component: {fileID: 6785929103142279717}
   - component: {fileID: -2918412291107325474}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ReverseWall4_0
   m_TagString: Wall
   m_Icon: {fileID: 0}

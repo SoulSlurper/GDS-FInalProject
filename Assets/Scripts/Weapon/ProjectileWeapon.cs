@@ -6,16 +6,10 @@ using UnityEngine;
 public class ProjectileWeapon : Weapon
 {
     [Header("Projectile Details")]
-    [SerializeField] private bool _isLaunched = false;
+    [SerializeField] private bool isLaunched = false;
     [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
 
     // Getter and Setters // // // //
-    public bool isLaunched
-    {
-        get { return _isLaunched; }
-        private set { _isLaunched = value; }
-    }
-
     public float speed
     {
         get { return _speed; }
@@ -30,7 +24,7 @@ public class ProjectileWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger detects: " + collision.gameObject.name);
+        Debug.Log("trigger tag: " + collision.gameObject.tag);
 
         Status status;
         if (status = collision.GetComponent<BossHp>())
@@ -67,17 +61,25 @@ public class ProjectileWeapon : Weapon
         {
             Attack(collision.collider);
         }
-        MakeDamage(collision);
 
-        Destroy(gameObject);
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
+        {
+            Destroy(gameObject);
+        }
     }
+
+
 
     // Projectile Details // // // // //
     public void SetSpeed(float speed) { this.speed = speed; }
 
+    public void LaunchProjectile() { isLaunched = true; }
+
+
+
     // Attack Details // // // // //
-    public override void Attack()
+    public override void Attack(Collider2D collider = null)
     {
-        isLaunched = true;
+        collider.GetComponent<Status>().health.DecreaseAmount(damage);
     }
 }
