@@ -9,7 +9,7 @@ public class BossHp : Status
         if (noHealth)
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
-            Instantiate(dropItem, gameObject.transform);
+            CreateDropItem();
             Destroy(gameObject);
         }
     }

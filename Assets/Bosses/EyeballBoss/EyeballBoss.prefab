@@ -210,7 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _user: 3
   _dropItem: {fileID: 9027494889550574452, guid: 30942d2f32c3392459c15d38ed62c80f, type: 3}
-  health: 300
+  health: 10
 --- !u!114 &-1867493990271088322
 MonoBehaviour:
   m_ObjectHideFlags: 0

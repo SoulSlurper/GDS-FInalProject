@@ -69,4 +69,14 @@ public class Status : MonoBehaviour
     public void IncreaseHealth(float health) { this.health += health; }
 
     public void DecreaseHealth(float health) { this.health -= health; }
+
+    // dropItem functions // // // //
+    public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
+
+    public void CreateDropItem()
+    {
+        Debug.Log(dropItem.name + " Item created");
+
+        Instantiate(dropItem, transform.position, Quaternion.identity);
+    }
 }
