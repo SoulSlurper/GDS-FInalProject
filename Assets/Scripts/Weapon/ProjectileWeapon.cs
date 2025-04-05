@@ -42,7 +42,7 @@ public class ProjectileWeapon : Weapon
         Status sDetails;
         if (sDetails = collision.GetComponent<Status>())
         {
-            if (sDetails.user == user) canDestroy = false;
+            if (sDetails.user == weaponUser.user) canDestroy = false; //prevents weapon from destroying by the weaponUser
         }
 
         if (canDestroy) Destroy(gameObject);

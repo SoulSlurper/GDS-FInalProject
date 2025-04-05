@@ -37,27 +37,31 @@ public class PlayerHealth : Status
     }
 
     // Unity // // // //
-    private void OnTriggerEnter2D(Collider2D collision)
+    void Update()
+    {
+        Respawn();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("BossProjectile"))
         {
             TakeDamage(bossProjectileDamage);
-            respawn();
+            Respawn();
         }
-
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Boss"))
         {
             TakeDamage(bossDamage);
-            respawn();
+            Respawn();
         }
+
         if (collision.collider.CompareTag("Enemy"))
         {
             TakeDamage(enemyDamage);
-            respawn();
         }
     }
 
@@ -68,7 +72,7 @@ public class PlayerHealth : Status
     public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
 
     // Other functions // // // //
-    public void respawn()
+    public void Respawn()
     {
         GameObject Boss = GameObject.FindWithTag("Boss");
         if (noHealth && Boss)
@@ -81,7 +85,7 @@ public class PlayerHealth : Status
             BossTrigger.hasSpawnedBoss = false;
 
         }
-        else if (noHealth && !Boss)
+        else if (noHealth)
         {
             this.transform.position = new Vector2(22, -1);
 

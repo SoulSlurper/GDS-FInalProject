@@ -6,9 +6,9 @@ using TMPro;
 
 public class Weapon : MonoBehaviour
 {
-    //maybe make the weapon more flexiable for enemy use
+    //maybe make the weapon more flexiable for enemy use in the future
 
-    [SerializeField] private StatusUser _user; //identifies who holds the weapon
+    [SerializeField] private Status _weaponUser; //identifies who holds the weapon
 
     [Header("Weapon Details")]
     [SerializeField] private WeaponType _type;
@@ -21,10 +21,10 @@ public class Weapon : MonoBehaviour
     private enum TDIndex { type, cost };
 
     // Getter and Setters // // // //
-    public StatusUser user
+    public Status weaponUser
     {
-        get { return _user; }
-        private set { _user = value; }
+        get { return _weaponUser; }
+        private set { _weaponUser = value; }
     }
 
     public WeaponType type
@@ -60,7 +60,7 @@ public class Weapon : MonoBehaviour
 
     // Set details functions // // // // //
 
-    public void SetUser(StatusUser user) { this.user = user; }
+    public void SetWeaponUser(Status weaponUser) { this.weaponUser = weaponUser; }
 
     public void SetDamage(float damage) { this.damage = damage; }
 
@@ -151,7 +151,7 @@ public class Weapon : MonoBehaviour
         Status status;
         if (status = collision.GetComponent<Status>())
         {
-            if (status.user != user) //prevents damage on the user
+            if (status.user != weaponUser.user) //prevents damage on the user
             {
                 status.TakeDamage(damage);
             }
