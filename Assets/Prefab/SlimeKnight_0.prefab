@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8328409611633574170}
-  areWeaponsCosting: 0
+  areWeaponsCosting: 1
   selectedWeapon: 1
   colorSelection: {r: 0, g: 0, b: 1, a: 1}
   skipOnMenuEnter: 1
