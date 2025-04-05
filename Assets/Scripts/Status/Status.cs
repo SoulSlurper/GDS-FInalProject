@@ -8,8 +8,8 @@ public class Status : MonoBehaviour
     //[SerializeField] private StatusAmount _health;
     //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
-    [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
     [SerializeField] private float _health = 100f;
+    [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
 
     private float _max;
 
