@@ -8,18 +8,12 @@ public class CloseRangeWeapon : Weapon
 
     [Header("Close Range Details")]
     [SerializeField] public Animator animator; //sprite and collider animator
-    [SerializeField] private Collider2D col;
 
 
     // Getter and Setters // // // //
 
 
     // Unity // // // // //
-    void Start()
-    {
-        col.enabled = false;
-    }
-
     void Update()
     {
         PerformAttack();
@@ -32,15 +26,11 @@ public class CloseRangeWeapon : Weapon
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
 
         MakeDamage(collision);
-
-        col.enabled = false;
     }
 
     // Attack Details // // // // //
     public override void Attack()
     {
-        col.enabled = true;
-
         int randomAttack = Random.Range(1, 5);
 
         switch (randomAttack)
