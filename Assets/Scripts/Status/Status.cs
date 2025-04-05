@@ -9,7 +9,7 @@ public class Status : MonoBehaviour
     //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
     [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
-    [SerializeField] private float health = 100f;
+    [SerializeField] private float _health = 100f;
 
     private float _max;
 
@@ -30,6 +30,12 @@ public class Status : MonoBehaviour
     { 
         get { return health <= 0f; }
         private set { }
+    }
+
+    public float health
+    { 
+        get { return _health; }
+        private set { _health = value; }
     }
 
     public float max
