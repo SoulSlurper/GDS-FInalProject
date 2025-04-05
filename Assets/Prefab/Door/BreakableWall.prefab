@@ -147,4 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 20
+  _dropItem: {fileID: 0}
+  _health: 20

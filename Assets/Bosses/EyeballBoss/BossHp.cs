@@ -6,7 +6,8 @@ public class BossHp : Status
 {
     [Header("Boss DropItem Details")]
     [SerializeField] private int _dropItemAmount = 1;
-    [SerializeField] private float _healthDropItemPercentage = 1f; //the percentage that indicates when the boss will drop the item
+    [SerializeField] private int _dropItemEndAmount = 1;
+    [SerializeField] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
                                                                    //Note: must be below or equal to 1
 
     private float healthPercentCheckpoint = 1f;
@@ -29,6 +30,9 @@ public class BossHp : Status
     void Start()
     {
         GetHealthCheckpoint();
+
+        Debug.Log("HealthPercentCheckpoint: " + healthPercentCheckpoint);
+        Debug.Log("HealthCheckpoint: " + healthCheckpoint);
     }
 
     void Update()
@@ -37,22 +41,21 @@ public class BossHp : Status
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
 
-            for (int i = 0; i < dropItemAmount; i++) CreateDropItem();
+            for (int i = 0; i < _dropItemEndAmount; i++) CreateDropItem();
 
             Destroy(gameObject);
         }
-        //else
-        //{
-        //    if (health <  healthCheckpoint)
-        //    {
-        //        Debug.Log("Reached HealthCheckpoint: " + healthCheckpoint);
+        else
+        {
+            if (health <= healthCheckpoint)
+            {
+                Debug.Log("Reached HealthCheckpoint: " + healthCheckpoint);
 
-        //        CreateDropItem();
+                for (int i = 0; i < _dropItemAmount; i++) CreateDropItem();
 
-        //        DecreaseHealthPercentCheckpoint();
-        //        GetHealthCheckpoint();
-        //    }
-        //}
+                GetHealthCheckpoint();
+            }
+        }
     }
 
     // Boss DropItem Details // // // //
@@ -61,13 +64,13 @@ public class BossHp : Status
     public void SetHealthDropItemPercentage(float healthDropItemPercentage) { this.healthDropItemPercentage = healthDropItemPercentage; }
 
     // Health Percentage // // // //
-    public void DecreaseHealthPercentCheckpoint()
-    {
-        healthPercentCheckpoint -= healthDropItemPercentage;
-    }
-
     public void GetHealthCheckpoint()
     {
-        healthCheckpoint = max / healthPercentCheckpoint;
+        if (healthDropItemPercentage > 0f && healthDropItemPercentage < 1f)
+        {
+            healthPercentCheckpoint -= healthDropItemPercentage;
+            healthCheckpoint = max * healthPercentCheckpoint;
+        }
+        else healthCheckpoint = 0f;
     }
 }

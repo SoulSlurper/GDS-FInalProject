@@ -13,6 +13,7 @@ TagManager:
   - BossProjectile
   - Boss
   - MovableObject
+  - Item
   layers:
   - Default
   - TransparentFX
