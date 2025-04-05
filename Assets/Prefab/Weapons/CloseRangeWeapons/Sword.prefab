@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1461085124450447434, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1461085124450447434, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -160,14 +160,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5975837197817639905, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 428f7e015de990a47a9c0f4fb9ceeb4b, type: 2}
+      objectReference: {fileID: 9100000, guid: 38f33e81d2f76db4189a8191e77c89ef, type: 2}
     - target: {fileID: 7518731880690734406, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5394564940999808596, guid: 4ce72a90eac1a604bb9a94b00a9f7cd4, type: 3}
+      objectReference: {fileID: -3467948050089011756, guid: a5e16e8389a134a4b978a57750b76ed3, type: 3}
     - target: {fileID: 7518731880690734406, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Color.b
       value: 1
