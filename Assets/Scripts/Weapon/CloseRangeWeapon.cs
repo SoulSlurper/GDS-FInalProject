@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CloseRangeWeapon : Weapon
 {
+    //maybe make the weapon more flexiable for enemy use
+
     [Header("Close Range Details")]
     [SerializeField] public Animator animator;
     [SerializeField] private Collider2D col;
@@ -26,6 +28,8 @@ public class CloseRangeWeapon : Weapon
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("trigger detects: " + collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
 
         MakeDamage(collision);
 

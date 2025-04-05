@@ -1,31 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    [SerializeField] private StatusAmount _health;
+    //[SerializeField] private StatusAmount _health;
     //[SerializeField] private StatusAmount _stamina;
+    [SerializeField] private float health = 100f;
 
-    public StatusAmount health
-    { 
-        get { return _health; }
-        private set { }
-    }
+    private float _max;
 
+    // Getter and Setter // // // //
     public bool noHealth
     { 
-        get { return health.amount <= 0f; }
+        get { return health <= 0f; }
         private set { }
     }
 
-    void Update()
-    {
-        health.RegainingAmount(Time.deltaTime);
-
-        if (noHealth)
-        {
-            Destroy(gameObject);
-        }
+    public float max
+    { 
+        get { return _max; }
+        private set { _max = value; }
     }
+
+    // Unity // // // //
+    void Awake()
+    {
+        max = health;
+    }
+
+    // Functions // // // //
+    public void TakeDamage(float damage)
+    {
+        DecreaseHealth(damage);
+    }
+
+    public void ResetHealth()
+    {
+        health = max;
+    }
+
+    public void SetHealth(float health) { this.health = health >= 0 && health <= max ? health : this.health; }
+
+    public void SetNewHealth(float health) { this.health = max = health; }
+
+    public void IncreaseHealth(float health) { this.health += health; }
+
+    public void DecreaseHealth(float health) { this.health -= health; }
 }

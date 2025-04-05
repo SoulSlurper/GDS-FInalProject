@@ -218,7 +218,7 @@ public class WeaponAtHand : MonoBehaviour
             SelectWeaponByIndex(tempWeaponIndex);
 
             if (areWeaponsCosting)
-                playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
+                playerStatus.TakeDamage(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
         }
 
         isSelecting = false;

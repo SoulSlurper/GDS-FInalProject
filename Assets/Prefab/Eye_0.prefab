@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 8766280178379438583}
   - component: {fileID: 4414380379387218028}
   - component: {fileID: 3021453570606058952}
-  - component: {fileID: 1029989136313499904}
+  - component: {fileID: 1518644079707202725}
   - component: {fileID: -4010415764205632723}
   m_Layer: 0
   m_Name: Eye_0
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,7 +173,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1029989136313499904
+--- !u!114 &1518644079707202725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,14 +182,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4535943814015397685}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cab0109cb3161c04ba15b82795ce1ff3, type: 3}
+  m_Script: {fileID: 11500000, guid: 83d712e949a4b004e9f176a62d8a978f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health:
-    _amount: 50
-    _isPassive: 0
-    _passiveAmount: 1
-    _passiveDelay: 1
+  health: 50
 --- !u!114 &-4010415764205632723
 MonoBehaviour:
   m_ObjectHideFlags: 0

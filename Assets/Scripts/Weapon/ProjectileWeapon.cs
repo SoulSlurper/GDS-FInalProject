@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ProjectileWeapon : Weapon
 {
+    //maybe make the weapon more flexiable for enemy use
+
     [Header("Projectile Details")]
     [SerializeField] private bool _isLaunched = false;
     [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
@@ -31,6 +33,8 @@ public class ProjectileWeapon : Weapon
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("trigger detects: " + collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
 
         MakeDamage(collision);
 

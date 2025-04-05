@@ -2,27 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : Status
 {
-    [SerializeField]
-    public int hp;
-    // Start is called before the first frame update
-    void Start()
+    //may change where enemies could have weapons
+    [Header("Collision Damage")]
+    [SerializeField] private float _enemyDamage;
+    [SerializeField] private float _bossDamage;
+    [SerializeField] private float _enemyProjectileDamage;
+    [SerializeField] private float _bossProjectileDamage;
+
+    // Getter and Setter // // // //
+    public float enemyDamage
     {
-        
+        get { return _enemyDamage; }
+        private set { _enemyDamage = value; }
     }
 
-    // Update is called once per frame
-    void Update()
+    public float bossDamage
     {
-        
+        get { return _bossDamage; }
+        private set { _bossDamage = value; }
     }
 
+    public float enemyProjectileDamage
+    {
+        get { return _enemyProjectileDamage; }
+        private set { _enemyProjectileDamage = value; }
+    }
+
+    public float bossProjectileDamage
+    {
+        get { return _bossProjectileDamage; }
+        private set { _bossProjectileDamage = value; }
+    }
+
+    // Unity // // // //
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("BossProjectile"))
         {
-            hp -= 1;
+            TakeDamage(bossProjectileDamage);
             respawn();
         }
 
@@ -32,33 +51,41 @@ public class PlayerHealth : MonoBehaviour
     {
         if (collision.collider.CompareTag("Boss"))
         {
-            hp -= 1;
+            TakeDamage(bossDamage);
             respawn();
         }
         if (collision.collider.CompareTag("Enemy"))
         {
-            hp -= 1;
+            TakeDamage(enemyDamage);
             respawn();
         }
     }
 
+    // Collision Damage // // // //
+    public void SetEnemyDamage(float enemyDamage) { this.enemyDamage = enemyDamage; }
+    public void SetBossDamage(float bossDamage) { this.bossDamage = bossDamage; }
+    public void SetEnemyProjectileDamage(float enemyProjectileDamage) { this.enemyProjectileDamage = enemyProjectileDamage; }
+    public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
+
+    // Other functions // // // //
     public void respawn()
     {
         GameObject Boss = GameObject.FindWithTag("Boss");
-        if (hp <= 0 && Boss)
+        if (noHealth && Boss)
         {
 
             this.transform.position = new Vector2(117, -10);
             Destroy(Boss);
-            hp = 3;
+            
+            ResetHealth();
             BossTrigger.hasSpawnedBoss = false;
 
         }
-        else if (hp <= 0 && !Boss)
+        else if (noHealth && !Boss)
         {
             this.transform.position = new Vector2(22, -1);
-            hp = 3;
-        }
 
+            ResetHealth();
+        }
     }
 }

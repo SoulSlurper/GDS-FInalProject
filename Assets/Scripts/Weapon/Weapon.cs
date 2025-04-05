@@ -6,6 +6,8 @@ using TMPro;
 
 public class Weapon : MonoBehaviour
 {
+    //maybe make the weapon more flexiable for enemy use
+
     [Header("Weapon Details")]
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
@@ -136,12 +138,10 @@ public class Weapon : MonoBehaviour
     //affects the health of the collided object
     public void MakeDamage(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
-
         Status status;
         if (status = collision.GetComponent<Status>())
         {
-            collision.GetComponent<Status>().health.DecreaseAmount(damage);
+            status.TakeDamage(damage);
         }
     }
 }
