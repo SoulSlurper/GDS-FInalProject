@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class ProjectileWeapon : Weapon
 {
+    //maybe make the weapon more flexiable for enemy use
+
     [Header("Projectile Details")]
-    [SerializeField] private bool isLaunched = false;
+    [SerializeField] private bool _isLaunched = false;
     [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
 
     // Getter and Setters // // // //
+    public bool isLaunched
+    {
+        get { return _isLaunched; }
+        private set { _isLaunched = value; }
+    }
+
     public float speed
     {
         get { return _speed; }
@@ -24,33 +32,28 @@ public class ProjectileWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger tag: " + collision.gameObject.tag);
+        Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        Status status;
-        if (status = collision.GetComponent<Status>()) { Attack(collision); }
-        else if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
+        if (collision.gameObject.CompareTag("Weapon")) return;
+
+        MakeDamage(collision);
+
+        bool canDestroy = true;
+        Status sDetails;
+        if (sDetails = collision.GetComponent<Status>())
         {
-            Attack(collision);
+            if (sDetails.user == weaponUser.user) canDestroy = false; //prevents weapon from destroying by the weaponUser
         }
 
-        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Weapon"))
-        {
-            Destroy(gameObject);
-        }
+        if (canDestroy) Destroy(gameObject);
     }
-
-
 
     // Projectile Details // // // // //
     public void SetSpeed(float speed) { this.speed = speed; }
 
-    public void LaunchProjectile() { isLaunched = true; }
-
-
-
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
-        collider.GetComponent<Status>().health.DecreaseAmount(damage);
+        isLaunched = true;
     }
 }

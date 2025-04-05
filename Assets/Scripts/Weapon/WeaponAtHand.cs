@@ -11,7 +11,6 @@ public class WeaponAtHand : MonoBehaviour
     [Header("Selection")]
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
     [SerializeField] private Color colorSelection = Color.grey;
-    [SerializeField] private bool skipOnMenu = false;
     [SerializeField] private bool skipOnMenuEnter = false;
 
     private List<GameObject> weapons = new List<GameObject>();
@@ -38,7 +37,7 @@ public class WeaponAtHand : MonoBehaviour
 
     void Update()
     {
-        ChangeWeapon();
+        ChangingWeapon();
 
         WeaponFacePointer();
     }
@@ -75,6 +74,7 @@ public class WeaponAtHand : MonoBehaviour
     {
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
+        wDetails.enabled = true;
 
         weapon.SetActive(true);
 
@@ -85,8 +85,6 @@ public class WeaponAtHand : MonoBehaviour
             currentWeaponIndex = index;
 
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
-
-            wDetails.enabled = true;
 
             wDetails.ShowAllTextDetails(false);
 
@@ -127,9 +125,9 @@ public class WeaponAtHand : MonoBehaviour
         if (currentWeaponIndex > -1) DeselectWeapon(currentWeaponIndex);
         if (tempWeaponIndex > -1) DeselectWeapon(tempWeaponIndex);
 
-        int i;
-        if (index > -1) //if the weapon has been found
+        if (index > -1 && index < weapons.Count) //if the weapon can exist
         {
+            int i;
             if (confirm)
             {
                 i = currentWeaponIndex = index;
@@ -141,7 +139,7 @@ public class WeaponAtHand : MonoBehaviour
 
             SelectWeapon(i, confirm);
         }
-        else // if weapon has not been found
+        else // if weapon cannot exist
         {
             SelectWeaponByIndex(GetWeaponIndex(WeaponType.None), confirm);
         }
@@ -152,115 +150,100 @@ public class WeaponAtHand : MonoBehaviour
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
     }
 
+    //checks and returns an index that is in the range of the weapons list, where it will be continously used until the newIndex is in range and is not the same as the indexSkip variable
+    private int GetIndexInRange(int index, bool isNextCheckIncrement = true, int indexSkip = -1)
+    {
+        if (index > -1 && index < weapons.Count && !index.Equals(indexSkip)) return index;
+
+        int newIndex = index;
+
+        if (newIndex >= weapons.Count) newIndex = 0;
+        else if (newIndex < 0) newIndex = weapons.Count - 1;
+        
+        if (newIndex.Equals(indexSkip))
+        {
+            if (isNextCheckIncrement) newIndex++;
+            else newIndex--;
+        }
+
+        return GetIndexInRange(newIndex, isNextCheckIncrement, indexSkip);
+    }
+
+    //when the player enters the weapon selection
+    private void OnWeaponMenuEnter()
+    {
+        tempWeaponIndex = currentWeaponIndex;
+        if (skipOnMenuEnter)
+        {
+            tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1, true, GetWeaponIndex(WeaponType.None));
+        }
+
+        SelectWeaponByIndex(tempWeaponIndex, false);
+
+        isSelecting = true;
+
+        Debug.Log("Weapon Menu opened");
+    }
+
     //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
-    private void ScrollForWeapon()
+    private void OnWeaponMenu()
     {
         if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            int maxIndex = weapons.Count - 1;
-
             DeselectWeapon(tempWeaponIndex);
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (skipOnMenu)
-                {
-                    tempWeaponIndex--;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
-
-                    if (tempWeaponIndex < 0) tempWeaponIndex = maxIndex;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex--;
-                }
-                else
-                {
-                    if (tempWeaponIndex <= 0) tempWeaponIndex = maxIndex;
-                    else tempWeaponIndex--;
-                }
+                tempWeaponIndex = GetIndexInRange(tempWeaponIndex - 1, false);
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (skipOnMenu)
-                {
-                    tempWeaponIndex++;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-
-                    if (tempWeaponIndex > maxIndex) tempWeaponIndex = 0;
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-
-                }
-                else
-                {
-                    if (tempWeaponIndex >= maxIndex) tempWeaponIndex = 0;
-                    else tempWeaponIndex++;
-                }
+                tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1);
             }
 
             SelectWeapon(tempWeaponIndex, false);
         }
     }
 
-    private void SwitchingWeapons()
+    //when the player exits the weapon selection
+    private void OnWeaponMenuExit()
     {
-        if (isSelecting)
+        if (tempWeaponIndex == currentWeaponIndex || !isSelecting)
         {
-            ScrollForWeapon();
-
-            if (Input.GetMouseButtonDown(1)) //confirms the selection by clicking the right mouse
-            {
-                isSelecting = false;
-
-                if (tempWeaponIndex == currentWeaponIndex)
-                {
-                    SelectWeaponByIndex(currentWeaponIndex);
-                }
-                else
-                {
-                    SelectWeaponByIndex(tempWeaponIndex);
-
-                    if (areWeaponsCosting)
-                        playerStatus.health.DecreaseAmount(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
-                }
-            }
+            SelectWeaponByIndex(currentWeaponIndex);
         }
+        else
+        {
+            SelectWeaponByIndex(tempWeaponIndex);
+
+            if (areWeaponsCosting)
+                playerStatus.TakeDamage(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
+        }
+
+        isSelecting = false;
+
+        Debug.Log("Weapon Menu exit");
     }
 
-    private void ChangeWeapon()
+    private void ChangingWeapon()
     {
-        if (Input.GetKeyDown(KeyCode.E) && weapons.Count > 1)
+        //enters selection and exit with the current weapon by mouse right click
+        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
         {
             isSelecting = !isSelecting;
 
-            if (isSelecting)
-            {
-                tempWeaponIndex = currentWeaponIndex;
-                if (skipOnMenuEnter || skipOnMenu)
-                {
-                    tempWeaponIndex++;
-
-                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-                    if (weapons[tempWeaponIndex].GetComponent<Weapon>().type == WeaponType.None && weapons.Count > 2)
-                    {
-                        tempWeaponIndex++;
-                    }
-
-                    if (tempWeaponIndex >= weapons.Count) tempWeaponIndex = 0;
-
-                    if (tempWeaponIndex == currentWeaponIndex) tempWeaponIndex++;
-                }
-
-                SelectWeaponByIndex(tempWeaponIndex, false);
-
-                Debug.Log("Weapon Menu opened");
-            }
-            else
-            {
-                SelectWeaponByIndex(currentWeaponIndex);
-            }
+            if (isSelecting) OnWeaponMenuEnter();
+            else OnWeaponMenuExit();
         }
 
-        SwitchingWeapons();
+        if (isSelecting)
+        {
+            OnWeaponMenu();
+
+            //exit selection with the selected weapon by mouse left click
+            if (Input.GetMouseButtonDown(0)) OnWeaponMenuExit();
+        }
     }
 
     private Vector2 PointerPosition()

@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class CloseRangeWeapon : Weapon
 {
+    //maybe make the weapon more flexiable for enemy use
+
     [Header("Close Range Details")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private Transform raycastOrigin;
-    [SerializeField] private float _raycastRadius = 1f;
+    [SerializeField] public Animator animator; //sprite and collider animator
 
 
     // Getter and Setters // // // //
-    public float raycastRadius
-    {
-        get { return _raycastRadius; }
-        private set { _raycastRadius = value; }
-    }
 
 
     // Unity // // // // //
@@ -24,28 +19,35 @@ public class CloseRangeWeapon : Weapon
         PerformAttack();
     }
 
-    void OnDrawGizmosSelected()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        //shows the raycast range when the gizmos is selected in the scene
+        Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        Gizmos.color = Color.blue;
-        Vector3 position = raycastOrigin == null ? Vector3.zero : raycastOrigin.position;
-        Gizmos.DrawWireSphere(position, raycastRadius);
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
+
+        MakeDamage(collision);
     }
 
-
-
-    // Close Range Details // // // // //
-    public void SetRaycastRadius(float radius) { raycastRadius =  radius; }
-
-
-
     // Attack Details // // // // //
-    public override void Attack(Collider2D collider = null)
+    public override void Attack()
     {
-        MakeDamage();
+        int randomAttack = Random.Range(1, 5);
 
-        animator.SetTrigger("Attack");
+        switch (randomAttack)
+        {
+            case 1:
+                animator.SetTrigger("Attack1");
+                break;
+            case 2:
+                animator.SetTrigger("Attack2");
+                break;
+            case 3:
+                animator.SetTrigger("Attack3");
+                break;
+            case 4:
+                animator.SetTrigger("Attack4");
+                break;
+        }
 
         if (SoundManager.Instance != null)
         {
@@ -55,23 +57,6 @@ public class CloseRangeWeapon : Weapon
         else
         {
             Debug.LogWarning("SoungManager instance is null");
-        }
-    }
-
-    private void MakeDamage()
-    {
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(raycastOrigin.position, raycastRadius))
-        {
-            Debug.Log(collider.name + " - " + collider.tag);
-
-            if (!collider.CompareTag("Player"))
-            {
-                Status status;
-                if (status = collider.GetComponent<Status>())
-                {
-                    status.health.DecreaseAmount(damage);
-                }
-            }
         }
     }
 }

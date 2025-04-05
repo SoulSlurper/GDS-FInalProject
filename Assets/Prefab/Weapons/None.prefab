@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: None
       objectReference: {fileID: 0}
+    - target: {fileID: 5041288964348727701, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7699009807264997417, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -257,8 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016fb884cb3746f43a6a7481dd1ef5aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  damage: 0
-  cost: 0
-  attackContinously: 0
-  attackDelay: 1
+  _weaponUser: {fileID: 0}
+  _type: 0
+  _damage: 0
+  _cost: 0

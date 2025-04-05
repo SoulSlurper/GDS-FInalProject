@@ -6,6 +6,8 @@ public class BossTrigger : MonoBehaviour
 {
     [SerializeField]
     public GameObject boss;
+    [SerializeField]
+    public Camera mainCamera;
     public static bool hasSpawnedBoss = false;
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,8 @@ public class BossTrigger : MonoBehaviour
         {
             Instantiate(boss);
             hasSpawnedBoss = true;
+            mainCamera.orthographicSize += 2f;
+            gameObject.SetActive(false);
         }
     }
 }
