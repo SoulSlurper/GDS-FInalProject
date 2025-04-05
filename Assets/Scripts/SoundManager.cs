@@ -108,20 +108,24 @@ public class SoundManager : MonoBehaviour
     // Method to play the splatter sound and ensure it completes a full loop
     public void PlaySplatterSound()
     {
-        if (splatterSound != null && !isSplattering)
+        if (splatterSound != null)
         {
-            isSplattering = true;
-            audioSource.clip = splatterSound;
-            audioSource.loop = false;
-            audioSource.volume = targetVolume/2;
-            audioSource.Play();
-            StartCoroutine(WaitForSplatterToEnd());
+            GameObject tempGO = new GameObject("TempSplatterSound");
+            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = splatterSound;
+            tempSource.volume = targetVolume / 2f;
+            tempSource.Play();
+
+            Destroy(tempGO, splatterSound.length);
         }
     }
-    public bool IsSplattering()
-    {
-        return isSplattering;
-    }
+
+    // public bool IsSplattering()
+    // {
+    //     return isSplattering;
+    // }
 
     public void PlaySwordSound()
     {
@@ -138,19 +142,19 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForSplatterToEnd()
-    {
-        yield return new WaitForSeconds(splatterSound.length);
-        isSplattering = false;
-
-        if (GameObject.FindWithTag("Player") != null)
-        {
-            SlimeKnightController playerController = GameObject.FindWithTag("Player").GetComponent<SlimeKnightController>();
-            if (playerController != null && playerController.IsMoving())
-            {
-                PlayWalkSound();  // Resume walking only if the player is still moving
-            }
-        }
-    }
+    // private IEnumerator WaitForSplatterToEnd()
+    // {
+    //     yield return new WaitForSeconds(splatterSound.length);
+    //     isSplattering = false;
+    //
+    //     if (GameObject.FindWithTag("Player") != null)
+    //     {
+    //         SlimeKnightController playerController = GameObject.FindWithTag("Player").GetComponent<SlimeKnightController>();
+    //         if (playerController != null && playerController.IsMoving())
+    //         {
+    //             PlayWalkSound();  // Resume walking only if the player is still moving
+    //         }
+    //     }
+    // }
 
 }

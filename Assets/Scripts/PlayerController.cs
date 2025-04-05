@@ -140,7 +140,7 @@ public class SlimeKnightController : MonoBehaviour
         {
             if (soundManager != null)
             {
-                soundManager.PlaySplatterSound();
+                SoundManager.Instance.PlaySplatterSound();
             }
         }
 
