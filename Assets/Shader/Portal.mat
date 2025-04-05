@@ -45,12 +45,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Brightness: 1
-    - _Density: 2
+    - _Brightness: 2
+    - _Density: 5
     - _Speed: 0.5
     - _Strength: 10
     m_Colors:
-    - _Color: {r: 341.7801, g: 341.7801, b: 341.7801, a: 0}
+    - _Color: {r: 456.3032, g: 40.4646, b: 40.4646, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &7380664101261557848
