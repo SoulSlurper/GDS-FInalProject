@@ -7,7 +7,7 @@ public class CloseRangeWeapon : Weapon
     //maybe make the weapon more flexiable for enemy use
 
     [Header("Close Range Details")]
-    [SerializeField] public Animator animator;
+    [SerializeField] public Animator animator; //sprite and collider animator
     [SerializeField] private Collider2D col;
 
 
