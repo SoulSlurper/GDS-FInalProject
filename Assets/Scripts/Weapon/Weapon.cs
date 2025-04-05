@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour
 {
     //maybe make the weapon more flexiable for enemy use
 
+    [SerializeField] private StatusUser _user; //identifies who holds the weapon
+
     [Header("Weapon Details")]
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
@@ -19,6 +21,12 @@ public class Weapon : MonoBehaviour
     private enum TDIndex { type, cost };
 
     // Getter and Setters // // // //
+    public StatusUser user
+    {
+        get { return _user; }
+        private set { _user = value; }
+    }
+
     public WeaponType type
     {
         get { return _type; }
@@ -50,7 +58,9 @@ public class Weapon : MonoBehaviour
 
 
 
-    // Weapon details functions // // // // //
+    // Set details functions // // // // //
+
+    public void SetUser(StatusUser user) { this.user = user; }
 
     public void SetDamage(float damage) { this.damage = damage; }
 
@@ -141,7 +151,10 @@ public class Weapon : MonoBehaviour
         Status status;
         if (status = collision.GetComponent<Status>())
         {
-            status.TakeDamage(damage);
+            if (status.user != user) //prevents damage on the user
+            {
+                status.TakeDamage(damage);
+            }
         }
     }
 }

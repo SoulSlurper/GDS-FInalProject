@@ -363,11 +363,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5a563e3ad59b4f8460b449584a8e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _user: 1
   health: 100
   _enemyDamage: 20
-  _bossDamage: 30
-  _enemyProjectileDamage: 20
-  _bossProjectileDamage: 10
+  _bossDamage: 40
+  _enemyProjectileDamage: 10
+  _bossProjectileDamage: 30
 --- !u!1001 &1670717139393854849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -467,6 +468,10 @@ PrefabInstance:
     - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: _cost
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
+      propertyPath: _user
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: attackContinously
@@ -590,6 +595,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 591676030938052933, guid: 1fb983c06a090c44e949d8884d47888f, type: 3}
+      propertyPath: _user
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4252581392655492621, guid: 1fb983c06a090c44e949d8884d47888f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.4
@@ -695,6 +704,10 @@ PrefabInstance:
     - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: _cost
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: _user
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: _attackDelay
@@ -878,14 +891,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8725081908086952217, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4094791031673090704}
+      addedObject: {fileID: 7655658732922872739}
   m_SourcePrefab: {fileID: 100100000, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
 --- !u!1 &365062161068194101 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8725081908086952217, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
   m_PrefabInstance: {fileID: 8936621455057233964}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &4094791031673090704
+--- !u!95 &7655658732922872739
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0

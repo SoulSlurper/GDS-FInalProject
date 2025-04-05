@@ -7,11 +7,18 @@ public class Status : MonoBehaviour
 {
     //[SerializeField] private StatusAmount _health;
     //[SerializeField] private StatusAmount _stamina;
+    [SerializeField] private StatusUser _user;
     [SerializeField] private float health = 100f;
 
     private float _max;
 
     // Getter and Setter // // // //
+    public StatusUser user
+    { 
+        get { return _user; }
+        private set { _user = value; }
+    }
+
     public bool noHealth
     { 
         get { return health <= 0f; }

@@ -49,6 +49,7 @@ public class LongRangeWeapon : Weapon
 
         wDetails.SetSpeed(speed);
         wDetails.SetDamage(damage);
+        wDetails.SetUser(user);
 
         wDetails.Attack();
     }

@@ -34,11 +34,18 @@ public class ProjectileWeapon : Weapon
     {
         Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon")) return;
+        if (collision.gameObject.CompareTag("Weapon")) return;
 
         MakeDamage(collision);
 
-        Destroy(gameObject);
+        bool canDestroy = true;
+        Status sDetails;
+        if (sDetails = collision.GetComponent<Status>())
+        {
+            if (sDetails.user == user) canDestroy = false;
+        }
+
+        if (canDestroy) Destroy(gameObject);
     }
 
     // Projectile Details // // // // //
