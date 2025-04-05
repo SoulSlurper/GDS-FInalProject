@@ -8019,6 +8019,7 @@ MonoBehaviour:
   _data:
     _json: '{"declarations":{"Kind":"Scene","collection":{"$content":[{"name":"PlayerPosition","value":{"x":0.0,"y":0.0,"$type":"UnityEngine.Vector2"},"typeHandle":{"Identification":"UnityEngine.Vector2,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Player","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"PlayerY","value":{"x":0.0,"y":0.0,"$type":"UnityEngine.Vector2"},"typeHandle":{"Identification":"UnityEngine.Vector2,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1835124838}
@@ -18797,6 +18798,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlimeKnight_0
       objectReference: {fileID: 0}
+    - target: {fileID: 9169130846810581999, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _weaponUser
+      value: 
+      objectReference: {fileID: 1835124839}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18807,6 +18812,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8328409611633574170, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
   m_PrefabInstance: {fileID: 1835124837}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1835124839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2556274459256270731, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+  m_PrefabInstance: {fileID: 1835124837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835124838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5a563e3ad59b4f8460b449584a8e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1844381196
 PrefabInstance:
   m_ObjectHideFlags: 0
