@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
+    public AudioClip backgroundMusic;
     public AudioClip walkSound;
     public AudioClip jumpSound;
     public AudioClip buttonSound;
@@ -13,7 +14,12 @@ public class SoundManager : MonoBehaviour
     public AudioClip splatterSound;
     public AudioClip swordSound;
     public AudioClip shootSound;
+    public AudioClip enemyDetectedSound;
+    public AudioClip teleportEnterSound;
+    public AudioClip teleportExitSound;
 
+
+    private AudioSource musicSource;
     private AudioSource audioSource;
     private GameObject player;
     private float targetVolume = 1f;
@@ -33,7 +39,6 @@ public class SoundManager : MonoBehaviour
             return;
         }
     }
-
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -48,8 +53,19 @@ public class SoundManager : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
-    }
+        
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.clip = backgroundMusic;
+        musicSource.loop = true;
+        musicSource.volume = 0.6f;
+        musicSource.playOnAwake = false;
+        musicSource.ignoreListenerVolume = true;
 
+        if (backgroundMusic != null)
+        {
+            musicSource.Play();
+        }
+    }
     public void PlayButtonSound()
     {
         if (buttonSound != null)
@@ -122,11 +138,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // public bool IsSplattering()
-    // {
-    //     return isSplattering;
-    // }
-
     public void PlaySwordSound()
     {
         if (swordSound != null)
@@ -141,6 +152,35 @@ public class SoundManager : MonoBehaviour
             audioSource.PlayOneShot(shootSound, targetVolume * 6f / 10f);
         }
     }
+    
+    public void PlayEnemyDetectedSound()
+    {
+        if (enemyDetectedSound != null)
+        {
+            audioSource.PlayOneShot(enemyDetectedSound, targetVolume * 1.2f);
+        }
+    }
+    
+    public void PlayTeleportEnterSound()
+    {
+        if (teleportEnterSound != null)
+        {
+            audioSource.PlayOneShot(teleportEnterSound, targetVolume);
+        }
+    }
+
+    public void PlayTeleportExitSound()
+    {
+        if (teleportExitSound != null)
+        {
+            audioSource.PlayOneShot(teleportExitSound, targetVolume);
+        }
+    }
+
+    // public bool IsSplattering()
+    // {
+    //     return isSplattering;
+    // }
 
     // private IEnumerator WaitForSplatterToEnd()
     // {

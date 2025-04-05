@@ -48,11 +48,14 @@ public class Teleporter : MonoBehaviour
                 StartCooldown();
                 destination.StartCooldown();
 
-                // Teleport the player
+                // Play teleport enter sound
+                SoundManager.Instance?.PlayTeleportEnterSound();
+
+                // Move player to destination
                 other.transform.position = destination.transform.position;
 
-                // Optional: play sound effect
-                // AudioManager.Instance.Play("Teleport");
+                // Play teleport exit sound at the destination
+                SoundManager.Instance?.PlayTeleportExitSound();
             }
             else
             {
@@ -60,6 +63,7 @@ public class Teleporter : MonoBehaviour
             }
         }
     }
+
 
     public void StartCooldown()
     {

@@ -15,6 +15,7 @@ TagManager:
   - MovableObject
   - Item
   - BossProjectileClear
+  - Portal
   layers:
   - Default
   - TransparentFX

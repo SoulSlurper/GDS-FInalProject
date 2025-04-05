@@ -21,6 +21,8 @@ public class EnemyController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     private float hoverOffset;
+    private bool hasDetectedPlayer = false;
+
     
     // Animation parameter
     private readonly string IS_CHASING = "IsChasing";
@@ -52,20 +54,30 @@ public class EnemyController : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            // Check if player is in detection range
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-            isChasing = distanceToPlayer <= detectionRange;
-            
-            // Update animation
+            bool currentlyChasing = distanceToPlayer <= detectionRange;
+
+            if (currentlyChasing && !hasDetectedPlayer)
+            {
+                hasDetectedPlayer = true;
+                SoundManager.Instance?.PlayEnemyDetectedSound();
+            }
+            else if (!currentlyChasing)
+            {
+                hasDetectedPlayer = false;
+            }
+
+            isChasing = currentlyChasing;
+
             if (animator != null)
             {
                 animator.SetBool(IS_CHASING, isChasing);
             }
-            
-            // Update facing direction
+
             UpdateFacingDirection();
         }
     }
+
     
     private void FixedUpdate()
     {
