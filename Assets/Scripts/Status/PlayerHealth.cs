@@ -56,7 +56,6 @@ public class PlayerHealth : Status
         if (collision.collider.CompareTag("Boss"))
         {
             TakeDamage(bossDamage);
-            Respawn();
         }
 
         if (collision.collider.CompareTag("Enemy"))
