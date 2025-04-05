@@ -10,12 +10,19 @@ public class LongRangeWeapon : Weapon
 
     [Header("Projectile Details")]
     [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _projectileCost = 0f;
 
     // Getter and Setters // // // //
     public float speed
     {
         get { return _speed; }
         private set { _speed = value; }
+    }
+
+    public float projectileCost
+    {
+        get { return _projectileCost; }
+        private set { _projectileCost = value; }
     }
 
     // Unity // // // // //
@@ -26,19 +33,26 @@ public class LongRangeWeapon : Weapon
 
     // Long Range Details // // // // //
     public void SetSpeed(float speed) { this.speed = speed; }
+    
+    public void SetProjectileCost(float projectileCost) { this.projectileCost = projectileCost; }
 
     // Attack Details // // // // //
     public override void Attack()
     {
-        SpawnProjectile();
+        weaponUser.TakeDamage(projectileCost);
 
-        if (SoundManager.Instance != null)
+        if (!weaponUser.noHealth)
         {
-            SoundManager.Instance.PlayShootSound();
-        }
-        else
-        {
-            Debug.LogWarning("SoundManager instance is null! Shoot sound won't play.");
+            SpawnProjectile();
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayShootSound();
+            }
+            else
+            {
+                Debug.LogWarning("SoundManager instance is null! Shoot sound won't play.");
+            }
         }
     }
 
@@ -49,7 +63,7 @@ public class LongRangeWeapon : Weapon
 
         wDetails.SetSpeed(speed);
         wDetails.SetDamage(damage);
-        wDetails.SetUser(user);
+        wDetails.SetWeaponUser(weaponUser);
 
         wDetails.Attack();
     }
