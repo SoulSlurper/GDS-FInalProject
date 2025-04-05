@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1461085124450447434, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1461085124450447434, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -72,10 +72,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
-      propertyPath: col
-      value: 
-      objectReference: {fileID: 6056271198288960248}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: cost
       value: 10
@@ -160,14 +156,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5975837197817639905, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 428f7e015de990a47a9c0f4fb9ceeb4b, type: 2}
+      objectReference: {fileID: 9100000, guid: 38f33e81d2f76db4189a8191e77c89ef, type: 2}
     - target: {fileID: 7518731880690734406, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5394564940999808596, guid: 4ce72a90eac1a604bb9a94b00a9f7cd4, type: 3}
+      objectReference: {fileID: -3467948050089011756, guid: a5e16e8389a134a4b978a57750b76ed3, type: 3}
     - target: {fileID: 7518731880690734406, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -218,15 +218,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 6056271198288960248}
+      insertIndex: -1
+      addedObject: {fileID: 5089997377540027717}
+    - targetCorrespondingSourceObject: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4037046325526635918}
   m_SourcePrefab: {fileID: 100100000, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
 --- !u!1 &6297764118068575802 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4897443097664103054, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
   m_PrefabInstance: {fileID: 1481985086702787764}
   m_PrefabAsset: {fileID: 0}
---- !u!70 &6056271198288960248
+--- !u!70 &5089997377540027717
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,10 +259,37 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.19, y: 0.35}
-  m_Direction: 0
+  m_Offset: {x: 0.07, y: 0}
+  m_Size: {x: 0.5, y: 0.5}
+  m_Direction: 1
+--- !u!50 &4037046325526635918
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297764118068575802}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
