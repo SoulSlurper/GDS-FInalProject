@@ -9,6 +9,7 @@ public class EnemyStatus : Status
         if (noHealth)
         {
             Debug.Log(gameObject.name + " Enemy is destroyed");
+            Instantiate(dropItem, gameObject.transform);
             Destroy(gameObject);
         }
     }
