@@ -67,7 +67,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -105,7 +105,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -370,7 +370,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SlimeHeart_0: -5102814280450429135
+      SlimeHeart_1: -8652210879919810068
+      SlimeHeart_10: -3887748545427610314
+      SlimeHeart_2: -7334606845386073321
+      SlimeHeart_3: 178657021894475858
+      SlimeHeart_4: 2664477529725196478
+      SlimeHeart_5: 78952812453755768
+      SlimeHeart_6: 7825934393113767931
+      SlimeHeart_7: -2094154610920275841
+      SlimeHeart_8: -1087259456350229998
+      SlimeHeart_9: 1059714156992443467
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

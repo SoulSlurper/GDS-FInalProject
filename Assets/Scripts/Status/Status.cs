@@ -10,8 +10,19 @@ public class Status : MonoBehaviour
     [SerializeField] private StatusUser _user;
     [SerializeField] private float _health = 100f;
     [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
+    public HealthBar healthBar;
+    public int maxHealth = 100;
+    public int currentHealth;
 
     private float _max;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+
+    }
+
 
     // Getter and Setter // // // //
     public StatusUser user
@@ -68,13 +79,37 @@ public class Status : MonoBehaviour
         health = max;
     }
 
-    public void SetHealth(float health) { this.health = health >= 0 && health <= max ? health : this.health; }
+    public void SetHealth(float health) 
+    { 
+        this.health = health >= 0 && health <= max ? health : this.health;
 
-    public void SetNewHealth(float health) { this.health = max = health; }
+        currentHealth = (int)this.health; 
+        healthBar.SetHealth(currentHealth);
+    }
 
-    public void IncreaseHealth(float health) { this.health += health; }
+    public void SetNewHealth(float health) 
+    { 
+        this.health = max = health;
 
-    public void DecreaseHealth(float health) { this.health -= health; }
+        currentHealth = (int)this.health; 
+        healthBar.SetHealth(currentHealth);
+    }
+
+    public void IncreaseHealth(float health) 
+    { 
+        this.health += health;
+
+        currentHealth = (int)this.health;
+        healthBar.SetHealth(currentHealth);
+    }
+
+    public void DecreaseHealth(float health) 
+    { 
+        this.health -= health;
+
+        currentHealth = (int)this.health;
+        healthBar.SetHealth(currentHealth);
+    }
 
     // dropItem functions // // // //
     public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
