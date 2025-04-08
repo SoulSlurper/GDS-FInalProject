@@ -8,6 +8,7 @@ public class PlayerHealth : Status
     [Header("Collision Damage")]
     [SerializeField] private float _enemyDamage;
     [SerializeField] private float _bossDamage;
+    [SerializeField] private float _lavaDamage;
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
@@ -23,6 +24,13 @@ public class PlayerHealth : Status
         get { return _bossDamage; }
         private set { _bossDamage = value; }
     }
+
+    public float lavaDamage
+    {
+        get { return _lavaDamage; }
+        private set { _lavaDamage = value; }
+    }
+
 
     public float enemyProjectileDamage
     {
@@ -47,6 +55,13 @@ public class PlayerHealth : Status
         if (collision.CompareTag("BossProjectile"))
         {
             TakeDamage(bossProjectileDamage);
+            Respawn();
+        }
+
+        if (collision.CompareTag("Lava"))
+        {
+            // Instantly kill the player when touching lava
+            TakeDamage(lavaDamage);
             Respawn();
         }
     }
