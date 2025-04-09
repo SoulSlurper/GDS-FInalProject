@@ -6,14 +6,16 @@ public class BossHp : Status
 {
     [Header("Boss DropItem Details")]
     [SerializeField] private int _dropItemAmount = 1;
-    [SerializeField] private int _dropItemEndAmount = 1;
     [SerializeField] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
                                                                    //Note: must be below or equal to 1
+
+    [Header("Death Drop Item Details")]
+    [SerializeField] private GameObject _endDropItem;
 
     private float healthPercentCheckpoint = 1f;
     private float healthCheckpoint;
 
-    // Unity // // // //
+    // Getters and Setters // // // //
     public int dropItemAmount
     {
         get { return _dropItemAmount; }
@@ -24,6 +26,12 @@ public class BossHp : Status
     {
         get { return _healthDropItemPercentage; }
         private set { }
+    }
+
+    public GameObject endDropItem
+    {
+        get { return _endDropItem; }
+        private set { _endDropItem = value; }
     }
 
     // Unity // // // //
@@ -41,7 +49,7 @@ public class BossHp : Status
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
 
-            for (int i = 0; i < _dropItemEndAmount; i++) CreateDropItem();
+            InstantiateItem(endDropItem);
 
             Destroy(gameObject);
         }

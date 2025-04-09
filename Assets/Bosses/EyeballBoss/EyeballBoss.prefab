@@ -208,11 +208,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 3
-  _dropItem: {fileID: 9027494889550574452, guid: 30942d2f32c3392459c15d38ed62c80f, type: 3}
   _health: 600
+  _dropItem: {fileID: 9027494889550574452, guid: 30942d2f32c3392459c15d38ed62c80f, type: 3}
+  healthBar: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
   _dropItemAmount: 3
-  _dropItemEndAmount: 5
   _healthDropItemPercentage: 0.2
+  _endDropItem: {fileID: 222488917914436569, guid: 0a74de993a7f4f347b51fdcbfb174cb8, type: 3}
 --- !u!114 &-1867493990271088322
 MonoBehaviour:
   m_ObjectHideFlags: 0

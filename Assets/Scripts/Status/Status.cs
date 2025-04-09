@@ -16,14 +16,6 @@ public class Status : MonoBehaviour
 
     private float _max;
 
-    private void Start()
-    {
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-
-    }
-
-
     // Getter and Setter // // // //
     public StatusUser user
     { 
@@ -59,6 +51,12 @@ public class Status : MonoBehaviour
     void Awake()
     {
         max = health;
+
+        if (healthBar)
+        {
+            currentHealth = maxHealth;
+            healthBar.SetMaxHealth(maxHealth);
+        }
     }
 
     // Health functions // // // //
@@ -114,10 +112,15 @@ public class Status : MonoBehaviour
     // dropItem functions // // // //
     public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
 
+    public void InstantiateItem(GameObject item)
+    {
+        Debug.Log(item.name + " Item created");
+
+        Instantiate(item, transform.position, Quaternion.identity);
+    }
+
     public void CreateDropItem()
     {
-        Debug.Log(dropItem.name + " Item created");
-
-        Instantiate(dropItem, transform.position, Quaternion.identity);
+        InstantiateItem(dropItem);
     }
 }
