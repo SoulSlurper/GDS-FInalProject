@@ -12,6 +12,8 @@ public class PlayerHealth : Status
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
+    private Vector3 savePointPosition;
+
     // Getter and Setter // // // //
     public float enemyDamage
     {
@@ -52,17 +54,22 @@ public class PlayerHealth : Status
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("SavePoint"))
+        {
+            savePointPosition = collision.transform.position;
+
+            Debug.Log("SavePoint Recorded: " + savePointPosition);
+        }
+
         if (collision.CompareTag("BossProjectile"))
         {
             TakeDamage(bossProjectileDamage);
-            Respawn();
         }
 
         if (collision.CompareTag("Lava"))
         {
             // Instantly kill the player when touching lava
             TakeDamage(lavaDamage);
-            Respawn();
         }
     }
 
@@ -93,17 +100,12 @@ public class PlayerHealth : Status
         GameObject Boss = GameObject.FindWithTag("Boss");
         if (Boss)
         {
-
-            this.transform.position = new Vector2(117, -10);
             Destroy(Boss);
             
             BossTrigger.hasSpawnedBoss = false;
         }
-        else
-        {
-            this.transform.position = new Vector2(22, -1);
-        }
 
+        this.transform.position = savePointPosition;
         ResetHealth();
     }
 }
