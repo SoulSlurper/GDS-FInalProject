@@ -17,6 +17,7 @@ TagManager:
   - BossProjectileClear
   - Portal
   - Lava
+  - SavePoint
   layers:
   - Default
   - TransparentFX

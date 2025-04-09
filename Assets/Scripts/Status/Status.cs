@@ -9,12 +9,10 @@ public class Status : MonoBehaviour
     //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
     [SerializeField] private float _health = 100f;
+    [SerializeField] private HealthBar healthBar;
     [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
-    public HealthBar healthBar;
-    public int maxHealth = 100;
-    public int currentHealth;
 
-    private float _max;
+    private float _maxHealth;
 
     // Getter and Setter // // // //
     public StatusUser user
@@ -29,33 +27,32 @@ public class Status : MonoBehaviour
         private set { _dropItem = value; }
     }
 
-    public bool noHealth
-    { 
-        get { return health <= 0f; }
-        private set { }
-    }
-
     public float health
     { 
         get { return _health; }
         private set { _health = value; }
     }
 
-    public float max
+    public bool noHealth
     { 
-        get { return _max; }
-        private set { _max = value; }
+        get { return health <= 0f; }
+        private set { }
+    }
+
+    public float maxHealth
+    { 
+        get { return _maxHealth; }
+        private set { _maxHealth = value; }
     }
 
     // Unity // // // //
     void Awake()
     {
-        max = health;
+        maxHealth = health;
 
         if (healthBar)
         {
-            currentHealth = maxHealth;
-            healthBar.SetMaxHealth(maxHealth);
+            healthBar.SetMaxHealth(health);
         }
     }
 
@@ -68,45 +65,46 @@ public class Status : MonoBehaviour
     public void TakeHealth(float amount)
     {
         IncreaseHealth(amount);
-
-        if (health > max) health = max;
     }
 
     public void ResetHealth()
     {
-        health = max;
+        health = maxHealth;
+
+        healthBar.SetHealth(health);
+
+        Debug.Log("health: " + health);
+        Debug.Log("maxHealth: " + maxHealth);
     }
 
     public void SetHealth(float health) 
     { 
-        this.health = health >= 0 && health <= max ? health : this.health;
+        this.health = health >= 0 && health <= maxHealth ? health : this.health;
 
-        currentHealth = (int)this.health; 
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealth(this.health);
     }
 
     public void SetNewHealth(float health) 
     { 
-        this.health = max = health;
+        this.health = maxHealth = health;
 
-        currentHealth = (int)this.health; 
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealth(this.health);
     }
 
     public void IncreaseHealth(float health) 
     { 
         this.health += health;
+        if (health > maxHealth) health = maxHealth;
 
-        currentHealth = (int)this.health;
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealth(this.health);
     }
 
     public void DecreaseHealth(float health) 
     { 
         this.health -= health;
+        if (health < 0) health = 0;
 
-        currentHealth = (int)this.health;
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealth(this.health);
     }
 
     // dropItem functions // // // //

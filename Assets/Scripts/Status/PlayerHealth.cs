@@ -88,22 +88,22 @@ public class PlayerHealth : Status
     // Other functions // // // //
     public void Respawn()
     {
+        if (!noHealth) return;
+
         GameObject Boss = GameObject.FindWithTag("Boss");
-        if (noHealth && Boss)
+        if (Boss)
         {
 
             this.transform.position = new Vector2(117, -10);
             Destroy(Boss);
             
-            ResetHealth();
             BossTrigger.hasSpawnedBoss = false;
-
         }
-        else if (noHealth)
+        else
         {
             this.transform.position = new Vector2(22, -1);
-
-            ResetHealth();
         }
+
+        ResetHealth();
     }
 }

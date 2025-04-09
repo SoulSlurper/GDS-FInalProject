@@ -77,7 +77,7 @@ public class BossHp : Status
         if (healthDropItemPercentage > 0f && healthDropItemPercentage < 1f)
         {
             healthPercentCheckpoint -= healthDropItemPercentage;
-            healthCheckpoint = max * healthPercentCheckpoint;
+            healthCheckpoint = maxHealth * healthPercentCheckpoint;
         }
         else healthCheckpoint = 0f;
     }
