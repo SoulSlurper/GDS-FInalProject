@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthItem : MonoBehaviour
+public class HealthItem : PickupItem
 {
     [SerializeField] private StatusUser itemUser; //identifies who can use the item
     [SerializeField] private float healthAmount;
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!onGround) CheckForGround();
+
         Status status;
-        if (status = collision.collider.GetComponent<Status>())
+        if (status = collision.GetComponent<Status>())
         {
             if (status.user == itemUser)
             {
