@@ -5,10 +5,27 @@ using UnityEngine;
 public class WeaponUpgrade : MonoBehaviour
 {
     [SerializeField] private WeaponType type;
+    [SerializeField] private float _increaseDamageBy;
+    [SerializeField] private float _improveCostsBy;
 
     private Rigidbody2D rb;
     private bool onGround;
 
+    // Getter and Setters // // // //
+    public float increaseDamageBy
+    {
+        get { return _increaseDamageBy; }
+        private set { _increaseDamageBy = value; }
+    }
+
+    public float improveCostsBy
+    {
+        get { return _improveCostsBy; }
+        private set { _improveCostsBy = value; }
+    }
+
+
+    // Unity // // // //
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,6 +39,7 @@ public class WeaponUpgrade : MonoBehaviour
         if (!collision.CompareTag("Player")) return;
 
         Weapon weapon = GetWeapon(collision.gameObject);
+        UpgradeWeapon(weapon);
         Debug.Log(weapon);
 
         Destroy(gameObject);
@@ -56,5 +74,11 @@ public class WeaponUpgrade : MonoBehaviour
         }
 
         return null;
+    }
+
+    public virtual void UpgradeWeapon(Weapon weapon)
+    {
+        weapon.IncreaseDamage(increaseDamageBy);
+        weapon.DecreaseCost(improveCostsBy);
     }
 }
