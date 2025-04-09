@@ -72,9 +72,6 @@ public class Status : MonoBehaviour
         health = maxHealth;
 
         healthBar.SetHealth(health);
-
-        Debug.Log("health: " + health);
-        Debug.Log("maxHealth: " + maxHealth);
     }
 
     public void SetHealth(float health) 

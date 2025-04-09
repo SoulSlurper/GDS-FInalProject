@@ -47,6 +47,11 @@ public class PlayerHealth : Status
     }
 
     // Unity // // // //
+    void Start()
+    {
+        savePointPosition = transform.position;
+    }
+
     void Update()
     {
         Respawn();
