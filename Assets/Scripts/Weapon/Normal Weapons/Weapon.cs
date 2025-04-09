@@ -58,41 +58,6 @@ public class Weapon : MonoBehaviour
 
 
 
-    // Set details functions // // // // //
-
-    public void SetWeaponUser(Status weaponUser) { this.weaponUser = weaponUser; }
-
-    public void IncreaseDamage(float amount) { damage += amount; }
-
-    public void DecreaseDamage(float amount) 
-    { 
-        damage -= amount; 
-        if (damage < 0) damage = 0;
-    }
-    
-    public void SetDamage(float damage) 
-    { 
-        if (damage < 0) this.damage = 0;
-        else this.damage = damage;
-    }
-
-    public void IncreaseCost(float amount) { cost += amount; }
-    
-    public void DecreaseCost(float amount) 
-    { 
-        cost -= amount; 
-        if (cost < 0) cost = 0;
-    }
-    
-    public void SetCost(float cost) 
-    {        
-        if (cost < 0) this.cost = 0;
-        else this.cost = cost;
-    }
-
-
-
-
     // Text functions // // // // //
     private void GetTextDetailGameObjects()
     {
@@ -136,6 +101,47 @@ public class Weapon : MonoBehaviour
     {
         SetActiveTextDetail((int)TDIndex.type, show);
         SetActiveTextDetail((int)TDIndex.cost, show);
+    }
+
+    // Set details functions // // // // //
+
+    public void SetWeaponUser(Status weaponUser) { this.weaponUser = weaponUser; }
+
+    public void IncreaseDamage(float amount) { damage += amount; }
+
+    public void DecreaseDamage(float amount) 
+    { 
+        damage -= amount; 
+        if (damage < 0) damage = 0;
+    }
+    
+    public void SetDamage(float damage) 
+    { 
+        if (damage < 0) this.damage = 0;
+        else this.damage = damage;
+    }
+
+    public void IncreaseCost(float amount) 
+    { 
+        cost += amount;
+
+        SetTextDetail((int)TDIndex.cost, cost.ToString());
+    }
+    
+    public void DecreaseCost(float amount) 
+    { 
+        cost -= amount; 
+        if (cost < 0) cost = 0;
+
+        SetTextDetail((int)TDIndex.cost, cost.ToString());
+    }
+
+    public void SetCost(float cost) 
+    {        
+        if (cost < 0) this.cost = 0;
+        else this.cost = cost;
+
+        SetTextDetail((int)TDIndex.cost, cost.ToString());
     }
 
     // Attack performance functions // // // // //

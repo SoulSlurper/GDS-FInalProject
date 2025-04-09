@@ -13,9 +13,7 @@ public class UpgradeProjectileWeapon : WeaponUpgrade
 
         if (!collision.CompareTag("Player")) return;
 
-        ProjectileWeapon weapon = GetWeapon(collision.gameObject);
-        UpgradeWeapon(weapon);
-        Debug.Log(weapon);
+        UpgradeWeapon(GetWeapon(collision.gameObject));
 
         Destroy(gameObject);
     }

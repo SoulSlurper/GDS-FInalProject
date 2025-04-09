@@ -15,9 +15,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
 
         if (!collision.CompareTag("Player")) return;
 
-        LongRangeWeapon weapon = GetWeapon(collision.gameObject);
-        UpgradeWeapon(weapon);
-        Debug.Log(weapon);
+        UpgradeWeapon(GetWeapon(collision.gameObject));
 
         Destroy(gameObject);
     }

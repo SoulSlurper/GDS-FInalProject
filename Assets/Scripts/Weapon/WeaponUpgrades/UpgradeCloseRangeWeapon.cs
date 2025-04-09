@@ -11,9 +11,7 @@ public class UpgradeCloseRangeWeapon : WeaponUpgrade
 
         if (!collision.CompareTag("Player")) return;
 
-        CloseRangeWeapon weapon = GetWeapon(collision.gameObject);
-        UpgradeWeapon(weapon);
-        Debug.Log(weapon);
+        UpgradeWeapon(GetWeapon(collision.gameObject));
 
         Destroy(gameObject);
     }
