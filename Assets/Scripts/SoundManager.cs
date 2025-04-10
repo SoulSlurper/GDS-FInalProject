@@ -19,6 +19,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip teleportExitSound;
     public AudioClip enemyDashSound;
     public AudioClip wallBreakSound;
+    public AudioClip laserShootSound;
+
 
 
     private AudioSource musicSource;
@@ -144,14 +146,31 @@ public class SoundManager : MonoBehaviour
     {
         if (swordSound != null)
         {
-            audioSource.PlayOneShot(swordSound, targetVolume * 2f);
+            GameObject tempGO = new GameObject("TempSwordSound");
+            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = swordSound;
+            tempSource.volume = targetVolume * 2f;
+            tempSource.Play();
+
+            Destroy(tempGO, swordSound.length);
         }
     }
+
     public void PlayShootSound()
     {
-        if (swordSound != null)
+        if (shootSound != null)
         {
-            audioSource.PlayOneShot(shootSound, targetVolume * 6f / 10f);
+            GameObject tempGO = new GameObject("TempShootSound");
+            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = shootSound;
+            tempSource.volume = targetVolume * 0.6f;
+            tempSource.Play();
+
+            Destroy(tempGO, shootSound.length);
         }
     }
     
@@ -204,6 +223,22 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void PlayLaserShootSound(Vector3 position)
+    {
+        if (laserShootSound != null)
+        {
+            GameObject tempGO = new GameObject("TempLaserShootSound");
+            tempGO.transform.position = position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = laserShootSound;
+            tempSource.spatialBlend = 0f; // 0 = 2D, 1 = 3D
+            tempSource.volume = targetVolume;
+            tempSource.Play();
+
+            Destroy(tempGO, laserShootSound.length);
+        }
+    }
 
 
 

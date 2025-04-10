@@ -18,6 +18,7 @@ TagManager:
   - Portal
   - Lava
   - SavePoint
+  - BreakableWall
   layers:
   - Default
   - TransparentFX
