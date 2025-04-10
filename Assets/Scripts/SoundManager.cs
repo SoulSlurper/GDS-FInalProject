@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip enemyDetectedSound;
     public AudioClip teleportEnterSound;
     public AudioClip teleportExitSound;
+    public AudioClip enemyDashSound;
 
 
     private AudioSource musicSource;
@@ -176,6 +177,15 @@ public class SoundManager : MonoBehaviour
             audioSource.PlayOneShot(teleportExitSound, targetVolume);
         }
     }
+    
+    public void PlayEnemyDashSound()
+    {
+        if (enemyDashSound != null)
+        {
+            audioSource.PlayOneShot(enemyDashSound, targetVolume * 1.1f);
+        }
+    }
+
 
     // public bool IsSplattering()
     // {

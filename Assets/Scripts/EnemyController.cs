@@ -60,7 +60,13 @@ public class EnemyController : MonoBehaviour
             if (currentlyChasing && !hasDetectedPlayer)
             {
                 hasDetectedPlayer = true;
-                SoundManager.Instance?.PlayEnemyDetectedSound();
+
+                // Play detection and dash sounds
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayEnemyDetectedSound();
+                    StartCoroutine(PlayDashAfterDelay(0.5f));
+                }
             }
             else if (!currentlyChasing)
             {
@@ -77,6 +83,7 @@ public class EnemyController : MonoBehaviour
             UpdateFacingDirection();
         }
     }
+
 
     
     private void FixedUpdate()
@@ -176,4 +183,11 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
+    
+    private IEnumerator PlayDashAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SoundManager.Instance?.PlayEnemyDashSound();
+    }
+
 }
