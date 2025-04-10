@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -112,10 +112,10 @@ TextureImporter:
       name: Gore_pieces_0
       rect:
         serializedVersion: 2
-        x: 35
-        y: 39
-        width: 31
-        height: 31
+        x: 36
+        y: 40
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,10 +133,10 @@ TextureImporter:
       name: Gore_pieces_1
       rect:
         serializedVersion: 2
-        x: 135
-        y: 39
-        width: 31
-        height: 31
+        x: 136
+        y: 40
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,10 +154,10 @@ TextureImporter:
       name: Gore_pieces_2
       rect:
         serializedVersion: 2
-        x: 235
-        y: 39
-        width: 31
-        height: 31
+        x: 236
+        y: 40
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,10 +175,10 @@ TextureImporter:
       name: Gore_pieces_3
       rect:
         serializedVersion: 2
-        x: 335
-        y: 39
-        width: 31
-        height: 31
+        x: 336
+        y: 40
+        width: 29
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,14 +195,18 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: edda51fb8f26fbe48a757242c4b0a362
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Gore_pieces_0: -4210583440642992630
+      Gore_pieces_1: 8075209197268799785
+      Gore_pieces_2: 8420723407459211841
+      Gore_pieces_3: 1403580482903906649
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
