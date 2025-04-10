@@ -18,6 +18,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip teleportEnterSound;
     public AudioClip teleportExitSound;
     public AudioClip enemyDashSound;
+    public AudioClip wallBreakSound;
 
 
     private AudioSource musicSource;
@@ -122,7 +123,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // Method to play the splatter sound and ensure it completes a full loop
+    
     public void PlaySplatterSound()
     {
         if (splatterSound != null)
@@ -185,6 +186,25 @@ public class SoundManager : MonoBehaviour
             audioSource.PlayOneShot(enemyDashSound, targetVolume * 1.1f);
         }
     }
+
+    public void PlayWallBreakSound(Vector3 position)
+    {
+        if (wallBreakSound != null)
+        {
+            GameObject tempGO = new GameObject("TempWallBreakSound");
+            tempGO.transform.position = position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = wallBreakSound;
+            tempSource.spatialBlend = 0f; // Set to 1 for 3D spatial audio
+            tempSource.volume = targetVolume;
+            tempSource.Play();
+
+            Destroy(tempGO, wallBreakSound.length);
+        }
+    }
+
+
 
 
     // public bool IsSplattering()

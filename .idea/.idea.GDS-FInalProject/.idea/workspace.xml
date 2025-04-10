@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="57bae2eb-64d7-47af-aec3-4069325f1696" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GDS-FInalProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GDS-FInalProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Door/BreakableWall.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Door/BreakableWall.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SoundManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/dash.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/dash.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/dash.wav.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/dash.wav.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +96,7 @@
       <workItem from="1743236652731" duration="1512000" />
       <workItem from="1743844973282" duration="328000" />
       <workItem from="1743846025601" duration="2479000" />
-      <workItem from="1744289971968" duration="399000" />
+      <workItem from="1744289971968" duration="1353000" />
     </task>
     <servers />
   </component>
