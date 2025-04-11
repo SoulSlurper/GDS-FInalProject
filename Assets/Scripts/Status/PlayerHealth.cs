@@ -132,7 +132,7 @@ public class PlayerHealth : Status
 
     private void ChangeSize()
     {
-        Debug.Log(gameObject.name + " size updated");
+        //Debug.Log(gameObject.name + " size updated");
 
         float healthPercentage = health / maxHealth;
 
