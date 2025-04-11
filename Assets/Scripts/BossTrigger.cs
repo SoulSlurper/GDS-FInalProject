@@ -27,7 +27,7 @@ public class BossTrigger : MonoBehaviour
         {
             Instantiate(boss);
             hasSpawnedBoss = true;
-            //mainCamera.orthographicSize += 2f;
+            mainCamera.orthographicSize += 2f;
             //gameObject.SetActive(false);
         }
     }

@@ -7,6 +7,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
     [Header("Projectile Details")]
     [SerializeField] private float increaseSpeedBy;
     [SerializeField] private float improveProjectileCostBy;
+    private Camera mainCamera;
 
     // Unity // // // //
     private void OnTriggerEnter2D(Collider2D collision)
@@ -16,6 +17,8 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
         if (!collision.CompareTag("Player")) return;
 
         UpgradeWeapon(GetWeapon(collision.gameObject));
+
+        mainCamera.orthographicSize -= 2f;
 
         Destroy(gameObject);
     }
@@ -43,5 +46,10 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
         weapon.DecreaseCost(improveCostsBy);
         weapon.IncreaseSpeed(increaseSpeedBy);
         weapon.DecreaseProjectileCost(improveProjectileCostBy);
+    }
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
     }
 }
