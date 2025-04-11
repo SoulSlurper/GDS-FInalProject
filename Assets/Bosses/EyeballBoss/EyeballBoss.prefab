@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 3
-  _health: 600
+  _health: 1000
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 1988137186141514875, guid: 25d8914f988f4d549bb598fe3f9134ce, type: 3}
   _dropItemAmount: 3
