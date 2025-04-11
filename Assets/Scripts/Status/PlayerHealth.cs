@@ -18,6 +18,7 @@ public class PlayerHealth : Status
     private SavePoint savePoint;
     private Vector2 initialPosition;
     private Vector3 initialSize;
+    private Camera mainCamera;
 
     // Getter and Setter // // // //
     public float enemyDamage
@@ -56,6 +57,7 @@ public class PlayerHealth : Status
     {
         initialPosition = transform.position;
         initialSize = transform.localScale;
+        mainCamera = Camera.main;
     }
 
     void Update()
@@ -120,7 +122,9 @@ public class PlayerHealth : Status
         if (Boss)
         {
             Destroy(Boss);
-            
+
+            mainCamera.orthographicSize -= 2f;
+
             BossTrigger.hasSpawnedBoss = false;
         }
 
