@@ -9,7 +9,7 @@ public class Status : MonoBehaviour
     //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
     [SerializeField] private float _health = 100f;
-    [SerializeField] private HealthBar healthBar;
+    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
 
     private float _maxHealth;
@@ -45,6 +45,12 @@ public class Status : MonoBehaviour
         private set { _maxHealth = value; }
     }
 
+    public HealthBar healthBar
+    { 
+        get { return _healthBar; }
+        private set { _healthBar = value; }
+    }
+
     // Unity // // // //
     void Awake()
     {
@@ -52,7 +58,7 @@ public class Status : MonoBehaviour
 
         if (healthBar)
         {
-            healthBar.SetMaxHealth(health);
+            healthBar.SetMaxHealth(maxHealth);
         }
     }
 
@@ -91,7 +97,7 @@ public class Status : MonoBehaviour
     public void IncreaseHealth(float health) 
     { 
         this.health += health;
-        if (health > maxHealth) health = maxHealth;
+        if (this.health > maxHealth) this.health = maxHealth;
 
         healthBar.SetHealth(this.health);
     }
@@ -99,7 +105,7 @@ public class Status : MonoBehaviour
     public void DecreaseHealth(float health) 
     { 
         this.health -= health;
-        if (health < 0) health = 0;
+        if (this.health < 0) this.health = 0;
 
         healthBar.SetHealth(this.health);
     }

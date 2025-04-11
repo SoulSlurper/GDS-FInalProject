@@ -13,6 +13,7 @@ public class PlayerHealth : Status
     [SerializeField] private float _bossProjectileDamage;
 
     private Vector3 savePointPosition;
+    private Vector3 initalSize;
 
     // Getter and Setter // // // //
     public float enemyDamage
@@ -50,11 +51,13 @@ public class PlayerHealth : Status
     void Start()
     {
         savePointPosition = transform.position;
+        initalSize = transform.localScale;
     }
 
     void Update()
     {
         Respawn();
+        ChangeSize();
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -98,7 +101,7 @@ public class PlayerHealth : Status
     public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
 
     // Other functions // // // //
-    public void Respawn()
+    private void Respawn()
     {
         if (!noHealth) return;
 
@@ -112,5 +115,10 @@ public class PlayerHealth : Status
 
         this.transform.position = savePointPosition;
         ResetHealth();
+    }
+
+    private void ChangeSize()
+    {
+        transform.localScale = initalSize * (health / maxHealth);
     }
 }
