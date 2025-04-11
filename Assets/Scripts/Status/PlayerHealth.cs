@@ -12,6 +12,9 @@ public class PlayerHealth : Status
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
+    [Header("Size by Health")]
+    [Range(0, 1f)] [SerializeField] private float minSize = 0f;
+
     private Vector3 savePointPosition;
     private Vector3 initalSize;
 
@@ -119,6 +122,33 @@ public class PlayerHealth : Status
 
     private void ChangeSize()
     {
-        transform.localScale = initalSize * (health / maxHealth);
+        Debug.Log(gameObject.name + " size updated");
+
+        float healthPercentage = health / maxHealth;
+
+        Vector3 newSize = initalSize;
+        if (health < maxHealth)
+        {
+            Vector3 actualMinSize = initalSize * minSize;
+            Vector3 remainingSize = initalSize - actualMinSize;
+
+            newSize = actualMinSize + remainingSize * healthPercentage;
+        }
+
+        transform.localScale = newSize;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+
+        ChangeSize();
+    }
+
+    public override void TakeHealth(float amount)
+    {
+        base.TakeHealth(amount);
+
+        ChangeSize();
     }
 }

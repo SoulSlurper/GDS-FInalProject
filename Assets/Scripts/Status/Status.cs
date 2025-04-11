@@ -63,12 +63,12 @@ public class Status : MonoBehaviour
     }
 
     // Health functions // // // //
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         DecreaseHealth(damage);
     }
 
-    public void TakeHealth(float amount)
+    public virtual void TakeHealth(float amount)
     {
         IncreaseHealth(amount);
     }
