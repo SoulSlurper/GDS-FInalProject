@@ -15,8 +15,9 @@ public class PlayerHealth : Status
     [Header("Size by Health")]
     [Range(0, 1f)] [SerializeField] private float minSize = 0f;
 
-    private Vector3 savePointPosition;
-    private Vector3 initalSize;
+    private SavePoint savePoint;
+    private Vector2 initialPosition;
+    private Vector3 initialSize;
 
     // Getter and Setter // // // //
     public float enemyDamage
@@ -53,8 +54,8 @@ public class PlayerHealth : Status
     // Unity // // // //
     void Start()
     {
-        savePointPosition = transform.position;
-        initalSize = transform.localScale;
+        initialPosition = transform.position;
+        initialSize = transform.localScale;
     }
 
     void Update()
@@ -67,9 +68,16 @@ public class PlayerHealth : Status
     {
         if (collision.CompareTag("SavePoint"))
         {
-            savePointPosition = collision.transform.position;
+            SavePoint encounteredSavePoint = collision.gameObject.GetComponent<SavePoint>();
+            if (!encounteredSavePoint.Equals(savePoint))
+            {
+                if (savePoint) savePoint.isActive = false;
 
-            Debug.Log("SavePoint Recorded: " + savePointPosition);
+                savePoint = encounteredSavePoint;
+                savePoint.isActive = true;
+            }
+
+            Debug.Log("SavePoint Recorded: " + savePoint.position);
         }
 
         if (collision.CompareTag("BossProjectile"))
@@ -116,7 +124,9 @@ public class PlayerHealth : Status
             BossTrigger.hasSpawnedBoss = false;
         }
 
-        this.transform.position = savePointPosition;
+        if (savePoint) this.transform.position = savePoint.position;
+        else this.transform.position = initialPosition;
+        
         ResetHealth();
     }
 
@@ -126,11 +136,11 @@ public class PlayerHealth : Status
 
         float healthPercentage = health / maxHealth;
 
-        Vector3 newSize = initalSize;
+        Vector3 newSize = initialSize;
         if (health < maxHealth)
         {
-            Vector3 actualMinSize = initalSize * minSize;
-            Vector3 remainingSize = initalSize - actualMinSize;
+            Vector3 actualMinSize = initialSize * minSize;
+            Vector3 remainingSize = initialSize - actualMinSize;
 
             newSize = actualMinSize + remainingSize * healthPercentage;
         }
