@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7718198024475730639}
   - component: {fileID: 6871598475304718763}
   - component: {fileID: 6977506626612099713}
-  - component: {fileID: 4671288516899830672}
+  - component: {fileID: 2403879111252521584}
   - component: {fileID: 6709205790223035342}
   m_Layer: 0
   m_Name: HealthItem
@@ -116,7 +116,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &4671288516899830672
+--- !u!61 &2403879111252521584
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +160,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.44, y: 0.44}
   m_EdgeRadius: 0
 --- !u!114 &6709205790223035342
 MonoBehaviour:
