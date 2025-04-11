@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour
 {
+    [SerializeField] private Transform raycastOrigin;
+    [SerializeField] private float checkGroundDistance = 0.1f;
+
     private Rigidbody2D rb;
     private bool _onGround;
-    private float checkGroundDistance = 0.1f;
 
     // Getter and Setters // // // //
     public bool onGround
@@ -26,15 +28,13 @@ public class PickupItem : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
 
-        Vector2 raycastOrigin = transform.position - new Vector3(0, transform.localScale.y + 0.1f) / 2;
-        Gizmos.DrawLine(raycastOrigin, raycastOrigin + Vector2.down * checkGroundDistance);
+        Gizmos.DrawLine((Vector2)raycastOrigin.position, (Vector2)raycastOrigin.position + Vector2.down * checkGroundDistance);
     }
 
     // Functions // // // //
     public bool CheckForGround()
     {
-        Vector2 raycastOrigin = transform.position - new Vector3(0, transform.localScale.y + 0.1f) / 2;
-        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, checkGroundDistance);
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)raycastOrigin.position, Vector2.down, checkGroundDistance);
         if (hit)
         {
             if (hit.collider.CompareTag("Wall") || hit.collider.CompareTag("Untagged"))

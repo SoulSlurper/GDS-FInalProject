@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponUpgrade : PickupItem
 {
+    [Header("Weapon Upgrade")]
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _increaseDamageBy;
     [SerializeField] private float _improveCostsBy;

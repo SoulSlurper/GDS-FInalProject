@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HealthItem : PickupItem
 {
+    [Header("Health Item Details")]
     [SerializeField] private StatusUser itemUser; //identifies who can use the item
     [SerializeField] private float healthAmount;
 
