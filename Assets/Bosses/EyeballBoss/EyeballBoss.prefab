@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -3628963085372766023}
   - component: {fileID: -1867493990271088322}
   - component: {fileID: -6745680296057762506}
+  - component: {fileID: 3650771999844865013}
   m_Layer: 0
   m_Name: EyeballBoss
   m_TagString: Boss
@@ -209,10 +210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _user: 3
   _health: 600
-  _dropItem: {fileID: 9027494889550574452, guid: 30942d2f32c3392459c15d38ed62c80f, type: 3}
   healthBar: {fileID: 0}
-  maxHealth: 100
-  currentHealth: 0
+  _dropItem: {fileID: 9027494889550574452, guid: 30942d2f32c3392459c15d38ed62c80f, type: 3}
   _dropItemAmount: 3
   _healthDropItemPercentage: 0.2
   _endDropItem: {fileID: 222488917914436569, guid: 0a74de993a7f4f347b51fdcbfb174cb8, type: 3}
@@ -251,3 +250,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3650771999844865013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5192570966487986778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb47219224a97145b8a3c041b1b48f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

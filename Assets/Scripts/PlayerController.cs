@@ -215,5 +215,7 @@ public class SlimeKnightController : MonoBehaviour
             Debug.Log("Player hit by enemy!");
         }
     }
+    
+    
 
 }

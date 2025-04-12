@@ -49,8 +49,12 @@ public class BossHp : Status
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
 
-            InstantiateItem(endDropItem);
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.ResumeBackgroundMusic();
+            }
 
+            InstantiateItem(endDropItem);
             Destroy(gameObject);
         }
         else
@@ -65,6 +69,7 @@ public class BossHp : Status
             }
         }
     }
+
 
     // Boss DropItem Details // // // //
     public void SetDropItemAmount(int dropItemAmount) { this.dropItemAmount = dropItemAmount;}
