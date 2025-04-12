@@ -45,6 +45,12 @@ public class Status : MonoBehaviour
         private set { _maxHealth = value; }
     }
 
+    public float currentHealthPercentage
+    {
+        get { return health / maxHealth; }
+        private set { }
+    }
+
     public HealthBar healthBar
     { 
         get { return _healthBar; }
@@ -73,25 +79,33 @@ public class Status : MonoBehaviour
         IncreaseHealth(amount);
     }
 
+    private void SetHealthBar()
+    {
+        if (healthBar)
+        {
+            healthBar.SetHealth(this.health);
+        }
+    }
+
     public void ResetHealth()
     {
         health = maxHealth;
 
-        healthBar.SetHealth(health);
+        SetHealthBar();
     }
 
     public void SetHealth(float health) 
     { 
         this.health = health >= 0 && health <= maxHealth ? health : this.health;
 
-        healthBar.SetHealth(this.health);
+        SetHealthBar();
     }
 
     public void SetNewHealth(float health) 
     { 
         this.health = maxHealth = health;
 
-        healthBar.SetHealth(this.health);
+        SetHealthBar();
     }
 
     public void IncreaseHealth(float health) 
@@ -99,7 +113,7 @@ public class Status : MonoBehaviour
         this.health += health;
         if (this.health > maxHealth) this.health = maxHealth;
 
-        healthBar.SetHealth(this.health);
+        SetHealthBar();
     }
 
     public void DecreaseHealth(float health) 
@@ -107,7 +121,7 @@ public class Status : MonoBehaviour
         this.health -= health;
         if (this.health < 0) this.health = 0;
 
-        healthBar.SetHealth(this.health);
+        SetHealthBar();
     }
 
     // dropItem functions // // // //

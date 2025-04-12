@@ -223,10 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00ccd185435529499dcdea73049047c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponUser: {fileID: 0}
   _type: 0
   _damage: 0
   _cost: 0
-  isAttackContinuous: 0
-  _attackDelay: 1
-  isLaunched: 0
+  minDamage: 0.3
+  _isLaunched: 0
   _speed: 1

@@ -14,7 +14,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
     [SerializeField] private float _cost; //amount needed to get the weapon
-    //[SerializeField] private Animator animator;
+                                          //[SerializeField] private Animator animator;
+
+    [Header("Details by User Health")]
+    [SerializeField][Range(0f, 1f)] private float minDamage = 1f;
 
     //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
@@ -183,7 +186,17 @@ public class Weapon : MonoBehaviour
         {
             if (status.user != weaponUser.user) //prevents damage on the user
             {
-                status.TakeDamage(damage);
+                float actualDamage = damage;
+                if (minDamage < 1f)
+                {
+                    float actualMinDamage = damage * minDamage;
+                    float remainingDamage = damage - actualMinDamage;
+
+                    actualDamage = actualMinDamage + remainingDamage * status.currentHealthPercentage;
+                }
+
+                Debug.Log("actualDamage: " + actualDamage);
+                status.TakeDamage(actualDamage);
             }
         }
     }
