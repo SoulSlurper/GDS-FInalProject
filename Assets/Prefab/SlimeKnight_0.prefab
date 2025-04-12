@@ -364,12 +364,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 1
-  _dropItem: {fileID: 0}
   _health: 100
+  _healthBar: {fileID: 0}
+  _dropItem: {fileID: 0}
   _enemyDamage: 20
-  _bossDamage: 40
+  _bossDamage: 30
+  _lavaDamage: 100
   _enemyProjectileDamage: 10
-  _bossProjectileDamage: 30
+  _bossProjectileDamage: 20
+  minSize: 0.3
 --- !u!1001 &1670717139393854849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -622,6 +625,26 @@ PrefabInstance:
       propertyPath: _projectileCost
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3360899620090217437, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.4
@@ -665,6 +688,14 @@ PrefabInstance:
     - target: {fileID: 8725081908086952217, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_Name
       value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076368552998731983, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.89872
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076368552998731983, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5.0481415
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

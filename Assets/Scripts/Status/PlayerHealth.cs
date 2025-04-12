@@ -13,7 +13,7 @@ public class PlayerHealth : Status
     [SerializeField] private float _bossProjectileDamage;
 
     [Header("Size by Health")]
-    [Range(0, 1f)] [SerializeField] private float minSize = 0f;
+    [SerializeField] [Range(0, 1f)] private float minSize = 0f;
 
     private SavePoint savePoint;
     private Vector2 initialPosition;

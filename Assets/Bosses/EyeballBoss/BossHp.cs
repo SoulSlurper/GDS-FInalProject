@@ -6,8 +6,7 @@ public class BossHp : Status
 {
     [Header("Boss DropItem Details")]
     [SerializeField] private int _dropItemAmount = 1;
-    [SerializeField] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
-                                                                   //Note: must be below or equal to 1
+    [SerializeField] [Range(0f, 1f)] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
 
     [Header("Death Drop Item Details")]
     [SerializeField] private GameObject _endDropItem;
