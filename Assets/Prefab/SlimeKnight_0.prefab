@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 8328409611633574170}
   areWeaponsCosting: 1
-  selectedWeapon: 1
+  selectedWeapon: 0
   colorSelection: {r: 0, g: 0, b: 1, a: 1}
   skipOnMenuEnter: 1
 --- !u!1 &8328409611633574170
@@ -372,7 +372,7 @@ MonoBehaviour:
   _lavaDamage: 100
   _enemyProjectileDamage: 10
   _bossProjectileDamage: 20
-  minSize: 0.3
+  minSize: 0.5
 --- !u!1001 &1670717139393854849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -639,7 +639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.65999997
       objectReference: {fileID: 0}
     - target: {fileID: 3221599371751940357, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -691,11 +691,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9076368552998731983, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5.89872
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9076368552998731983, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.0481415
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
