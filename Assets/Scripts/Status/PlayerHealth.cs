@@ -135,7 +135,7 @@ public class PlayerHealth : Status
         Debug.Log(gameObject.name + " size updated");
 
         Vector3 newSize = initialSize;
-        if (health < maxHealth)
+        if (currentHealth < maxHealth)
         {
             Vector3 actualMinSize = initialSize * minSize;
             Vector3 remainingSize = initialSize - actualMinSize;

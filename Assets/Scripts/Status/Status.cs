@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    //[SerializeField] private StatusAmount _health;
-    //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
     [SerializeField] private float _health = 100f;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
 
+    private float _currentHealth;
     private float _maxHealth;
 
     // Getter and Setter // // // //
@@ -33,9 +32,15 @@ public class Status : MonoBehaviour
         private set { _health = value; }
     }
 
+    public float currentHealth
+    { 
+        get { return _currentHealth; }
+        private set { _currentHealth = value; }
+    }
+
     public bool noHealth
     { 
-        get { return health <= 0f; }
+        get { return currentHealth <= 0f; }
         private set { }
     }
 
@@ -47,7 +52,7 @@ public class Status : MonoBehaviour
 
     public float currentHealthPercentage
     {
-        get { return health / maxHealth; }
+        get { return currentHealth / maxHealth; }
         private set { }
     }
 
@@ -60,7 +65,7 @@ public class Status : MonoBehaviour
     // Unity // // // //
     void Awake()
     {
-        maxHealth = health;
+        maxHealth = currentHealth = health;
 
         if (healthBar)
         {
@@ -71,55 +76,55 @@ public class Status : MonoBehaviour
     // Health functions // // // //
     public virtual void TakeDamage(float damage)
     {
-        DecreaseHealth(damage);
+        DecreaseCurrentHealth(damage);
     }
 
     public virtual void TakeHealth(float amount)
     {
-        IncreaseHealth(amount);
+        IncreaseCurrentHealth(amount);
     }
 
     private void SetHealthBar()
     {
         if (healthBar)
         {
-            healthBar.SetHealth(this.health);
+            healthBar.SetHealth(currentHealth);
         }
     }
 
     public void ResetHealth()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
 
         SetHealthBar();
     }
 
-    public void SetHealth(float health) 
+    public void SetCurrentHealth(float currentHealth) 
     { 
-        this.health = health >= 0 && health <= maxHealth ? health : this.health;
+        this.currentHealth = currentHealth >= 0 && currentHealth <= maxHealth ? currentHealth : this.currentHealth;
 
         SetHealthBar();
     }
 
     public void SetNewHealth(float health) 
     { 
-        this.health = maxHealth = health;
+        this.health = currentHealth = maxHealth = health;
 
         SetHealthBar();
     }
 
-    public void IncreaseHealth(float health) 
+    public void IncreaseCurrentHealth(float currentHealth) 
     { 
-        this.health += health;
-        if (this.health > maxHealth) this.health = maxHealth;
+        this.currentHealth += currentHealth;
+        if (this.currentHealth > maxHealth) this.currentHealth = maxHealth;
 
         SetHealthBar();
     }
 
-    public void DecreaseHealth(float health) 
+    public void DecreaseCurrentHealth(float currentHealth) 
     { 
-        this.health -= health;
-        if (this.health < 0) this.health = 0;
+        this.currentHealth -= currentHealth;
+        if (this.currentHealth < 0) this.currentHealth = 0;
 
         SetHealthBar();
     }

@@ -54,7 +54,7 @@ public class BossHp : Status
         }
         else
         {
-            if (health <= healthCheckpoint)
+            if (currentHealth <= healthCheckpoint)
             {
                 Debug.Log("Reached HealthCheckpoint: " + healthCheckpoint);
 
