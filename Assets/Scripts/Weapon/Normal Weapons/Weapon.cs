@@ -97,6 +97,9 @@ public class Weapon : MonoBehaviour
 
     void LateUpdate()
     {
+        realDamage = GetRealAmount(damage, minDamage);
+        //Debug.Log("realDamage: " + realDamage);
+
         realCost = GetRealAmount(cost, minCost);
         SetCostTextDetail(realCost);
         Debug.Log("realCost: " + realCost);
@@ -124,14 +127,14 @@ public class Weapon : MonoBehaviour
         detail.text = text;
     }
 
-    private void SetTypeTextDetail(WeaponType text)
+    private void SetTypeTextDetail(WeaponType type)
     {
-        SetTextDetail(TDIndex.type, text.ToString());
+        SetTextDetail(TDIndex.type, type.ToString());
     }
 
-    private void SetCostTextDetail(float text)
+    private void SetCostTextDetail(float cost)
     {
-        SetTextDetail(TDIndex.cost, text.ToString());
+        SetTextDetail(TDIndex.cost, cost.ToString("#.###")); //incase the decimals go beyond
     }
 
     private void SetAllTextDetails()
@@ -252,8 +255,6 @@ public class Weapon : MonoBehaviour
         {
             if (status.user != weaponUser.user) //prevents damage on the user
             {
-                realDamage = GetRealAmount(damage, minDamage);
-                Debug.Log("realDamage: " + realDamage);
                 status.TakeDamage(realDamage);
             }
         }
