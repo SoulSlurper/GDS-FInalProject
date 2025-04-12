@@ -51,7 +51,7 @@ public class SlimeKnightController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        soundManager = FindObjectOfType<SoundManager>();
+        soundManager = FindAnyObjectByType<SoundManager>();
 
         if (spriteRenderer != null && spriteRenderer.sprite != null)
         {
