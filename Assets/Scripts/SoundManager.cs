@@ -19,7 +19,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip teleportExitSound;
     public AudioClip enemyDashSound;
     public AudioClip wallBreakSound;
-    public AudioClip laserShootSound;
+    public AudioClip enemyLaserShootSound;
+    public AudioClip slimeHitSound;
+
 
 
 
@@ -225,21 +227,36 @@ public class SoundManager : MonoBehaviour
 
     public void PlayLaserShootSound(Vector3 position)
     {
-        if (laserShootSound != null)
+        if (enemyLaserShootSound != null)
         {
             GameObject tempGO = new GameObject("TempLaserShootSound");
             tempGO.transform.position = position;
 
             AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = laserShootSound;
+            tempSource.clip = enemyLaserShootSound;
             tempSource.spatialBlend = 0f; // 0 = 2D, 1 = 3D
             tempSource.volume = targetVolume;
             tempSource.Play();
 
-            Destroy(tempGO, laserShootSound.length);
+            Destroy(tempGO, enemyLaserShootSound.length);
         }
     }
 
+    public void PlaySlimeHitSound(Vector3 position)
+    {
+        if (slimeHitSound != null)
+        {
+            GameObject tempGO = new GameObject("TempSlimeHitSound");
+            tempGO.transform.position = position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = slimeHitSound;
+            tempSource.volume = targetVolume;
+            tempSource.Play();
+
+            Destroy(tempGO, slimeHitSound.length);
+        }
+    }
 
 
     // public bool IsSplattering()
