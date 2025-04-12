@@ -15,10 +15,13 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
     [SerializeField] private float _cost; //amount needed to get the weapon
-                                          //[SerializeField] private Animator animator;
+    //[SerializeField] private Animator animator;
 
     [Header("Details by User Health")]
     [SerializeField][Range(0f, 1f)] private float minDamage = 1f;
+    //[SerializeField][Range(0f, 1f)] private float minCost = 1f;
+
+    private float _realDamage;
 
     //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
@@ -41,6 +44,12 @@ public class Weapon : MonoBehaviour
     {
         get { return _damage; }
         private set { _damage = value; }
+    }
+
+    public float realDamage
+    {
+        get { return _realDamage; }
+        private set { _realDamage = value; }
     }
 
     public float cost
@@ -158,6 +167,21 @@ public class Weapon : MonoBehaviour
         SetCostTextDetail(cost.ToString());
     }
 
+    //gets the actual amount based on the weaponUser's health
+    private float GetRealAmount(float amount, float minAmount)
+    {
+        float actualAmount = amount;
+        if (minAmount < 1f)
+        {
+            float actualMinAmount = amount * minAmount;
+            float remainingAmount = amount - actualMinAmount;
+
+            actualAmount = actualMinAmount + remainingAmount * weaponUser.currentHealthPercentage;
+        }
+        
+        return actualAmount;
+    }
+
     // Attack performance functions // // // // //
 
     //describes how the weapon will attack, including sounds
@@ -197,17 +221,9 @@ public class Weapon : MonoBehaviour
         {
             if (status.user != weaponUser.user) //prevents damage on the user
             {
-                float actualDamage = damage;
-                if (minDamage < 1f)
-                {
-                    float actualMinDamage = damage * minDamage;
-                    float remainingDamage = damage - actualMinDamage;
-
-                    actualDamage = actualMinDamage + remainingDamage * status.currentHealthPercentage;
-                }
-
-                Debug.Log("actualDamage: " + actualDamage);
-                status.TakeDamage(actualDamage);
+                realDamage = GetRealAmount(damage, minDamage);
+                Debug.Log("realDamage: " + realDamage);
+                status.TakeDamage(realDamage);
             }
         }
     }
