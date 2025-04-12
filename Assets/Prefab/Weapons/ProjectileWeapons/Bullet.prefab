@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: damage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1714389796360220931, guid: aede17c93ff91054e9b301e4d6b62204, type: 3}
+      propertyPath: _minCost
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1714389796360220931, guid: aede17c93ff91054e9b301e4d6b62204, type: 3}
+      propertyPath: _minDamage
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2054490387294642822, guid: aede17c93ff91054e9b301e4d6b62204, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

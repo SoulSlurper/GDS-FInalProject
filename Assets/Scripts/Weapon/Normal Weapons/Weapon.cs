@@ -17,11 +17,14 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _cost; //amount needed to get the weapon
     //[SerializeField] private Animator animator;
 
+    private bool _enabledAttack = true;
+
     [Header("Details by User Health")]
-    [SerializeField][Range(0f, 1f)] private float minDamage = 1f;
-    //[SerializeField][Range(0f, 1f)] private float minCost = 1f;
+    [SerializeField][Range(0f, 1f)] private float _minDamage = 1f;
+    [SerializeField][Range(0f, 1f)] private float _minCost = 1f;
 
     private float _realDamage;
+    private float _realCost;
 
     //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
@@ -46,6 +49,12 @@ public class Weapon : MonoBehaviour
         private set { _damage = value; }
     }
 
+    public float minDamage
+    {
+        get { return _minDamage; }
+        private set { _minDamage = value; }
+    }
+
     public float realDamage
     {
         get { return _realDamage; }
@@ -58,8 +67,25 @@ public class Weapon : MonoBehaviour
         private set { _cost = value; }
     }
 
-    // Unity // // // // //
+    public float minCost
+    {
+        get { return _minCost; }
+        private set { _minCost = value; }
+    }
 
+    public float realCost
+    {
+        get { return _realCost; }
+        private set { _realCost = value; }
+    }
+
+    public bool enabledAttack
+    {
+        get { return _enabledAttack; }
+        set { _enabledAttack = value; }
+    }
+
+    // Unity // // // // //
     void Awake()
     {
         GetTextDetailGameObjects();
@@ -69,7 +95,12 @@ public class Weapon : MonoBehaviour
         ShowAllTextDetails(false);
     }
 
-
+    void LateUpdate()
+    {
+        realCost = GetRealAmount(cost, minCost);
+        SetCostTextDetail(realCost);
+        Debug.Log("realCost: " + realCost);
+    }
 
     // Text functions // // // // //
     private void GetTextDetailGameObjects()
@@ -93,20 +124,20 @@ public class Weapon : MonoBehaviour
         detail.text = text;
     }
 
-    private void SetTypeTextDetail(string text)
+    private void SetTypeTextDetail(WeaponType text)
     {
-        SetTextDetail(TDIndex.type, text);
+        SetTextDetail(TDIndex.type, text.ToString());
     }
 
-    private void SetCostTextDetail(string text)
+    private void SetCostTextDetail(float text)
     {
-        SetTextDetail(TDIndex.cost, text);
+        SetTextDetail(TDIndex.cost, text.ToString());
     }
 
     private void SetAllTextDetails()
     {
-        SetTypeTextDetail(type.ToString());
-        SetCostTextDetail(cost.ToString());
+        SetTypeTextDetail(type);
+        SetCostTextDetail(cost);
     }
 
     private void SetActiveTextDetail(TDIndex index, bool active)
@@ -148,7 +179,7 @@ public class Weapon : MonoBehaviour
     { 
         cost += amount;
 
-        SetCostTextDetail(cost.ToString());
+        SetCostTextDetail(cost);
     }
     
     public void DecreaseCost(float amount) 
@@ -156,7 +187,7 @@ public class Weapon : MonoBehaviour
         cost -= amount; 
         if (cost < 0) cost = 0;
 
-        SetCostTextDetail(cost.ToString());
+        SetCostTextDetail(cost);
     }
 
     public void SetCost(float cost) 
@@ -164,11 +195,11 @@ public class Weapon : MonoBehaviour
         if (cost < 0) this.cost = 0;
         else this.cost = cost;
 
-        SetCostTextDetail(cost.ToString());
+        SetCostTextDetail(cost);
     }
 
     //gets the actual amount based on the weaponUser's health
-    private float GetRealAmount(float amount, float minAmount)
+    public float GetRealAmount(float amount, float minAmount)
     {
         float actualAmount = amount;
         if (minAmount < 1f)
@@ -195,7 +226,7 @@ public class Weapon : MonoBehaviour
     {
         int mouseCode = 0; //for left mouse clicks
 
-        if (Input.GetMouseButtonDown(mouseCode)) return true;
+        if (Input.GetMouseButtonDown(mouseCode) && enabledAttack) return true;
 
         return false;
     }

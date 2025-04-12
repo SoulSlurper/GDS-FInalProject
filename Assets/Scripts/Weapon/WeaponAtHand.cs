@@ -74,7 +74,6 @@ public class WeaponAtHand : MonoBehaviour
     {
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
-        wDetails.enabled = true;
 
         weapon.SetActive(true);
 
@@ -87,6 +86,8 @@ public class WeaponAtHand : MonoBehaviour
             weapon.GetComponent<SpriteRenderer>().color = Color.white;
 
             wDetails.ShowAllTextDetails(false);
+
+            wDetails.enabledAttack = true;
 
             selectedWeapon = wDetails.type;
         }
@@ -105,7 +106,7 @@ public class WeaponAtHand : MonoBehaviour
             }
             else wDetails.ShowTextDetails(true, false);
             
-            wDetails.enabled = false;
+            wDetails.enabledAttack = false;
         }
     }
 
