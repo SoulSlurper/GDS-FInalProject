@@ -11,6 +11,7 @@ public class BossLaserSound : MonoBehaviour
             SoundManager.Instance.PlayEnemyLaserShootSound(transform.position);
         }
     }
+    // TODO: there is still no sound when boss shoots laser
 }
 
 
