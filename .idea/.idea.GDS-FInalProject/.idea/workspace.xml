@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="57bae2eb-64d7-47af-aec3-4069325f1696" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GDS-FInalProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GDS-FInalProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Bosses/EyeballBoss/EyeballBoss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Bosses/EyeballBoss/EyeballBoss.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Bosses/EyeballBoss/EyeballStateMachine.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Bosses/EyeballBoss/EyeballStateMachine.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BossTrigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BossTrigger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SoundManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +101,7 @@
       <workItem from="1743844973282" duration="328000" />
       <workItem from="1743846025601" duration="2479000" />
       <workItem from="1744289971968" duration="2134000" />
+      <workItem from="1744455841377" duration="3005000" />
     </task>
     <servers />
   </component>

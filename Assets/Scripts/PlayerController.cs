@@ -205,4 +205,17 @@ public class SlimeKnightController : MonoBehaviour
         return Mathf.Abs(horizontalInput) > 0.1f;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            SoundManager.Instance?.PlaySlimeHitSound(transform.position);
+
+            // Optional: Insert damage logic here
+            Debug.Log("Player hit by enemy!");
+        }
+    }
+    
+    
+
 }

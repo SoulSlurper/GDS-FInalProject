@@ -19,9 +19,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip teleportExitSound;
     public AudioClip enemyDashSound;
     public AudioClip wallBreakSound;
-    public AudioClip laserShootSound;
-
-
+    public AudioClip enemyLaserShootSound;
+    public AudioClip slimeHitSound;
+    public AudioClip bossMusic;
 
     private AudioSource musicSource;
     private AudioSource audioSource;
@@ -223,29 +223,109 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayLaserShootSound(Vector3 position)
+    public void PlaySlimeHitSound(Vector3 position)
     {
-        if (laserShootSound != null)
+        if (slimeHitSound != null)
+        {
+            GameObject tempGO = new GameObject("TempSlimeHitSound");
+            tempGO.transform.position = position;
+
+            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
+            tempSource.clip = slimeHitSound;
+            tempSource.volume = targetVolume;
+            tempSource.Play();
+
+            Destroy(tempGO, slimeHitSound.length);
+        }
+    }
+
+    public void PlayEnemyLaserShootSound(Vector3 position)
+    {
+        if (enemyLaserShootSound != null)
         {
             GameObject tempGO = new GameObject("TempLaserShootSound");
             tempGO.transform.position = position;
 
             AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = laserShootSound;
-            tempSource.spatialBlend = 0f; // 0 = 2D, 1 = 3D
-            tempSource.volume = targetVolume;
+            tempSource.clip = enemyLaserShootSound;
+            tempSource.volume = 1f;
             tempSource.Play();
 
-            Destroy(tempGO, laserShootSound.length);
+            Destroy(tempGO, enemyLaserShootSound.length);
         }
+    }
+    public void PlayBossMusic()
+    {
+        if (musicSource != null && bossMusic != null)
+        {
+            StartCoroutine(FadeOutAndSwitchToBossMusic(1.5f));
+        }
+    }
+    public void ResumeBackgroundMusic()
+    {
+        if (musicSource != null && backgroundMusic != null)
+        {
+            StartCoroutine(FadeOutAndSwitchToBackgroundMusic(1.5f)); // 1.5s fade
+        }
+    }
+    private IEnumerator FadeOutAndSwitchToBackgroundMusic(float fadeDuration)
+    {
+        float startVolume = musicSource.volume;
+
+        // Fade out boss music
+        while (musicSource.volume > 0f)
+        {
+            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        musicSource.Stop();
+        musicSource.clip = backgroundMusic;
+        musicSource.volume = 0f; // Start silent
+
+        musicSource.loop = true;
+        musicSource.Play();
+
+        // Fade in background music
+        float targetVolume = 0.6f;
+        while (musicSource.volume < targetVolume)
+        {
+            musicSource.volume += targetVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
+    }
+    private IEnumerator FadeOutAndSwitchToBossMusic(float fadeDuration)
+    {
+        float startVolume = musicSource.volume;
+
+        // Fade out background music
+        while (musicSource.volume > 0f)
+        {
+            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        musicSource.Stop();
+        musicSource.clip = bossMusic;
+        musicSource.volume = 0f; // Start at silence for fade-in
+        musicSource.loop = true;
+        musicSource.Play();
+
+        // Fade in boss music
+        float targetVolume = 0.7f;
+        while (musicSource.volume < targetVolume)
+        {
+            musicSource.volume += targetVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
     }
 
 
 
-    // public bool IsSplattering()
-    // {
-    //     return isSplattering;
-    // }
 
     // private IEnumerator WaitForSplatterToEnd()
     // {
