@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Weapon : MonoBehaviour
 {
@@ -70,9 +71,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void SetTextDetail(int index, string text)
+    private void SetTextDetail(TDIndex index, string text)
     {
-        Transform textDetail = textDetails[index].transform;
+        Transform textDetail = textDetails[(int)index].transform;
 
         TMP_Text detail = textDetail.GetComponent<TMP_Text>();
         if (detail == null)
@@ -83,27 +84,37 @@ public class Weapon : MonoBehaviour
         detail.text = text;
     }
 
-    private void SetAllTextDetails()
+    private void SetTypeTextDetail(string text)
     {
-        SetTextDetail((int)TDIndex.type, type.ToString());
-        SetTextDetail((int)TDIndex.cost, cost.ToString());
+        SetTextDetail(TDIndex.type, text);
     }
 
-    private void SetActiveTextDetail(int index, bool active)
+    private void SetCostTextDetail(string text)
     {
-        textDetails[index].SetActive(active);
+        SetTextDetail(TDIndex.cost, text);
+    }
+
+    private void SetAllTextDetails()
+    {
+        SetTypeTextDetail(type.ToString());
+        SetCostTextDetail(cost.ToString());
+    }
+
+    private void SetActiveTextDetail(TDIndex index, bool active)
+    {
+        textDetails[(int)index].SetActive(active);
     }
 
     public void ShowTextDetails(bool showType, bool showCost)
     {
-        SetActiveTextDetail((int)TDIndex.type, showType);
-        SetActiveTextDetail((int)TDIndex.cost, showCost);
+        SetActiveTextDetail(TDIndex.type, showType);
+        SetActiveTextDetail(TDIndex.cost, showCost);
     }
 
     public void ShowAllTextDetails(bool show)
     {
-        SetActiveTextDetail((int)TDIndex.type, show);
-        SetActiveTextDetail((int)TDIndex.cost, show);
+        SetActiveTextDetail(TDIndex.type, show);
+        SetActiveTextDetail(TDIndex.cost, show);
     }
 
     // Set details functions // // // // //
@@ -128,7 +139,7 @@ public class Weapon : MonoBehaviour
     { 
         cost += amount;
 
-        SetTextDetail((int)TDIndex.cost, cost.ToString());
+        SetCostTextDetail(cost.ToString());
     }
     
     public void DecreaseCost(float amount) 
@@ -136,7 +147,7 @@ public class Weapon : MonoBehaviour
         cost -= amount; 
         if (cost < 0) cost = 0;
 
-        SetTextDetail((int)TDIndex.cost, cost.ToString());
+        SetCostTextDetail(cost.ToString());
     }
 
     public void SetCost(float cost) 
@@ -144,7 +155,7 @@ public class Weapon : MonoBehaviour
         if (cost < 0) this.cost = 0;
         else this.cost = cost;
 
-        SetTextDetail((int)TDIndex.cost, cost.ToString());
+        SetCostTextDetail(cost.ToString());
     }
 
     // Attack performance functions // // // // //
