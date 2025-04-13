@@ -123,7 +123,7 @@ public class PlayerHealth : Status
         {
             Destroy(Boss);
 
-            mainCamera.orthographicSize -= 2f;
+            mainCamera.orthographicSize = 3f;
 
             BossTrigger.hasSpawnedBoss = false;
         }
