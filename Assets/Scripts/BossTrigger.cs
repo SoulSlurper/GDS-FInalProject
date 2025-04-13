@@ -27,8 +27,7 @@ public class BossTrigger : MonoBehaviour
         {
             Instantiate(boss);
             hasSpawnedBoss = true;
-            SoundManager.Instance?.PlayBossMusic();
-            //mainCamera.orthographicSize += 2f;
+            mainCamera.orthographicSize = 5f;
             //gameObject.SetActive(false);
         }
     }
