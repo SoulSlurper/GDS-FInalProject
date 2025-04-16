@@ -73,7 +73,7 @@ public class AnimationButton : MonoBehaviour
             targetAnimator.SetBool(stateParameter, isOn);
             if (animator != null)
             {
-                animator.SetBool("ButtonOn", true); // <- This line right here
+                animator.SetBool("ButtonOn", true);
             }
             UpdateColliderState();
             if (soundManager != null)
