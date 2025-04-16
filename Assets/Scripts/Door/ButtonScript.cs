@@ -6,10 +6,10 @@ public class AnimationButton : MonoBehaviour
     [SerializeField] private Animator targetAnimator;
     [SerializeField] private string stateParameter = "On";
     [SerializeField] private bool toggleMode = true;
-
     [Header("Collider Settings")]
     [SerializeField] private Collider2D doorCollider;
     private bool originalColliderEnabled;
+    public Animator animator;
 
     private bool isOn = false;
     private int objectsOnButton = 0;
@@ -71,6 +71,10 @@ public class AnimationButton : MonoBehaviour
         {
             isOn = newState;
             targetAnimator.SetBool(stateParameter, isOn);
+            if (animator != null)
+            {
+                animator.SetBool("ButtonOn", true); // <- This line right here
+            }
             UpdateColliderState();
             if (soundManager != null)
             {

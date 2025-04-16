@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3853763044584214517}
   - component: {fileID: 2683087658217815597}
   - component: {fileID: 2184952631108038927}
+  - component: {fileID: 4205706369732410151}
   m_Layer: 0
   m_Name: DoorButton
   m_TagString: DoorButton
@@ -104,6 +105,7 @@ MonoBehaviour:
   stateParameter: On
   toggleMode: 1
   doorCollider: {fileID: 0}
+  animator: {fileID: 4205706369732410151}
 --- !u!61 &2184952631108038927
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -150,3 +152,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &4205706369732410151
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8813716898033759950}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ada0e801d055d124e893c7bcc6dade65, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
