@@ -44,6 +44,12 @@ public class ProjectileWeapon : Weapon
     void Update()
     {
         if (isLaunched && !usesGravity) transform.position += transform.right * launchForce * Time.deltaTime;
+
+        if (usesGravity)
+        {
+            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
