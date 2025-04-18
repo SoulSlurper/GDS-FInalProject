@@ -12,7 +12,6 @@ public class BossHp : Status
     [SerializeField] private GameObject _endDropItem;
 
     private float healthPercentCheckpoint = 1f;
-    private float healthCheckpoint;
 
     // Getters and Setters // // // //
     public int dropItemAmount
@@ -36,10 +35,7 @@ public class BossHp : Status
     // Unity // // // //
     void Start()
     {
-        GetHealthCheckpoint();
-
-        Debug.Log("HealthPercentCheckpoint: " + healthPercentCheckpoint);
-        Debug.Log("HealthCheckpoint: " + healthCheckpoint);
+        SetHealthPercentCheckpoint();
     }
 
     void Update()
@@ -58,13 +54,13 @@ public class BossHp : Status
         }
         else
         {
-            if (currentHealth <= healthCheckpoint)
+            if (currentHealthPercentage <= healthPercentCheckpoint)
             {
-                Debug.Log("Reached HealthCheckpoint: " + healthCheckpoint);
+                Debug.Log("Reached HealthCheckpoint: " + healthPercentCheckpoint);
 
-                for (int i = 0; i < _dropItemAmount; i++) CreateDropItem();
+                for (int i = 0; i < dropItemAmount; i++) CreateDropItem();
 
-                GetHealthCheckpoint();
+                SetHealthPercentCheckpoint();
             }
         }
     }
@@ -76,13 +72,12 @@ public class BossHp : Status
     public void SetHealthDropItemPercentage(float healthDropItemPercentage) { this.healthDropItemPercentage = healthDropItemPercentage; }
 
     // Health Percentage // // // //
-    public void GetHealthCheckpoint()
+    public void SetHealthPercentCheckpoint()
     {
         if (healthDropItemPercentage > 0f && healthDropItemPercentage < 1f)
         {
             healthPercentCheckpoint -= healthDropItemPercentage;
-            healthCheckpoint = maxHealth * healthPercentCheckpoint;
         }
-        else healthCheckpoint = 0f;
+        else healthPercentCheckpoint = 1f;
     }
 }

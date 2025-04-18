@@ -129,7 +129,7 @@ public class Status : MonoBehaviour
 
     public void InstantiateItem(GameObject item)
     {
-        Debug.Log(item.name + " Item created");
+        //Debug.Log(item.name + " Item created");
 
         Instantiate(item, transform.position, Quaternion.identity);
     }
