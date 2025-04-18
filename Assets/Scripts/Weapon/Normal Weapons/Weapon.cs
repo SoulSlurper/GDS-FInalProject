@@ -98,11 +98,11 @@ public class Weapon : MonoBehaviour
     void LateUpdate()
     {
         realDamage = GetRealAmount(damage, minDamage);
-        Debug.Log("realDamage: " + realDamage);
+        //Debug.Log("realDamage: " + realDamage);
 
         realCost = GetRealAmount(cost, minCost);
         SetCostTextDetail(realCost);
-        Debug.Log("realCost: " + realCost);
+        //Debug.Log("realCost: " + realCost);
     }
 
     // Text functions // // // // //
