@@ -39,6 +39,6 @@ public class UpgradeProjectileWeapon : WeaponUpgrade
 
         weapon.IncreaseDamage(increaseDamageBy);
         weapon.DecreaseCost(improveCostsBy);
-        weapon.IncreaseSpeed(increaseSpeedBy);
+        weapon.IncreaseLaunchForce(increaseSpeedBy);
     }
 }

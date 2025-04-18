@@ -11,17 +11,24 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private Transform launchLocation; //where the projectile will appear
 
     [Header("Projectile Details")]
-    [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _launchForce = 1f;
+    [SerializeField] private bool _usesGravity = false;
     [SerializeField] private float _projectileCost = 0f;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
 
     private float _realProjectileCost;
 
     // Getter and Setters // // // //
-    public float speed
+    public float launchForce
     {
-        get { return _speed; }
-        private set { _speed = value; }
+        get { return _launchForce; }
+        private set { _launchForce = value; }
+    }
+
+    public bool usesGravity
+    {
+        get { return _usesGravity; }
+        private set { _usesGravity = value; }
     }
 
     public float projectileCost
@@ -55,18 +62,18 @@ public class LongRangeWeapon : Weapon
     }
 
     // Long Range Details // // // // //
-    public void IncreaseSpeed(float amount) { speed += amount; }
+    public void IncreaseLaunchForce(float amount) { launchForce += amount; }
 
-    public void DecreaseSpeed(float amount) 
+    public void DecreaseLaunchForce(float amount) 
     { 
-        speed -= amount; 
-        if (speed < 0f) speed = 0f;
+        launchForce -= amount; 
+        if (launchForce < 0f) launchForce = 0f;
     }
 
-    public void SetSpeed(float speed) 
+    public void SetLaunchForce(float launchForce) 
     { 
-        if (speed < 0f) this.speed = 0f;
-        else this.speed = speed;
+        if (launchForce < 0f) this.launchForce = 0f;
+        else this.launchForce = launchForce;
     }
 
     public void IncreaseProjectileCost(float amount) { projectileCost += amount; }
@@ -126,9 +133,10 @@ public class LongRangeWeapon : Weapon
         GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, transform.rotation);
         ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
 
-        wDetails.SetSpeed(speed);
-        wDetails.SetDamage(damage);
         wDetails.SetWeaponUser(weaponUser);
+        wDetails.SetUsesGravity(usesGravity);
+        wDetails.SetLaunchForce(launchForce);
+        wDetails.SetDamage(damage);
 
         wDetails.Attack();
     }

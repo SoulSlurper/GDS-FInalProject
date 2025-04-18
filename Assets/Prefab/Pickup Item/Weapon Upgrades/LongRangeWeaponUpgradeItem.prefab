@@ -159,7 +159,7 @@ MonoBehaviour:
   _type: 2
   _increaseDamageBy: 10
   _improveCostsBy: 5
-  increaseSpeedBy: 2
+  increaseLaunchForceBy: 2
   improveProjectileCostBy: 2
 --- !u!4 &5882922692182421024 stripped
 Transform:

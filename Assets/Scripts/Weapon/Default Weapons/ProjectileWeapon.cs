@@ -9,8 +9,11 @@ public class ProjectileWeapon : Weapon
 
     [Header("Projectile Details")]
     [SerializeField] private bool _isLaunched = false;
-    [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
+    [SerializeField] private bool _usesGravity = false;
+    [SerializeField] private float _launchForce = 1f; //the force that the projectile is traveling
     [SerializeField] private GameObject _dropItem;
+
+    private Rigidbody2D rb;
 
     // Getter and Setters // // // //
     public bool isLaunched
@@ -19,10 +22,16 @@ public class ProjectileWeapon : Weapon
         private set { _isLaunched = value; }
     }
 
-    public float speed
+    public bool usesGravity
     {
-        get { return _speed; }
-        private set { _speed = value; }
+        get { return _usesGravity; }
+        private set { _usesGravity = value; }
+    }
+
+    public float launchForce
+    {
+        get { return _launchForce; }
+        private set { _launchForce = value; }
     }
 
     public GameObject dropItem
@@ -34,7 +43,7 @@ public class ProjectileWeapon : Weapon
     // Unity // // // //
     void Update()
     {
-        if (isLaunched) transform.position += transform.right * speed * Time.deltaTime;
+        if (isLaunched && !usesGravity) transform.position += transform.right * launchForce * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -61,18 +70,23 @@ public class ProjectileWeapon : Weapon
     }
 
     // Projectile Details // // // // //
-    public void IncreaseSpeed(float amount) { speed += amount; }
-
-    public void DecreaseSpeed(float amount)
+    public void SetUsesGravity(bool usesGravity)
     {
-        speed += amount;
-        if (speed < 0f) speed = 0f;
+        this.usesGravity = usesGravity;
     }
 
-    public void SetSpeed(float speed)
+    public void IncreaseLaunchForce(float amount) { launchForce += amount; }
+
+    public void DecreaseLaunchForce(float amount)
     {
-        if (speed < 0f) this.speed = 0f;
-        else this.speed = speed;
+        launchForce += amount;
+        if (launchForce < 0f) launchForce = 0f;
+    }
+
+    public void SetLaunchForce(float launchForce)
+    {
+        if (launchForce < 0f) this.launchForce = 0f;
+        else this.launchForce = launchForce;
     }
 
     public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
@@ -88,5 +102,12 @@ public class ProjectileWeapon : Weapon
     public override void Attack()
     {
         isLaunched = true;
+
+        if (usesGravity)
+        {
+            if (!rb) rb = GetComponent<Rigidbody2D>();
+            rb.gravityScale = 1f;
+            rb.velocity = transform.right * launchForce;
+        }
     }
 }

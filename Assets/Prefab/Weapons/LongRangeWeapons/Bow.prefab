@@ -77,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -163,6 +163,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4690018812042117187, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690018812042117187, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690018812042117187, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690018812042117187, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690018812042117187, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5041288964348727701, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_Name
       value: Bow
@@ -241,16 +261,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponUser: {fileID: 0}
   _type: 4
-  _damage: 0
-  _cost: 0
+  _damage: 30
+  _cost: 10
   _minDamage: 1
   _minCost: 1
   _minProjectileCost: 1
-  projectile: {fileID: 0}
-  launchLocation: {fileID: 0}
-  _speed: 1
-  _projectileCost: 0
-  _stopGapHealth: 0
+  projectile: {fileID: 1714389796360220931, guid: 80c2e2e0a37884947b093d49b2874285, type: 3}
+  launchLocation: {fileID: 6723654275287701040}
+  _launchForce: 7
+  _usesGravity: 1
+  _projectileCost: 15
+  _stopGapHealth: 0.3
 --- !u!4 &5862545898409560437 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}

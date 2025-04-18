@@ -245,6 +245,8 @@ MonoBehaviour:
   _minDamage: 1
   _minCost: 1
   _isLaunched: 0
+  usesGravity: 1
+  launchForce: 1
   _speed: 1
   _dropItem: {fileID: 1988137186141514875, guid: 25d8914f988f4d549bb598fe3f9134ce, type: 3}
 --- !u!61 &-3486186417945426455

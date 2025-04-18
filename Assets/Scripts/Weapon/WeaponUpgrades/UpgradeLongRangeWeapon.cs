@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeLongRangeWeapon : WeaponUpgrade
 {
     [Header("Projectile Details")]
-    [SerializeField] private float increaseSpeedBy;
+    [SerializeField] private float increaseLaunchForceBy;
     [SerializeField] private float improveProjectileCostBy;
     private Camera mainCamera;
 
@@ -44,7 +44,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
 
         weapon.IncreaseDamage(increaseDamageBy);
         weapon.DecreaseCost(improveCostsBy);
-        weapon.IncreaseSpeed(increaseSpeedBy);
+        weapon.IncreaseLaunchForce(increaseLaunchForceBy);
         weapon.DecreaseProjectileCost(improveProjectileCostBy);
     }
 
