@@ -21,7 +21,7 @@ public class CloseRangeWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger detects: " + collision.gameObject.name);
+        //Debug.Log("trigger detects: " + collision.gameObject.name);
 
         if (collision.gameObject.CompareTag("Weapon")) return;
 

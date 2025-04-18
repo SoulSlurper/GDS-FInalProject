@@ -10,6 +10,7 @@ public class ProjectileWeapon : Weapon
     [Header("Projectile Details")]
     [SerializeField] private bool _isLaunched = false;
     [SerializeField] private float _speed = 1f; //the speed the projectile is traveling
+    [SerializeField] private GameObject _dropItem;
 
     // Getter and Setters // // // //
     public bool isLaunched
@@ -22,6 +23,12 @@ public class ProjectileWeapon : Weapon
     {
         get { return _speed; }
         private set { _speed = value; }
+    }
+
+    public GameObject dropItem
+    {
+        get { return _dropItem; }
+        private set { _dropItem = value; }
     }
 
     // Unity // // // //
@@ -45,7 +52,12 @@ public class ProjectileWeapon : Weapon
             if (sDetails.user == weaponUser.user) canDestroy = false;
         }
 
-        if (canDestroy) Destroy(gameObject);
+        if (canDestroy)
+        {
+            CreateDropItem();
+
+            Destroy(gameObject);
+        }
     }
 
     // Projectile Details // // // // //
@@ -61,6 +73,15 @@ public class ProjectileWeapon : Weapon
     {
         if (speed < 0f) this.speed = 0f;
         else this.speed = speed;
+    }
+
+    public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
+
+    private void CreateDropItem()
+    {
+        if (dropItem == null) return;
+
+        Instantiate(dropItem, transform.position, Quaternion.identity);
     }
 
     // Attack Details // // // // //
