@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LongRangeWeapon : Weapon
 {
+    [SerializeField][Range(0f, 1f)] private float _minProjectileCost = 1f;
+
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchLocation; //where the projectile will appear
@@ -11,7 +13,9 @@ public class LongRangeWeapon : Weapon
     [Header("Projectile Details")]
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _projectileCost = 0f;
-    [SerializeField] [Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
+    [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
+
+    private float _realProjectileCost;
 
     // Getter and Setters // // // //
     public float speed
@@ -24,6 +28,18 @@ public class LongRangeWeapon : Weapon
     {
         get { return _projectileCost; }
         private set { _projectileCost = value; }
+    }
+
+    public float minProjectileCost
+    {
+        get { return _minProjectileCost; }
+        private set { _minProjectileCost = value; }
+    }
+
+    public float realProjectileCost
+    {
+        get { return _realProjectileCost; }
+        private set { _realProjectileCost = value; }
     }
 
     public float stopGapHealth
@@ -74,13 +90,21 @@ public class LongRangeWeapon : Weapon
         else this.stopGapHealth = 0f;
     }
 
+    public override void SetRealAmounts()
+    {
+        base.SetRealAmounts();
+
+        realProjectileCost = GetRealAmount(projectileCost, minProjectileCost);
+        //Debug.Log("realProjectileCost: " + realProjectileCost);
+    }
+
     // Attack Details // // // // //
     public override void Attack()
     {
         //whether the weapon can be used or not
         bool useWeapon = weaponUser.currentHealthPercentage > stopGapHealth || projectileCost == 0f;
 
-        if (useWeapon && projectileCost > 0f) weaponUser.TakeDamage(projectileCost);
+        if (useWeapon && projectileCost > 0f) weaponUser.TakeDamage(realProjectileCost);
 
         if (!weaponUser.noHealth && useWeapon)
         {
