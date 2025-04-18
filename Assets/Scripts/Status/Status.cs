@@ -65,12 +65,7 @@ public class Status : MonoBehaviour
     // Unity // // // //
     void Awake()
     {
-        maxHealth = currentHealth = health;
-
-        if (healthBar)
-        {
-            healthBar.SetMaxHealth(maxHealth);
-        }
+        SetNewHealth(health);
     }
 
     // Health functions // // // //
@@ -84,7 +79,7 @@ public class Status : MonoBehaviour
         IncreaseCurrentHealth(amount);
     }
 
-    private void SetHealthBar()
+    private void UpdateHealthBar()
     {
         if (healthBar)
         {
@@ -96,21 +91,21 @@ public class Status : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        SetHealthBar();
+        UpdateHealthBar();
     }
 
     public void SetCurrentHealth(float currentHealth) 
     { 
         this.currentHealth = currentHealth >= 0 && currentHealth <= maxHealth ? currentHealth : this.currentHealth;
 
-        SetHealthBar();
+        UpdateHealthBar();
     }
 
     public void SetNewHealth(float health) 
     { 
         this.health = currentHealth = maxHealth = health;
 
-        SetHealthBar();
+        UpdateHealthBar();
     }
 
     public void IncreaseCurrentHealth(float currentHealth) 
@@ -118,7 +113,7 @@ public class Status : MonoBehaviour
         this.currentHealth += currentHealth;
         if (this.currentHealth > maxHealth) this.currentHealth = maxHealth;
 
-        SetHealthBar();
+        UpdateHealthBar();
     }
 
     public void DecreaseCurrentHealth(float currentHealth) 
@@ -126,7 +121,7 @@ public class Status : MonoBehaviour
         this.currentHealth -= currentHealth;
         if (this.currentHealth < 0) this.currentHealth = 0;
 
-        SetHealthBar();
+        UpdateHealthBar();
     }
 
     // dropItem functions // // // //

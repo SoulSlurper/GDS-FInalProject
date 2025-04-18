@@ -7,6 +7,7 @@ public class LongRangeWeapon : Weapon
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchLocation; //where the projectile will appear
+    public bool killsUser = false;
 
     [Header("Projectile Details")]
     [SerializeField] private float _speed = 1f;
@@ -63,7 +64,13 @@ public class LongRangeWeapon : Weapon
     // Attack Details // // // // //
     public override void Attack()
     {
-        weaponUser.TakeDamage(projectileCost);
+        bool damagesUser = true;
+        if (!killsUser)
+        {
+            damagesUser = false;
+        }
+
+        if (damagesUser) weaponUser.TakeDamage(projectileCost);
 
         if (!weaponUser.noHealth)
         {
