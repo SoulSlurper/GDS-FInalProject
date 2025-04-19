@@ -163,8 +163,8 @@ MonoBehaviour:
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   wallSlideMultiplier: 0.1
-  groundCheckRadius: 0.2
-  wallCheckDistance: 0.1
+  groundCheckRadius: 0.1
+  wallCheckDistance: 0.125
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -172,6 +172,8 @@ MonoBehaviour:
   knockbackForce: 10
   knockbackDuration: 0.25
   invincibilityDuration: 1
+  flashInterval: 0.1
+  playHurtAnimation: 1
 --- !u!50 &5566176409633086406
 Rigidbody2D:
   serializedVersion: 4
@@ -256,7 +258,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.3, y: 0.21}
+  m_Size: {x: 0.25, y: 0.2}
   m_Direction: 1
 --- !u!82 &380340996724195687
 AudioSource:
@@ -687,6 +689,10 @@ PrefabInstance:
       propertyPath: _weaponUser
       value: 
       objectReference: {fileID: 2556274459256270731}
+    - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
+      propertyPath: _launchForce
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 9199337148527217218, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
