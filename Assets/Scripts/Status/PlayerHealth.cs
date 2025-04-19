@@ -116,22 +116,25 @@ public class PlayerHealth : Status
     // Other functions // // // //
     private void Respawn()
     {
-        if (!noHealth) return;
-
-        GameObject Boss = GameObject.FindWithTag("Boss");
-        if (Boss)
-        {
-            Destroy(Boss);
-
-            mainCamera.orthographicSize = 3f;
-
-            BossTrigger.hasSpawnedBoss = false;
-        }
+        if (!noHealth && !Input.GetKeyDown(KeyCode.R)) return;
 
         if (savePoint) this.transform.position = savePoint.position;
         else this.transform.position = initialPosition;
-        
-        ResetHealth();
+
+        if (noHealth) 
+        {
+            GameObject Boss = GameObject.FindWithTag("Boss");
+            if (Boss)
+            {
+                Destroy(Boss);
+
+                mainCamera.orthographicSize = 3f;
+
+                BossTrigger.hasSpawnedBoss = false;
+            }
+
+            ResetHealth();
+        }
     }
 
     private void ChangeSize()
