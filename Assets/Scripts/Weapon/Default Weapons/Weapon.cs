@@ -1,136 +1,86 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class Weapon : MonoBehaviour
 {
-    //maybe make the weapon more flexiable for enemy use in the future
-
-    [SerializeField] private Status _weaponUser; //identifies who holds the weapon
+    [SerializeField] private Status _weaponUser;
 
     [Header("Weapon Details")]
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
-    [SerializeField] private float _cost; //amount needed to get the weapon
-    //[SerializeField] private Animator animator;
-
-    private bool _enabledAttack = true;
+    [SerializeField] private float _cost;
+    
+    [Header("Knockback Settings")]
+    [SerializeField] private bool _applyKnockback = true;
+    [SerializeField] private float _knockbackForce = 8f;
+    [SerializeField] private float _bossKnockbackMultiplier = 0.5f;
 
     [Header("Details by User Health")]
     [SerializeField][Range(0f, 1f)] private float _minDamage = 1f;
     [SerializeField][Range(0f, 1f)] private float _minCost = 1f;
 
+    private bool _enabledAttack = true;
     private float _realDamage;
     private float _realCost;
-
-    //Text Details
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
 
-    // Getter and Setters // // // //
-    public Status weaponUser
-    {
-        get { return _weaponUser; }
-        private set { _weaponUser = value; }
+    // Properties
+    public Status weaponUser { get => _weaponUser; private set => _weaponUser = value; }
+    public WeaponType type { get => _type; private set => _type = value; }
+    public float damage { get => _damage; private set => _damage = value; }
+    public bool applyKnockback { get => _applyKnockback; set => _applyKnockback = value; }
+    public float knockbackForce { 
+        get => _knockbackForce; 
+        set => _knockbackForce = value > 0 ? value : _knockbackForce; 
     }
+    public float minDamage { get => _minDamage; private set => _minDamage = value; }
+    public float realDamage { get => _realDamage; private set => _realDamage = value; }
+    public float cost { get => _cost; private set => _cost = value; }
+    public float minCost { get => _minCost; private set => _minCost = value; }
+    public float realCost { get => _realCost; private set => _realCost = value; }
+    public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
 
-    public WeaponType type
-    {
-        get { return _type; }
-        private set { _type = value; }
-    }
-
-    public float damage
-    {
-        get { return _damage; }
-        private set { _damage = value; }
-    }
-
-    public float minDamage
-    {
-        get { return _minDamage; }
-        private set { _minDamage = value; }
-    }
-
-    public float realDamage
-    {
-        get { return _realDamage; }
-        private set { _realDamage = value; }
-    }
-
-    public float cost
-    {
-        get { return _cost; }
-        private set { _cost = value; }
-    }
-
-    public float minCost
-    {
-        get { return _minCost; }
-        private set { _minCost = value; }
-    }
-
-    public float realCost
-    {
-        get { return _realCost; }
-        private set { _realCost = value; }
-    }
-
-    public bool enabledAttack
-    {
-        get { return _enabledAttack; }
-        set { _enabledAttack = value; }
-    }
-
-    // Unity // // // // //
     void Awake()
     {
         GetTextDetailGameObjects();
-
         SetAllTextDetails();
-
         ShowAllTextDetails(false);
     }
 
-    void LateUpdate()
-    {
-        SetRealAmounts();
-    }
+    void LateUpdate() => SetRealAmounts();
 
-    // Text functions // // // // //
+    // Text management
     private void GetTextDetailGameObjects()
     {
-        foreach (Transform child in transform.Find("LabelCanvas").Find("BackgroundImage"))
-        {
+        Transform labelCanvas = transform.Find("LabelCanvas");
+        if (labelCanvas == null) return;
+        
+        Transform backgroundImage = labelCanvas.Find("BackgroundImage");
+        if (backgroundImage == null) return;
+        
+        foreach (Transform child in backgroundImage)
             textDetails.Add(child.gameObject);
-        }
     }
 
     private void SetTextDetail(TDIndex index, string text)
     {
+        if (textDetails.Count <= (int)index) return;
+        
         Transform textDetail = textDetails[(int)index].transform;
+        if (textDetail == null) return;
 
         TMP_Text detail = textDetail.GetComponent<TMP_Text>();
         if (detail == null)
-        {
-            detail = textDetail.Find("ValueText").GetComponent<TMP_Text>();
-        }
+            detail = textDetail.Find("ValueText")?.GetComponent<TMP_Text>();
 
-        detail.text = text;
+        if (detail != null)
+            detail.text = text;
     }
 
-    private void SetTypeTextDetail(WeaponType type)
-    {
-        SetTextDetail(TDIndex.type, type.ToString());
-    }
-
-    private void SetCostTextDetail(float cost)
-    {
-        SetTextDetail(TDIndex.cost, cost.ToString("#.###")); //incase the decimals go beyond
-    }
+    private void SetTypeTextDetail(WeaponType type) => SetTextDetail(TDIndex.type, type.ToString());
+    private void SetCostTextDetail(float cost) => SetTextDetail(TDIndex.cost, cost.ToString("#.###"));
 
     private void SetAllTextDetails()
     {
@@ -140,6 +90,7 @@ public class Weapon : MonoBehaviour
 
     private void SetActiveTextDetail(TDIndex index, bool active)
     {
+        if (textDetails.Count <= (int)index) return;
         textDetails[(int)index].SetActive(active);
     }
 
@@ -155,113 +106,102 @@ public class Weapon : MonoBehaviour
         SetActiveTextDetail(TDIndex.cost, show);
     }
 
-    // Set details functions // // // // //
+    // Weapon properties management
+    public void SetWeaponUser(Status weaponUser) => this.weaponUser = weaponUser;
 
-    public void SetWeaponUser(Status weaponUser) { this.weaponUser = weaponUser; }
+    public void IncreaseDamage(float amount) => damage += amount;
 
-    public void IncreaseDamage(float amount) { damage += amount; }
-
-    public void DecreaseDamage(float amount) 
-    { 
-        damage -= amount; 
+    public void DecreaseDamage(float amount)
+    {
+        damage -= amount;
         if (damage < 0) damage = 0;
     }
     
-    public void SetDamage(float damage) 
-    { 
-        if (damage < 0) this.damage = 0;
-        else this.damage = damage;
-    }
+    public void SetDamage(float damage) => this.damage = damage < 0 ? 0 : damage;
 
-    public void IncreaseCost(float amount) 
-    { 
+    public void IncreaseCost(float amount)
+    {
         cost += amount;
-
         SetCostTextDetail(cost);
     }
     
-    public void DecreaseCost(float amount) 
-    { 
-        cost -= amount; 
+    public void DecreaseCost(float amount)
+    {
+        cost -= amount;
         if (cost < 0) cost = 0;
-
         SetCostTextDetail(cost);
     }
-
-    public void SetCost(float cost) 
-    {        
-        if (cost < 0) this.cost = 0;
-        else this.cost = cost;
-
-        SetCostTextDetail(cost);
+    
+    public void SetCost(float cost)
+    {
+        this.cost = cost < 0 ? 0 : cost;
+        SetCostTextDetail(this.cost);
     }
 
-    //gets the actual amount based on the weaponUser's health
+    // Calculate actual values based on player health
     public float GetRealAmount(float amount, float minAmount)
     {
-        float actualAmount = amount;
-        if (minAmount < 1f)
-        {
-            float actualMinAmount = amount * minAmount;
-            float remainingAmount = amount - actualMinAmount;
-
-            actualAmount = actualMinAmount + remainingAmount * weaponUser.currentHealthPercentage;
-        }
+        if (minAmount >= 1f || weaponUser == null) return amount;
         
-        return actualAmount;
+        float actualMinAmount = amount * minAmount;
+        float remainingAmount = amount - actualMinAmount;
+        return actualMinAmount + remainingAmount * weaponUser.currentHealthPercentage;
     }
 
     public virtual void SetRealAmounts()
     {
         realDamage = GetRealAmount(damage, minDamage);
-        //Debug.Log("realDamage: " + realDamage);
-
         realCost = GetRealAmount(cost, minCost);
         SetCostTextDetail(realCost);
-        //Debug.Log("realCost: " + realCost);
     }
 
-    // Attack performance functions // // // // //
+    // Attack methods
+    public virtual void Attack() => Debug.Log("Attack");
 
-    //describes how the weapon will attack, including sounds
-    public virtual void Attack()
-    {
-        Debug.Log("Attack");
-    }
+    private bool CanAttack() => Input.GetMouseButtonDown(0) && enabledAttack;
 
-    //return a true if an attack is being made
-    private bool CanAttack()
-    {
-        int mouseCode = 0; //for left mouse clicks
-
-        if (Input.GetMouseButtonDown(mouseCode) && enabledAttack) return true;
-
-        return false;
-    }
-
-    //return a true if an attack is being made
     public bool PerformAttack()
     {
         if (CanAttack())
         {
             Attack();
-
             return true;
         }
-
         return false;
     }
 
-    //affects the health of the collided object
+    // Apply damage and knockback
     public void MakeDamage(Collider2D collision)
     {
-        Status status;
-        if (status = collision.GetComponent<Status>())
+        if (collision == null) return;
+        
+        Status status = collision.GetComponent<Status>();
+        if (status == null || (weaponUser != null && status.user == weaponUser.user)) 
+            return;
+            
+        // Apply damage
+        status.TakeDamage(realDamage);
+        
+        // Apply knockback if enabled
+        if (!applyKnockback) return;
+            
+        Vector2 weaponPos = transform.position;
+        
+        // Try to apply knockback to an enemy
+        EnemyController enemyController = collision.GetComponent<EnemyController>();
+        if (enemyController != null)
         {
-            if (status.user != weaponUser.user) //prevents damage on the user
-            {
-                status.TakeDamage(realDamage);
-            }
+            float force = knockbackForce;
+            if (collision.CompareTag("Boss"))
+                force *= _bossKnockbackMultiplier;
+                
+            enemyController.ApplyKnockback(weaponPos, force);
+            return;
         }
+        
+        // Or try to apply knockback to the player
+        SlimeKnightController playerController = collision.GetComponent<SlimeKnightController>();
+        if (playerController != null)
+            playerController.ApplyKnockback(weaponPos, knockbackForce);
     }
 }
