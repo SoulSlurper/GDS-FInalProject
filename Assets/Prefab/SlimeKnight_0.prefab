@@ -163,7 +163,7 @@ MonoBehaviour:
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   wallSlideMultiplier: 0.1
-  groundCheckRadius: 0.1
+  groundCheckRadius: 0.125
   wallCheckDistance: 0.125
   groundLayer:
     serializedVersion: 2
