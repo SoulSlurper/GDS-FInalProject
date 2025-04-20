@@ -23,6 +23,7 @@ public class WeaponAtHand : MonoBehaviour
     private SpriteRenderer playerSpriteRenderer;
 
     private bool isSelecting = false;
+    private enum ScrollDirection { Stationary, Up, Down }
 
     void Awake()
     {
@@ -114,7 +115,7 @@ public class WeaponAtHand : MonoBehaviour
         selectedWeapon = WeaponType.None;
     }
 
-    //shows the selected weapon, where there can only be one selected
+    //shows the selected weapon, where there can only be one
     private void SelectWeapon(int index, bool confirm = true)
     {
         DeselectWeapon(); //if a weapon is currently being held
@@ -130,6 +131,7 @@ public class WeaponAtHand : MonoBehaviour
         else UnconfirmSelectedWeapon(wDetails);
     }
 
+    //selects the weapon by index
     private void SelectWeaponByIndex(int index, bool confirm = true)
     {
         if (index > -1 && index < weapons.Count) //if the weapon does exist
@@ -142,6 +144,7 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
+    //selects the weapon by weapon type
     private void SelectWeaponByType(WeaponType type, bool confirm = true)
     {
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
@@ -184,18 +187,29 @@ public class WeaponAtHand : MonoBehaviour
         Debug.Log("Weapon Menu opened");
     }
 
+    private ScrollDirection GetScrollBehaviour()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
+            return ScrollDirection.Up;
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
+            return ScrollDirection.Down;
+
+        return ScrollDirection.Stationary;
+    }
+
     //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
     private void OnWeaponMenu()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+        ScrollDirection scrollBeavhour = GetScrollBehaviour();
+
+        if (scrollBeavhour != ScrollDirection.Stationary)
         {
             int newCurrentIndex = currentWeaponIndex;
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
+            if (scrollBeavhour == ScrollDirection.Up)
             {
                 newCurrentIndex = GetIndexInRange(newCurrentIndex - 1);
             }
-
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (scrollBeavhour == ScrollDirection.Down)
             {
                 newCurrentIndex = GetIndexInRange(newCurrentIndex + 1);
             }
@@ -204,43 +218,41 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
-    //when the player exits the weapon selection
-    private void OnWeaponMenuExit()
+    //when the player exits the weapon selection, which confirms the selected weapon
+    private void OnWeaponMenuExit(bool weaponSelected)
     {
-        if (!isSelecting)
+        if (weaponSelected)
         {
-            currentWeaponIndex = tempWeaponIndex;
+            SelectWeaponByIndex(currentWeaponIndex);
+
+            if (areWeaponsCosting)
+                playerStatus.TakeDamage(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
         }
         else
         {
-            if (areWeaponsCosting)
-                playerStatus.TakeDamage(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
-
-            isSelecting = false;
+            SelectWeaponByIndex(tempWeaponIndex);
         }
 
-        SelectWeaponByIndex(currentWeaponIndex);
+        isSelecting = false;
 
         Debug.Log("Weapon Menu exit");
     }
 
     private void WeaponMenu()
     {
-        //enters selection and exit with the current weapon by mouse right click
-        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
+        //enters selection and exit with the current weapon by mouse right click or the Z key
+        if ((Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Z)) && weapons.Count > 1)
         {
-            isSelecting = !isSelecting;
-
-            if (isSelecting) OnWeaponMenuEnter();
-            else OnWeaponMenuExit();
+            if (isSelecting) OnWeaponMenuExit(false);
+            else OnWeaponMenuEnter();
         }
 
         if (isSelecting)
         {
             OnWeaponMenu();
 
-            //exit selection with the selected weapon by mouse left click
-            if (Input.GetMouseButtonDown(0)) OnWeaponMenuExit();
+            //exit selection with the selected weapon by mouse left click or the X key
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.X)) OnWeaponMenuExit(true);
         }
     }
 
