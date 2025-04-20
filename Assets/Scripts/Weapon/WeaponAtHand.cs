@@ -12,6 +12,7 @@ public class WeaponAtHand : MonoBehaviour
 
     [Header("Selection")]
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
+    [SerializeField][Range(1, 4)] private int availableWeaponsLimit = 3; // limits the access of the weapons by number
     [SerializeField] private Color colorSelection = Color.grey;
     [SerializeField] private bool skipOnMenuEnter = false;
 
@@ -64,7 +65,7 @@ public class WeaponAtHand : MonoBehaviour
     //gets the index from the weapons List based on the WeaponType enum
     private int GetWeaponIndex(WeaponType type)
     {
-        for (int i = 0; i < weapons.Count; i++)
+        for (int i = 0; i < availableWeaponsLimit; i++)
         {
             if (weapons[i].GetComponent<Weapon>().type == type)
             {
@@ -131,20 +132,26 @@ public class WeaponAtHand : MonoBehaviour
         else UnconfirmSelectedWeapon(wDetails);
     }
 
-    //selects the weapon by index
+    //selects the weapon by the appropriate indexes
     private void SelectWeaponByIndex(int index, bool confirm = true)
     {
-        if (index > -1 && index < weapons.Count) //if the weapon does exist
+        if (index > -1 && index < availableWeaponsLimit) //if the weapon does exist
         {
             SelectWeapon(index, confirm);
         }
         else // if weapon does not exist
         {
             selectedWeapon = WeaponType.None;
+
+            currentWeaponIndex = GetWeaponIndex(selectedWeapon);
+            if (currentWeaponIndex >  -1)
+            {
+                SelectWeapon(currentWeaponIndex, confirm);
+            }
         }
     }
 
-    //selects the weapon by weapon type
+    //selects the weapon by the weapon type
     private void SelectWeaponByType(WeaponType type, bool confirm = true)
     {
         SelectWeaponByIndex(GetWeaponIndex(type), confirm);
@@ -153,12 +160,12 @@ public class WeaponAtHand : MonoBehaviour
     //checks and returns an index that is in the range of the weapons list, where it will be continously used until the newIndex is in range and is not the same as the indexSkip variable
     private int GetIndexInRange(int index, int indexSkip = -1, bool isCheckIncrement = true)
     {
-        if (index > -1 && index < weapons.Count && !index.Equals(indexSkip)) return index;
+        if (index > -1 && index < availableWeaponsLimit && !index.Equals(indexSkip)) return index;
 
         int newIndex = index;
 
-        if (newIndex >= weapons.Count) newIndex = 0;
-        else if (newIndex < 0) newIndex = weapons.Count - 1;
+        if (newIndex >= availableWeaponsLimit) newIndex = 0;
+        else if (newIndex < 0) newIndex = availableWeaponsLimit - 1;
         
         if (newIndex.Equals(indexSkip))
         {
@@ -256,6 +263,9 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
+    // Weapon Facing // // // //
+
+    //gets the pointer's position
     private Vector2 PointerPosition()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -263,6 +273,22 @@ public class WeaponAtHand : MonoBehaviour
         return (mousePosition - (Vector2)transform.position).normalized;
     }
 
+    //flips the texts of the weapons
+    private void FlipWeaponTexts()
+    {
+        foreach (Transform child in transform)
+        {
+            Transform labelCanvas = child.Find("LabelCanvas");
+
+            Vector2 scaleLabel = labelCanvas.localScale;
+
+            scaleLabel.x *= -1;
+
+            labelCanvas.localScale = scaleLabel;
+        }
+    }
+
+    //makes the weapon face towards the pointer's position
     private void WeaponFacePointer()
     {
         Vector2 direction = PointerPosition();
@@ -274,16 +300,7 @@ public class WeaponAtHand : MonoBehaviour
         {
             scale.y *= -1;
 
-            foreach (Transform child in transform)
-            {
-                Transform labelCanvas = child.Find("LabelCanvas");
-
-                Vector2 scaleLabel = labelCanvas.localScale;
-
-                scaleLabel.x *= -1;
-
-                labelCanvas.localScale = scaleLabel;
-            }
+            FlipWeaponTexts();
         }
 
         transform.localScale = scale;
