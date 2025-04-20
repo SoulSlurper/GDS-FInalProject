@@ -12,7 +12,7 @@ public class WeaponAtHand : MonoBehaviour
 
     [Header("Selection")]
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
-    [SerializeField][Range(1, 4)] private int availableWeaponsLimit = 3; // limits the access of the weapons by number
+    [SerializeField][Range(1, 4)] private int _availableWeaponsLimit = 3; // limits the access of the weapons by number
     [SerializeField] private Color colorSelection = Color.grey;
     [SerializeField] private bool skipOnMenuEnter = false;
 
@@ -26,6 +26,14 @@ public class WeaponAtHand : MonoBehaviour
     private bool isSelecting = false;
     private enum ScrollDirection { Stationary, Up, Down }
 
+    // Getters and Setters // // // //
+    public int availableWeaponsLimit
+    {
+        get { return _availableWeaponsLimit; }
+        private set { _availableWeaponsLimit = value; }
+    }
+
+    // Unity // // // //
     void Awake()
     {
         GetExistingWeapons();
@@ -45,6 +53,15 @@ public class WeaponAtHand : MonoBehaviour
 
         WeaponFacePointer();
     }
+
+    // WeaponAtHand Details // // // //
+    public void IncreaseAvailableWeaponLimit(int amount)
+    {
+        availableWeaponsLimit += amount;
+        if (availableWeaponsLimit > weapons.Count) availableWeaponsLimit = weapons.Count;
+    }
+
+    // Weapon Menu Behaviour // // // //
 
     //gets all the children gameobjects that have the Weapon component
     private void GetExistingWeapons()
@@ -263,7 +280,7 @@ public class WeaponAtHand : MonoBehaviour
         }
     }
 
-    // Weapon Facing // // // //
+    // Weapon Facing Behaviour // // // //
 
     //gets the pointer's position
     private Vector2 PointerPosition()
