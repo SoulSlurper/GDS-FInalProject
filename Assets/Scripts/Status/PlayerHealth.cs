@@ -100,7 +100,7 @@ public class PlayerHealth : Status
             TakeDamage(lavaDamage);
         }
 
-        if (collision.CompareTag("Spike"))
+        if (collision.gameObject.CompareTag("Spike"))
         {
             // Instantly kill the player when touching lava
             TakeDamage(spikeDamage);

@@ -223,6 +223,9 @@ public class SlimeKnightController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
             ApplyKnockback(collision.transform.position);
+
+        if (collision.gameObject.CompareTag("Spike"))
+            ApplyKnockback(collision.transform.position);
     }
     
     // Apply knockback with unified API
