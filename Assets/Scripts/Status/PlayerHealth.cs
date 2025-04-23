@@ -9,6 +9,7 @@ public class PlayerHealth : Status
     [SerializeField] private float _enemyDamage;
     [SerializeField] private float _bossDamage;
     [SerializeField] private float _lavaDamage;
+    [SerializeField] private float _spikeDamage;
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
@@ -37,6 +38,12 @@ public class PlayerHealth : Status
     {
         get { return _lavaDamage; }
         private set { _lavaDamage = value; }
+    }
+
+    public float spikeDamage
+    {
+        get { return _spikeDamage; }
+        private set { _spikeDamage = value; }
     }
 
 
@@ -91,6 +98,12 @@ public class PlayerHealth : Status
         {
             // Instantly kill the player when touching lava
             TakeDamage(lavaDamage);
+        }
+
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            // Instantly kill the player when touching lava
+            TakeDamage(spikeDamage);
         }
     }
 

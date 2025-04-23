@@ -19,6 +19,7 @@ TagManager:
   - Lava
   - SavePoint
   - BreakableWall
+  - Spike
   layers:
   - Default
   - TransparentFX
