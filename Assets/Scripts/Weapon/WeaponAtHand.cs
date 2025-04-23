@@ -22,9 +22,9 @@ public class WeaponAtHand : MonoBehaviour
 
     private Status playerStatus;
     private SpriteRenderer playerSpriteRenderer;
+    private Color playerColor;
 
     private bool isSelecting = false;
-    private enum ScrollDirection { Stationary, Up, Down }
 
     // Getters and Setters // // // //
     public int availableWeaponsLimit
@@ -43,6 +43,7 @@ public class WeaponAtHand : MonoBehaviour
     {
         playerStatus = player.GetComponent<Status>();
         playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        playerColor = playerSpriteRenderer.color;
 
         SelectWeaponByType(selectedWeapon);
     }
@@ -96,9 +97,9 @@ public class WeaponAtHand : MonoBehaviour
     //sets the settings of when the player have their desired weapon
     private void ConfirmSelectedWeapon(Weapon weaponDetails)
     {
-        playerSpriteRenderer.color = Color.white;
+        playerSpriteRenderer.color = playerColor;
 
-        weaponDetails.GetComponent<SpriteRenderer>().color = Color.white;
+        weaponDetails.GetComponent<SpriteRenderer>().color = weaponDetails.color;
 
         weaponDetails.ShowAllTextDetails(false);
 
@@ -211,29 +212,17 @@ public class WeaponAtHand : MonoBehaviour
         Debug.Log("Weapon Menu opened");
     }
 
-    private ScrollDirection GetScrollBehaviour()
-    {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
-            return ScrollDirection.Up;
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
-            return ScrollDirection.Down;
-
-        return ScrollDirection.Stationary;
-    }
-
     //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
     private void OnWeaponMenu()
     {
-        ScrollDirection scrollBeavhour = GetScrollBehaviour();
-
-        if (scrollBeavhour != ScrollDirection.Stationary)
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
         {
             int newCurrentIndex = currentWeaponIndex;
-            if (scrollBeavhour == ScrollDirection.Up)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 newCurrentIndex = GetIndexInRange(newCurrentIndex - 1);
             }
-            else if (scrollBeavhour == ScrollDirection.Down)
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 newCurrentIndex = GetIndexInRange(newCurrentIndex + 1);
             }

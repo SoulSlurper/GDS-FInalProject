@@ -26,6 +26,8 @@ public class Weapon : MonoBehaviour
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
 
+    private Color _color;
+
     // Properties
     public Status weaponUser { get => _weaponUser; private set => _weaponUser = value; }
     public WeaponType type { get => _type; private set => _type = value; }
@@ -41,12 +43,15 @@ public class Weapon : MonoBehaviour
     public float minCost { get => _minCost; private set => _minCost = value; }
     public float realCost { get => _realCost; private set => _realCost = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
+    public Color color { get => _color; private set => _color = value; }
 
     void Awake()
     {
         GetTextDetailGameObjects();
         SetAllTextDetails();
         ShowAllTextDetails(false);
+
+        color = GetComponent<SpriteRenderer>().color;
     }
 
     void LateUpdate() => SetRealAmounts();
