@@ -242,13 +242,15 @@ MonoBehaviour:
   _type: 5
   _damage: 0
   _cost: 0
+  _applyKnockback: 1
+  _knockbackForce: 8
+  _bossKnockbackMultiplier: 0.5
   _minDamage: 1
   _minCost: 1
   _isLaunched: 0
-  usesGravity: 1
-  launchForce: 1
-  _speed: 1
-  _dropItem: {fileID: 1988137186141514875, guid: 25d8914f988f4d549bb598fe3f9134ce, type: 3}
+  _usesGravity: 0
+  _launchForce: 1
+  _dropItem: {fileID: 1988137186141514875, guid: 8890f3f11b11e4044a79a7bc511da281, type: 3}
 --- !u!61 &-3486186417945426455
 BoxCollider2D:
   m_ObjectHideFlags: 0

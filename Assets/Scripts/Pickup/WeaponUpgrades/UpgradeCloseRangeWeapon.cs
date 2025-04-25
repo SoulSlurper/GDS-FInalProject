@@ -33,6 +33,8 @@ public class UpgradeCloseRangeWeapon : WeaponUpgrade
 
     private void UpgradeWeapon(CloseRangeWeapon weapon)
     {
+        if (weapon == null) return;
+
         Debug.Log("Upgrade " + weapon.gameObject.name);
 
         weapon.IncreaseDamage(increaseDamageBy);

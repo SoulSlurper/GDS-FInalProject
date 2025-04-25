@@ -40,6 +40,8 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
 
     private void UpgradeWeapon(LongRangeWeapon weapon)
     {
+        if (weapon == null) return;
+
         Debug.Log("Upgrade " + weapon.gameObject.name);
 
         weapon.IncreaseDamage(increaseDamageBy);

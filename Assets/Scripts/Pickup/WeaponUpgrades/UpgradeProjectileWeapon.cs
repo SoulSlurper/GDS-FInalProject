@@ -35,6 +35,8 @@ public class UpgradeProjectileWeapon : WeaponUpgrade
 
     private void UpgradeWeapon(ProjectileWeapon weapon)
     {
+        if (weapon == null) return;
+
         Debug.Log("Upgrade " + weapon.gameObject.name);
 
         weapon.IncreaseDamage(increaseDamageBy);

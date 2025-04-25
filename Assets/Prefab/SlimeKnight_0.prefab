@@ -32,8 +32,8 @@ Transform:
   m_Children:
   - {fileID: 64095465640552535}
   - {fileID: 1727223754651292031}
-  - {fileID: 5954059667384249329}
   - {fileID: 8422993256563651290}
+  - {fileID: 5954059667384249329}
   m_Father: {fileID: 5680072701811430040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9147381770472217210
@@ -51,6 +51,7 @@ MonoBehaviour:
   player: {fileID: 8328409611633574170}
   areWeaponsCosting: 1
   selectedWeapon: 0
+  _availableWeaponsLimit: 3
   colorSelection: {r: 0, g: 0, b: 1, a: 1}
   skipOnMenuEnter: 1
 --- !u!1 &8328409611633574170
@@ -376,6 +377,7 @@ MonoBehaviour:
   _enemyDamage: 20
   _bossDamage: 30
   _lavaDamage: 100
+  _spikeDamage: 0
   _enemyProjectileDamage: 10
   _bossProjectileDamage: 20
   minSize: 0.5
@@ -689,10 +691,6 @@ PrefabInstance:
       propertyPath: _weaponUser
       value: 
       objectReference: {fileID: 2556274459256270731}
-    - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
-      propertyPath: _launchForce
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 9199337148527217218, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

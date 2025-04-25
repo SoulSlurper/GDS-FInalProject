@@ -263,12 +263,15 @@ MonoBehaviour:
   _type: 4
   _damage: 30
   _cost: 10
+  _applyKnockback: 1
+  _knockbackForce: 8
+  _bossKnockbackMultiplier: 0.5
   _minDamage: 1
   _minCost: 1
   _minProjectileCost: 1
   projectile: {fileID: 1714389796360220931, guid: 80c2e2e0a37884947b093d49b2874285, type: 3}
   launchLocation: {fileID: 6723654275287701040}
-  _launchForce: 7
+  _launchForce: 6
   _usesGravity: 1
   _projectileCost: 15
   _stopGapHealth: 0.3
