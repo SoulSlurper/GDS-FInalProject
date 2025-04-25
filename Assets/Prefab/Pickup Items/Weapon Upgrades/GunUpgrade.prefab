@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6439969257216880953
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4273594677191476024, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_Name
+      value: UpgradeGun Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -87.11283
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -73.13609
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.022251882
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323304514192916846, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333723894784365650, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: _type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333723894784365650, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: _improveCostsBy
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333723894784365650, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: _increaseDamageBy
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333723894784365650, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: increaseLaunchForceBy
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333723894784365650, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}
+      propertyPath: improveProjectileCostBy
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21358d0999e359c44b6ad4bff6fb5248, type: 3}

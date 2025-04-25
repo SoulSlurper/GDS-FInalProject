@@ -76,6 +76,11 @@ public class LongRangeWeapon : Weapon
         else this.launchForce = launchForce;
     }
 
+    public void SetUseGravity(bool usesGravity) 
+    {
+        this.usesGravity = usesGravity;
+    }
+
     public void IncreaseProjectileCost(float amount) { projectileCost += amount; }
     
     public void DecreaseProjectileCost(float amount) 

@@ -6,6 +6,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
 {
     [Header("Projectile Details")]
     [SerializeField] private float increaseLaunchForceBy;
+    [SerializeField] private bool usesGravity = false;
     [SerializeField] private float improveProjectileCostBy;
     private Camera mainCamera;
 
@@ -47,6 +48,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
         weapon.IncreaseDamage(increaseDamageBy);
         weapon.DecreaseCost(improveCostsBy);
         weapon.IncreaseLaunchForce(increaseLaunchForceBy);
+        weapon.SetUseGravity(usesGravity);
         weapon.DecreaseProjectileCost(improveProjectileCostBy);
     }
 
