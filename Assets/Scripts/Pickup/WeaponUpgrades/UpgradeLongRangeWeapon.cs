@@ -12,8 +12,6 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
     // Unity // // // //
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!onGround) SetOnGround(CheckForGround());
-
         if (!collision.CompareTag("Player")) return;
 
         UpgradeWeapon(GetWeapon(collision.gameObject));

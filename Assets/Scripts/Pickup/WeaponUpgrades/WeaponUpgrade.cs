@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponUpgrade : PickupItem
+public class WeaponUpgrade : MonoBehaviour
 {
     [Header("Weapon Upgrade")]
     [SerializeField] private WeaponType _type;

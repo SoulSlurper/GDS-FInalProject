@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2598021768038600937, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
+      propertyPath: checkGroundDistance
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2620841364145924244, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331164391878461402, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
       propertyPath: m_LocalScale.x
@@ -91,11 +95,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2208853863574700121}
   m_SourcePrefab: {fileID: 100100000, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
---- !u!4 &2593463140695863232 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2620841364145924244, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
-  m_PrefabInstance: {fileID: 550228234213492564}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5266775388987540184 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5671604121387451788, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
@@ -159,8 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79742719be8e584ab3afb04374a39d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastOrigin: {fileID: 2593463140695863232}
-  checkGroundDistance: 0.1
   _type: 0
   _increaseDamageBy: 0
   _improveCostsBy: 0

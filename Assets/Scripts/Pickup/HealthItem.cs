@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthItem : PickupItem
+public class HealthItem : MonoBehaviour
 {
     [Header("Health Item Details")]
     [SerializeField] private StatusUser itemUser; //identifies who can use the item
@@ -10,8 +10,6 @@ public class HealthItem : PickupItem
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!onGround) CheckForGround();
-
         Status status;
         if (status = collision.GetComponent<Status>())
         {

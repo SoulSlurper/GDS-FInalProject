@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewWeaponPickup : PickupItem
+public class NewWeaponPickup : MonoBehaviour
 {
     [Header("New Weapon Details")]
     [SerializeField] private StatusUser weaponUser; //identifies who can use the item
@@ -10,8 +10,6 @@ public class NewWeaponPickup : PickupItem
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!onGround) CheckForGround();
-
         Status status;
         if (status = collision.GetComponent<Status>())
         {
