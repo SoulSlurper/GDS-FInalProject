@@ -13,6 +13,8 @@ public class UpgradeCloseRangeWeapon : WeaponUpgrade
 
         UpgradeWeapon(GetWeapon(collision.gameObject));
 
+        ResetCameraSize();
+
         Destroy(gameObject);
     }
 

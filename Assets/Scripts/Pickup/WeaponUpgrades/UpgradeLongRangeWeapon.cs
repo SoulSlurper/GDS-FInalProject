@@ -8,7 +8,6 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
     [SerializeField] private float increaseLaunchForceBy;
     [SerializeField] private bool usesGravity = false;
     [SerializeField] private float improveProjectileCostBy;
-    private Camera mainCamera;
 
     // Unity // // // //
     private void OnTriggerEnter2D(Collider2D collision)
@@ -19,7 +18,7 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
 
         UpgradeWeapon(GetWeapon(collision.gameObject));
 
-        mainCamera.orthographicSize -= 2f;
+        ResetCameraSize();
 
         Destroy(gameObject);
     }
@@ -50,10 +49,5 @@ public class UpgradeLongRangeWeapon : WeaponUpgrade
         weapon.IncreaseLaunchForce(increaseLaunchForceBy);
         weapon.SetUseGravity(usesGravity);
         weapon.DecreaseProjectileCost(improveProjectileCostBy);
-    }
-
-    private void Start()
-    {
-        mainCamera = Camera.main;
     }
 }

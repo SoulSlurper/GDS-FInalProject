@@ -8,7 +8,7 @@ public class PickupItem : MonoBehaviour
     [SerializeField] private float checkGroundDistance = 0.1f;
 
     private Rigidbody2D rb;
-    private bool _onGround;
+    private bool _onGround = false;
 
     // Getter and Setters // // // //
     public bool onGround

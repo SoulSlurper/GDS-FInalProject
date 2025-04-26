@@ -15,6 +15,8 @@ public class UpgradeProjectileWeapon : WeaponUpgrade
 
         UpgradeWeapon(GetWeapon(collision.gameObject));
 
+        ResetCameraSize();
+
         Destroy(gameObject);
     }
 

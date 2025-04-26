@@ -27,4 +27,15 @@ public class WeaponUpgrade : PickupItem
         get { return _improveCostsBy; }
         private set { _improveCostsBy = value; }
     }
+
+    // Functions // // // //
+    public void ResetCameraSize()
+    {
+        Camera mainCamera = Camera.main;
+        if (!mainCamera.orthographic.Equals(3f)) 
+        {
+            Debug.Log("Reset Camera Size");
+            Camera.main.orthographicSize = 3f;
+        }
+    }
 }
