@@ -31,7 +31,7 @@ public class LightningController : MonoBehaviour
 
     private void TriggerRandomLightning()
     {
-        int randomAttack = Random.Range(1, 7); // 1 to 6 
+        int randomAttack = Random.Range(1, 7); // 1 to 6 inclusive
         animator.SetTrigger($"Lightning{randomAttack}");
 
         // Randomly scale lightning
