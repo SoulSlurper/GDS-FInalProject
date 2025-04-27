@@ -82,7 +82,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -120,7 +120,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -490,7 +490,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PipeBackgrounds_0: 7336711239799736146
+      PipeBackgrounds_1: 8896459047272439774
+      PipeBackgrounds_10: -6563814054491110982
+      PipeBackgrounds_11: -3074664002599650037
+      PipeBackgrounds_12: 2987055498070965845
+      PipeBackgrounds_13: 3943417363696825300
+      PipeBackgrounds_14: -4794297632789313122
+      PipeBackgrounds_15: 5933663535232270259
+      PipeBackgrounds_2: 8520486192338240756
+      PipeBackgrounds_3: 609768273835218463
+      PipeBackgrounds_4: 7714181132482958774
+      PipeBackgrounds_5: 7361401268217745304
+      PipeBackgrounds_6: 8271265737663942722
+      PipeBackgrounds_7: 293973304248947868
+      PipeBackgrounds_8: 8671872113606894285
+      PipeBackgrounds_9: -8464305650404839353
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

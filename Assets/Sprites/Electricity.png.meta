@@ -124,7 +124,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -162,7 +162,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -826,7 +826,37 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Electricity_0: -6624910562423039438
+      Electricity_1: -6889779730706040819
+      Electricity_10: 6299944438010489679
+      Electricity_11: -5333423655861996960
+      Electricity_12: 5767417582203243366
+      Electricity_13: 7919270718261608718
+      Electricity_14: -8175946484079781957
+      Electricity_15: -6469928407332084831
+      Electricity_16: -2261003953846772778
+      Electricity_17: -7945546226643733480
+      Electricity_18: 45760903004030220
+      Electricity_19: -1971455438526836571
+      Electricity_2: 7103196926343963196
+      Electricity_20: 1527505244393948090
+      Electricity_21: -9153710496387364189
+      Electricity_22: -1069583135304229977
+      Electricity_23: -2305448768193802591
+      Electricity_24: 2778080681281074433
+      Electricity_25: 4187338460134662730
+      Electricity_26: -384952957381262845
+      Electricity_27: -2319711409945779499
+      Electricity_28: 3633828634998998140
+      Electricity_29: -8154000861100006552
+      Electricity_3: 915119507131856742
+      Electricity_4: 8152553747938091301
+      Electricity_5: 3920542726847177860
+      Electricity_6: -2979655169564212209
+      Electricity_7: 4743782125371607806
+      Electricity_8: -1408022030152059233
+      Electricity_9: -5898663588021495641
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -9,12 +9,15 @@ public class LongRangeWeapon : Weapon
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchLocation; //where the projectile will appear
+    [SerializeField] public Animator animator;
 
     [Header("Projectile Details")]
     [SerializeField] private float _launchForce = 1f;
     [SerializeField] private bool _usesGravity = false;
     [SerializeField] private float _projectileCost = 0f;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
+
+
 
     private float _realProjectileCost;
 
@@ -121,6 +124,8 @@ public class LongRangeWeapon : Weapon
         if (!weaponUser.noHealth && useWeapon)
         {
             SpawnProjectile();
+
+            animator.SetTrigger("Fire");
 
             if (SoundManager.Instance != null)
             {

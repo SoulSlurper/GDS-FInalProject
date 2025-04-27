@@ -124,7 +124,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -162,7 +162,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -826,7 +826,37 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ElectricityEmmisionMap_0: 3288821521461203266
+      ElectricityEmmisionMap_1: 1533945025037976278
+      ElectricityEmmisionMap_10: 145468620489989822
+      ElectricityEmmisionMap_11: -2488763506953050717
+      ElectricityEmmisionMap_12: -7546229758800951915
+      ElectricityEmmisionMap_13: -8558874073331625927
+      ElectricityEmmisionMap_14: -4458069644620537727
+      ElectricityEmmisionMap_15: -3405082405326339701
+      ElectricityEmmisionMap_16: -8365677418392361961
+      ElectricityEmmisionMap_17: -2218318719530009221
+      ElectricityEmmisionMap_18: -2375222532886968139
+      ElectricityEmmisionMap_19: -3004315083769941603
+      ElectricityEmmisionMap_2: 7705873128597957241
+      ElectricityEmmisionMap_20: 4066656532832856895
+      ElectricityEmmisionMap_21: -1284154765920145995
+      ElectricityEmmisionMap_22: 5848556587453749620
+      ElectricityEmmisionMap_23: 8013665714576141762
+      ElectricityEmmisionMap_24: 3590272699662024635
+      ElectricityEmmisionMap_25: 8984845137592650363
+      ElectricityEmmisionMap_26: -545306989974292919
+      ElectricityEmmisionMap_27: -3916757891518166308
+      ElectricityEmmisionMap_28: -7414024799815015275
+      ElectricityEmmisionMap_29: 6097327687669435635
+      ElectricityEmmisionMap_3: 3783951111337511295
+      ElectricityEmmisionMap_4: -8492534458222981888
+      ElectricityEmmisionMap_5: 5588839510561904300
+      ElectricityEmmisionMap_6: 727870847397910927
+      ElectricityEmmisionMap_7: -8447065910014788667
+      ElectricityEmmisionMap_8: -5454453056554222852
+      ElectricityEmmisionMap_9: 8351869848456933602
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
