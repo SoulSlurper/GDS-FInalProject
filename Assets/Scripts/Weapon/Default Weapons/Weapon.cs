@@ -16,6 +16,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _knockbackForce = 8f;
     [SerializeField] private float _bossKnockbackMultiplier = 0.5f;
 
+    [Header("Aim Settings")]
+    [SerializeField] private float _aimDamageMultiplier = 1.25f; // 25% damage increase when aiming
+
     [Header("Details by User Health")]
     [SerializeField][Range(0f, 1f)] private float _minDamage = 1f;
     [SerializeField][Range(0f, 1f)] private float _minCost = 1f;
@@ -27,6 +30,7 @@ public class Weapon : MonoBehaviour
     private enum TDIndex { type, cost };
 
     private Color _color;
+    private SlimeKnightController playerController;
 
     // Properties
     public Status weaponUser { get => _weaponUser; private set => _weaponUser = value; }
@@ -44,6 +48,7 @@ public class Weapon : MonoBehaviour
     public float realCost { get => _realCost; private set => _realCost = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
+    public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
 
     void Awake()
     {
@@ -52,6 +57,13 @@ public class Weapon : MonoBehaviour
         ShowAllTextDetails(false);
 
         color = GetComponent<SpriteRenderer>().color;
+        
+        // Find player controller for aim check
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerController = player.GetComponent<SlimeKnightController>();
+        }
     }
 
     void LateUpdate() => SetRealAmounts();
@@ -155,7 +167,20 @@ public class Weapon : MonoBehaviour
 
     public virtual void SetRealAmounts()
     {
-        realDamage = GetRealAmount(damage, minDamage);
+        // Calculate base damage based on health
+        float baseDamage = GetRealAmount(damage, minDamage);
+        
+        // Apply aiming damage bonus if player is aiming
+        if (playerController != null && playerController.IsAiming())
+        {
+            realDamage = baseDamage * aimDamageMultiplier;
+        }
+        else
+        {
+            realDamage = baseDamage;
+        }
+        
+        // Calculate cost
         realCost = GetRealAmount(cost, minCost);
         SetCostTextDetail(realCost);
     }

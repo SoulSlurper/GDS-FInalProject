@@ -25,6 +25,9 @@ public class SlimeKnightController : MonoBehaviour
     [SerializeField] private float flashInterval = 0.1f;
     [SerializeField] private bool playHurtAnimation = true;
 
+    [Header("Aiming Settings")]
+    [SerializeField] private float aimMovementMultiplier = 0.6f; // Slow down to 60% when aiming
+
     [Header("Physics Materials")]
     [SerializeField] private PhysicsMaterial2D noFriction;
     [SerializeField] private PhysicsMaterial2D fullFriction;
@@ -35,6 +38,7 @@ public class SlimeKnightController : MonoBehaviour
     private Animator animator;
     private SoundManager soundManager;
     private Collider2D playerCollider;
+    private WeaponAtHand weaponHandler;
     
     // State variables
     private Vector2 spriteSize;
@@ -45,6 +49,7 @@ public class SlimeKnightController : MonoBehaviour
     private Vector2 velocity = Vector2.zero;
     private bool facingRight = true;
     private bool isWalking = false;
+    private bool isAiming = false;
     
     // Jump related variables
     private float coyoteTimeCounter;
@@ -62,6 +67,7 @@ public class SlimeKnightController : MonoBehaviour
     private readonly string IS_FALLING = "IsFalling";
     private readonly string IS_GROUNDED = "IsGrounded";
     private readonly string IS_HURT = "IsHurt";
+    private readonly string IS_AIMING = "IsAiming"; // New animation parameter for aiming
 
     private void Awake()
     {
@@ -70,6 +76,7 @@ public class SlimeKnightController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
+        weaponHandler = GetComponentInChildren<WeaponAtHand>();
         
         // Setup collision detection sizes
         CalculateCollisionPoints();
@@ -96,6 +103,9 @@ public class SlimeKnightController : MonoBehaviour
 
         // Process movement input
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        
+        // Handle aiming state
+        UpdateAimingState();
         
         // Handle jump input and buffer
         HandleJumpInput();
@@ -130,6 +140,25 @@ public class SlimeKnightController : MonoBehaviour
         
         // Handle movement physics
         HandleMovementPhysics();
+    }
+
+    private void UpdateAimingState()
+    {
+        if (weaponHandler == null)
+        {
+            weaponHandler = GetComponentInChildren<WeaponAtHand>();
+            if (weaponHandler == null) return;
+        }
+        
+        // Check if weapon selection is active or was recently canceled with right-click
+        if (weaponHandler.IsSelecting() || weaponHandler.WasSelectionRecentlyCanceled())
+        {
+            isAiming = false;
+        }
+        else
+        {
+            isAiming = Input.GetMouseButton(1); // Right mouse button
+        }
     }
 
     private void CalculateCollisionPoints()
@@ -228,8 +257,14 @@ public class SlimeKnightController : MonoBehaviour
 
     private void HandleMovementPhysics()
     {
-        // Calculate target velocity
-        float targetVelocityX = horizontalInput * moveSpeed;
+        // Calculate target velocity with aiming slowdown if applicable
+        float currentMoveSpeed = moveSpeed;
+        if (isAiming)
+        {
+            currentMoveSpeed *= aimMovementMultiplier;
+        }
+        
+        float targetVelocityX = horizontalInput * currentMoveSpeed;
 
         // Wall sliding
         if ((isTouchingWallLeft && horizontalInput < 0) || (isTouchingWallRight && horizontalInput > 0))
@@ -296,6 +331,20 @@ public class SlimeKnightController : MonoBehaviour
         animator.SetBool(IS_GROUNDED, isGrounded);
         animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f);
         animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
+        
+        // Set aiming animation if parameter exists
+        bool hasAimParameter = false;
+        foreach (AnimatorControllerParameter param in animator.parameters)
+        {
+            if (param.name == IS_AIMING)
+            {
+                hasAimParameter = true;
+                break;
+            }
+        }
+        
+        if (hasAimParameter)
+            animator.SetBool(IS_AIMING, isAiming);
     }
 
     private void HandleWalkingSound()
@@ -314,6 +363,8 @@ public class SlimeKnightController : MonoBehaviour
     }
     
     public bool IsMoving() => Mathf.Abs(horizontalInput) > 0.1f;
+    
+    public bool IsAiming() => isAiming;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

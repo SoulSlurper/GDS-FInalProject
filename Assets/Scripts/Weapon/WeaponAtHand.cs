@@ -71,6 +71,26 @@ public class WeaponAtHand : MonoBehaviour
             availableWeaponsLimit = weapons.Count;
     }
     
+    // Tracking right-click cancel for aiming conflict prevention
+    private float lastCancelTime = 0f;
+    private const float RIGHT_CLICK_COOLDOWN = 0.2f; // 200ms cooldown
+    
+    /// <summary>
+    /// Returns whether the player is currently in weapon selection mode
+    /// </summary>
+    public bool IsSelecting()
+    {
+        return isSelecting;
+    }
+    
+    /// <summary>
+    /// Checks if right-click was recently used to cancel weapon selection
+    /// </summary>
+    public bool WasSelectionRecentlyCanceled()
+    {
+        return Time.time - lastCancelTime < RIGHT_CLICK_COOLDOWN;
+    }
+    
     #endregion
 
     #region Weapon Management Methods
@@ -360,9 +380,10 @@ public class WeaponAtHand : MonoBehaviour
             {
                 OnWeaponMenuExit(true);
             }
-            // Cancel with right click
+            // Cancel with right click - only process right-click when in selection mode
             else if (Input.GetMouseButtonDown(1))
             {
+                lastCancelTime = Time.time; // Record time of right-click cancel
                 OnWeaponMenuExit(false);
             }
         }

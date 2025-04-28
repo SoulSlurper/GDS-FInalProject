@@ -8,27 +8,46 @@ public class BossTrigger : MonoBehaviour
     public GameObject boss;
     [SerializeField]
     public Camera mainCamera;
+    [SerializeField]
+    private float bossCameraSize = 5f;
+    
     public static bool hasSpawnedBoss = false;
-    // Start is called before the first frame update
+    private float originalCameraSize;
+    
     void Start()
     {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
         
+        originalCameraSize = mainCamera.orthographicSize;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasSpawnedBoss)
+        if (!hasSpawnedBoss && collision.CompareTag("Player"))
         {
             Instantiate(boss);
             hasSpawnedBoss = true;
-            mainCamera.orthographicSize = 5f;
+            
+            // Set camera size for boss battle
+            mainCamera.orthographicSize = bossCameraSize;
+            
+            // Optional: Disable the trigger after spawning
             //gameObject.SetActive(false);
         }
+    }
+    
+    // Method to restore original camera settings (can be called when boss is defeated)
+    public void RestoreOriginalCamera()
+    {
+        if (mainCamera != null)
+        {
+            mainCamera.orthographicSize = originalCameraSize;
+        }
+        
+        // Reset the static flag if needed for future boss encounters
+        hasSpawnedBoss = false;
     }
 }
