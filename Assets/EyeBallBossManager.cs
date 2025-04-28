@@ -26,13 +26,20 @@ public class EyeBallBossManager : MonoBehaviour
     [SerializeField]
     public float idleDistance = 5f;
 
+    //Ranged
     public float idleTimer = 0f;
     public Vector2 rangedAttackPos;
     public bool rangedPosSet = false;
 
+    //Melee
     public float chargeTimer = 0f;
     public bool chargePosSet = false;
     Vector2 charge1Start;
+
+    //Summon
+    [SerializeField]
+    public GameObject eyeball;
+    public int eyeballCount = 2;
 
     [SerializeField]
     public GameObject Laser;
@@ -84,7 +91,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void pickState()
     {
-        switch (Random.Range(0, 2))
+        /*switch (Random.Range(0, 2))
         {
             case 0:
                 currentState = BossState.RangedAttack; break;
@@ -93,8 +100,8 @@ public class EyeBallBossManager : MonoBehaviour
             case 2:
                 currentState = BossState.SummonAttack; break;
 
-        }
-        //currentState = BossState.MeleeAttackStart;
+        }*/
+        currentState = BossState.SummonAttack;
     }
     void Idle()
     {
@@ -147,7 +154,7 @@ public class EyeBallBossManager : MonoBehaviour
             Vector2 shootDirection = (Player.GetComponent<Rigidbody2D>().position - rb.position).normalized;
             GameObject laser = Instantiate(Laser, rb.position, Quaternion.identity);
 
-            laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 9f;
+            laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 8f;
 
             yield return new WaitForSeconds(0.5f);
 
@@ -247,7 +254,28 @@ public class EyeBallBossManager : MonoBehaviour
 
     void SummonAttack() 
     {
+        if (!rangedPosSet)
+        {
+            rangedAttackPos = this.GetComponent<Rigidbody2D>().position + new Vector2(0, 3);
+            rangedPosSet = true;
+        }
 
+        Vector2 currentPos = rb.position;
+        Vector2 newPos = Vector2.Lerp(currentPos, rangedAttackPos, 8f * Time.deltaTime);
+        rb.MovePosition(newPos);
+
+        if (currentPos == newPos)
+        {
+            if (eyeballCount != 0)
+            {
+                //Instantiate(eyeball, new Vector2(rb.position.x, rb.position.y + 1));
+                eyeballCount--;
+            }
+            currentState = BossState.Idle;
+            Debug.Log(currentState);
+            rangedPosSet = false;
+            idleTimer = 0f;
+        }
     }
 
     void Dead()

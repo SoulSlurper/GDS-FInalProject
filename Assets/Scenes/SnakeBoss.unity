@@ -651,6 +651,10 @@ MonoBehaviour:
   idleTimer: 0
   rangedAttackPos: {x: 0, y: 0}
   rangedPosSet: 0
+  chargeTimer: 0
+  chargePosSet: 0
+  eyeball: {fileID: 4535943814015397685, guid: 3a4d8269d5addff438412baa39b7a1aa, type: 3}
+  eyeballCount: 2
   Laser: {fileID: 5182014147571137551, guid: b332bfaf7e27a3c4e94656d1ba9d678f, type: 3}
   Player: {fileID: 0}
   playerPos: {x: 0, y: 0}
