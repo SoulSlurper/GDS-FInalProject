@@ -17,8 +17,6 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private float _projectileCost = 0f;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
 
-
-
     private float _realProjectileCost;
 
     // Getter and Setters // // // //
@@ -146,7 +144,9 @@ public class LongRangeWeapon : Weapon
         wDetails.SetWeaponUser(weaponUser);
         wDetails.SetUsesGravity(usesGravity);
         wDetails.SetLaunchForce(launchForce);
-        wDetails.SetDamage(damage);
+        
+        // Use realDamage instead of damage to apply aiming bonus to projectiles
+        wDetails.SetDamage(realDamage);
 
         wDetails.Attack();
     }
