@@ -10,21 +10,17 @@ public class WeaponAtHand : MonoBehaviour
     [SerializeField] private GameObject player;
     
     [Header("Weapon Settings")]
-    [SerializeField] private bool areWeaponsCosting = false;
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
     [SerializeField][Range(1, 4)] private int _availableWeaponsLimit = 3;
     
-    [Header("Visual Settings")]
-    [SerializeField] private Color colorSelection = Color.grey;
-    
-    [Header("Health Settings")]
-    [SerializeField] private float healthRestoreOnNone = 5f; // Amount of HP restored when switching to None
+    [Header("Health Regeneration")]
+    [SerializeField] private float healthRegenPerSecond = 1f; // HP regenerated per second when using None weapon
 
     // Internal weapon tracking
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
-    private int tempWeaponIndex = -1;
-    private bool isSelecting = false;
+    private bool selectionRecentlyCanceled = false;
+    private float selectionCancelTime = 0f;
 
     // Component references
     private Status playerStatus;
@@ -53,8 +49,9 @@ public class WeaponAtHand : MonoBehaviour
 
     private void Update()
     {
-        HandleWeaponSelection();
+        HandleDirectWeaponSwitching();
         UpdateWeaponOrientation();
+        HandleHealthRegeneration();
     }
     
     #endregion
@@ -71,24 +68,30 @@ public class WeaponAtHand : MonoBehaviour
             availableWeaponsLimit = weapons.Count;
     }
     
-    // Tracking right-click cancel for aiming conflict prevention
-    private float lastCancelTime = 0f;
-    private const float RIGHT_CLICK_COOLDOWN = 0.2f; // 200ms cooldown
-    
     /// <summary>
     /// Returns whether the player is currently in weapon selection mode
+    /// Maintained for compatibility with SlimeKnightController
     /// </summary>
     public bool IsSelecting()
     {
-        return isSelecting;
+        // Always false in the new implementation since we don't have a selection mode
+        return false;
     }
     
     /// <summary>
-    /// Checks if right-click was recently used to cancel weapon selection
+    /// Returns whether the weapon selection was recently canceled
+    /// Maintained for compatibility with SlimeKnightController
     /// </summary>
     public bool WasSelectionRecentlyCanceled()
     {
-        return Time.time - lastCancelTime < RIGHT_CLICK_COOLDOWN;
+        // Check if it was canceled recently (within last 0.5 seconds)
+        if (selectionRecentlyCanceled && Time.time - selectionCancelTime < 0.5f)
+        {
+            return true;
+        }
+        
+        selectionRecentlyCanceled = false;
+        return false;
     }
     
     #endregion
@@ -141,34 +144,13 @@ public class WeaponAtHand : MonoBehaviour
     /// <summary>
     /// Applies visual settings and enables attack for active weapon
     /// </summary>
-    private void ConfirmSelectedWeapon(Weapon weaponDetails)
+    private void SetupSelectedWeapon(Weapon weaponDetails)
     {
         playerSpriteRenderer.color = playerColor;
         weaponDetails.GetComponent<SpriteRenderer>().color = weaponDetails.color;
         weaponDetails.ShowAllTextDetails(false);
         weaponDetails.enabledAttack = true;
         selectedWeapon = weaponDetails.type;
-    }
-
-    /// <summary>
-    /// Applies selection visual settings and disables attack for preview weapon
-    /// </summary>
-    private void UnconfirmSelectedWeapon(Weapon weaponDetails)
-    {
-        playerSpriteRenderer.color = colorSelection;
-        weaponDetails.GetComponent<SpriteRenderer>().color = colorSelection;
-
-        if (areWeaponsCosting)
-        {
-            bool showCost = weaponDetails.type != WeaponType.None;
-            weaponDetails.ShowTextDetails(true, showCost);
-        }
-        else 
-        {
-            weaponDetails.ShowTextDetails(true, false);
-        }
-
-        weaponDetails.enabledAttack = false;
     }
 
     /// <summary>
@@ -185,7 +167,7 @@ public class WeaponAtHand : MonoBehaviour
     /// <summary>
     /// Activates a weapon by index and applies appropriate settings
     /// </summary>
-    private void SelectWeapon(int index, bool confirm = true)
+    private void SelectWeapon(int index)
     {
         DeselectWeapon();
         currentWeaponIndex = index;
@@ -194,21 +176,17 @@ public class WeaponAtHand : MonoBehaviour
         Weapon wDetails = weapon.GetComponent<Weapon>();
 
         weapon.SetActive(true);
-
-        if (confirm) 
-            ConfirmSelectedWeapon(wDetails);
-        else 
-            UnconfirmSelectedWeapon(wDetails);
+        SetupSelectedWeapon(wDetails);
     }
 
     /// <summary>
     /// Selects a weapon by its index in the weapons list
     /// </summary>
-    private void SelectWeaponByIndex(int index, bool confirm = true)
+    private void SelectWeaponByIndex(int index)
     {
         if (index > -1 && index < availableWeaponsLimit)
         {
-            SelectWeapon(index, confirm);
+            SelectWeapon(index);
         }
         else
         {
@@ -217,7 +195,7 @@ public class WeaponAtHand : MonoBehaviour
             
             if (currentWeaponIndex > -1)
             {
-                SelectWeapon(currentWeaponIndex, confirm);
+                SelectWeapon(currentWeaponIndex);
             }
         }
     }
@@ -225,9 +203,9 @@ public class WeaponAtHand : MonoBehaviour
     /// <summary>
     /// Selects a weapon by its type
     /// </summary>
-    private void SelectWeaponByType(WeaponType type, bool confirm = true)
+    private void SelectWeaponByType(WeaponType type)
     {
-        SelectWeaponByIndex(GetWeaponIndex(type), confirm);
+        SelectWeaponByIndex(GetWeaponIndex(type));
     }
     
     #endregion
@@ -235,157 +213,65 @@ public class WeaponAtHand : MonoBehaviour
     #region Weapon Cycling Methods
     
     /// <summary>
-    /// Get next weapon index, cycling through all weapons except the current one
+    /// Get next weapon index, cycling through all weapons
     /// </summary>
     private int GetNextWeaponIndex(int currentIndex)
     {
         int nextIndex = currentIndex + 1;
         if (nextIndex >= availableWeaponsLimit)
             nextIndex = 0;
-            
-        // Skip original weapon when cycling
-        if (nextIndex == tempWeaponIndex)
-        {
-            nextIndex++;
-            if (nextIndex >= availableWeaponsLimit)
-                nextIndex = 0;
-        }
         
         return nextIndex;
     }
     
     /// <summary>
-    /// Get previous weapon index, cycling through all weapons except the current one
+    /// Get previous weapon index, cycling through all weapons
     /// </summary>
     private int GetPreviousWeaponIndex(int currentIndex)
     {
         int prevIndex = currentIndex - 1;
         if (prevIndex < 0)
             prevIndex = availableWeaponsLimit - 1;
-            
-        // Skip original weapon when cycling
-        if (prevIndex == tempWeaponIndex)
-        {
-            prevIndex--;
-            if (prevIndex < 0)
-                prevIndex = availableWeaponsLimit - 1;
-        }
         
         return prevIndex;
     }
     
     #endregion
 
-    #region Weapon Selection Logic
+    #region Direct Weapon Switching
     
     /// <summary>
-    /// Handles entering the weapon selection menu
+    /// Directly switches weapons based on mouse wheel input
     /// </summary>
-    private void OnWeaponMenuEnter(bool isScrollUp)
-    {
-        tempWeaponIndex = currentWeaponIndex;
-        
-        // Get first weapon to display based on scroll direction
-        int newCurrentIndex;
-        if (isScrollUp)
-        {
-            // If scrolling up, start with next weapon
-            newCurrentIndex = GetNextWeaponIndex(currentWeaponIndex);
-        }
-        else
-        {
-            // If scrolling down, start with previous weapon
-            newCurrentIndex = GetPreviousWeaponIndex(currentWeaponIndex);
-        }
-        
-        SelectWeaponByIndex(newCurrentIndex, false);
-        isSelecting = true;
-    }
-
-    /// <summary>
-    /// Handles scrolling through weapons in the selection menu
-    /// </summary>
-    private void OnWeaponMenu()
+    private void HandleDirectWeaponSwitching()
     {
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollValue != 0f)
-        {
-            if (scrollValue > 0f)
-            {
-                // Scroll up = next weapon
-                int newCurrentIndex = GetNextWeaponIndex(currentWeaponIndex);
-                SelectWeaponByIndex(newCurrentIndex, false);
-            }
-            else
-            {
-                // Scroll down = previous weapon
-                int newCurrentIndex = GetPreviousWeaponIndex(currentWeaponIndex);
-                SelectWeaponByIndex(newCurrentIndex, false);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Handles exiting the weapon selection menu
-    /// </summary>
-    private void OnWeaponMenuExit(bool weaponSelected)
-    {
-        if (weaponSelected)
-        {
-            // Confirm selection
-            SelectWeaponByIndex(currentWeaponIndex);
+        
+        if (scrollValue == 0f || weapons.Count <= 1) 
+            return;
             
-            // Apply weapon switch cost if enabled
-            if (areWeaponsCosting)
-            {
-                float weaponCost = weapons[currentWeaponIndex].GetComponent<Weapon>().cost;
-                playerStatus.TakeDamage(weaponCost);
-            }
-                
-            // Restore health when switching to None weapon
-            Weapon selectedWeaponComponent = weapons[currentWeaponIndex].GetComponent<Weapon>();
-            if (selectedWeaponComponent.type == WeaponType.None && healthRestoreOnNone > 0)
-            {
-                playerStatus.TakeHealth(healthRestoreOnNone);
-            }
+        if (scrollValue > 0f)
+        {
+            // Scroll up = previous weapon (corrected direction)
+            int newIndex = GetPreviousWeaponIndex(currentWeaponIndex);
+            SelectWeaponByIndex(newIndex);
         }
         else
         {
-            // Cancel and revert to previous weapon
-            SelectWeaponByIndex(tempWeaponIndex);
+            // Scroll down = next weapon (corrected direction)
+            int newIndex = GetNextWeaponIndex(currentWeaponIndex);
+            SelectWeaponByIndex(newIndex);
         }
-
-        isSelecting = false;
     }
-
+    
     /// <summary>
-    /// Main method for handling weapon selection input
+    /// Regenerates health over time when no weapon is equipped
     /// </summary>
-    private void HandleWeaponSelection()
+    private void HandleHealthRegeneration()
     {
-        float scrollValue = Input.GetAxis("Mouse ScrollWheel");
-        
-        // Enter selection mode when mouse wheel is scrolled
-        if (scrollValue != 0f && !isSelecting && weapons.Count > 1)
+        if (selectedWeapon == WeaponType.None && playerStatus != null)
         {
-            OnWeaponMenuEnter(scrollValue > 0f);
-        }
-
-        if (isSelecting)
-        {
-            OnWeaponMenu();
-
-            // Confirm with left click
-            if (Input.GetMouseButtonDown(0))
-            {
-                OnWeaponMenuExit(true);
-            }
-            // Cancel with right click - only process right-click when in selection mode
-            else if (Input.GetMouseButtonDown(1))
-            {
-                lastCancelTime = Time.time; // Record time of right-click cancel
-                OnWeaponMenuExit(false);
-            }
+            playerStatus.TakeHealth(healthRegenPerSecond * Time.deltaTime);
         }
     }
     
