@@ -259,7 +259,7 @@ public class SlimeKnightController : MonoBehaviour
     {
         // Calculate target velocity with aiming slowdown if applicable
         float currentMoveSpeed = moveSpeed;
-        if (isAiming)
+        if (isAiming && isGrounded) // Only apply slowdown when on ground
         {
             currentMoveSpeed *= aimMovementMultiplier;
         }
