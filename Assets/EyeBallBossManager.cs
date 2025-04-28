@@ -11,7 +11,10 @@ public class EyeBallBossManager : MonoBehaviour
         Idle,
         RangedAttack,
         Shooting,
-        MeleeAttack,
+        MeleeAttackStart,
+        Charge1,
+        Charge2,
+        Charge3,
         SummonAttack,
         Dead
     }
@@ -26,6 +29,10 @@ public class EyeBallBossManager : MonoBehaviour
     public float idleTimer = 0f;
     public Vector2 rangedAttackPos;
     public bool rangedPosSet = false;
+
+    public float chargeTimer = 0f;
+    public bool chargePosSet = false;
+    Vector2 charge1Start;
 
     [SerializeField]
     public GameObject Laser;
@@ -54,8 +61,17 @@ public class EyeBallBossManager : MonoBehaviour
                 break;
             case BossState.Shooting:
                 break;
-            case BossState.MeleeAttack:
-                MeleeAttack();
+            case BossState.MeleeAttackStart:
+                MeleeAttackStart();
+                break;
+            case BossState.Charge1:
+                Charge1();
+                break;
+            case BossState.Charge2:
+                Charge2();
+                break;
+            case BossState.Charge3:
+                Charge3();
                 break;
             case BossState.SummonAttack:
                 SummonAttack(); 
@@ -68,17 +84,17 @@ public class EyeBallBossManager : MonoBehaviour
 
     void pickState()
     {
-        /*switch (Random.Range(0, 3))
+        switch (Random.Range(0, 2))
         {
             case 0:
                 currentState = BossState.RangedAttack; break;
             case 1:
-                currentState = BossState.MeleeAttack; break;
+                currentState = BossState.MeleeAttackStart; break;
             case 2:
                 currentState = BossState.SummonAttack; break;
 
-        }*/
-        currentState = BossState.RangedAttack;
+        }
+        //currentState = BossState.MeleeAttackStart;
     }
     void Idle()
     {
@@ -131,7 +147,7 @@ public class EyeBallBossManager : MonoBehaviour
             Vector2 shootDirection = (Player.GetComponent<Rigidbody2D>().position - rb.position).normalized;
             GameObject laser = Instantiate(Laser, rb.position, Quaternion.identity);
 
-            laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 7.5f;
+            laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 9f;
 
             yield return new WaitForSeconds(0.5f);
 
@@ -139,12 +155,93 @@ public class EyeBallBossManager : MonoBehaviour
         }
 
         idleTimer = 0f;
+        rangedPosSet = false;
         currentState = BossState.Idle;
 
     }
 
-    void MeleeAttack() 
-    { 
+    void MeleeAttackStart() 
+    {
+
+        chargeTimer += Time.deltaTime;
+        playerPos = Player.GetComponent<Rigidbody2D>().position;
+        charge1Start = playerPos + new Vector2(10, -1);
+        Vector2 currentPos = rb.position;
+
+        Vector2 newPos = Vector2.Lerp(currentPos, charge1Start, 10f * Time.deltaTime);
+
+        rb.MovePosition(newPos);
+
+        if (chargeTimer > 1f)
+        {
+            Debug.Log("Charge 1");
+            currentState = BossState.Charge1;
+            chargeTimer = 0f;
+        }
+    }
+
+    void Charge1()
+    {
+        chargeTimer += Time.deltaTime;
+        Vector2 currentPos = rb.position;
+        Vector2 chargeEnd = (currentPos + new Vector2(-10, 0));
+
+        Vector2 newPos = Vector2.Lerp(currentPos, chargeEnd, 0.9f * Time.deltaTime);
+
+        
+        rb.MovePosition(newPos);
+
+        
+
+        if (chargeTimer > 2.5f)
+        {
+            Debug.Log("Charge 2");
+            currentState = BossState.Charge2;
+            chargeTimer = 0f;
+        }
+
+    }
+
+    void Charge2()
+    {
+        chargeTimer += Time.deltaTime;
+        Vector2 currentPos = rb.position;
+        Vector2 chargeEnd = (currentPos + new Vector2(10, 0));
+
+        Vector2 newPos = Vector2.Lerp(currentPos, chargeEnd, 0.9f * Time.deltaTime);
+
+
+        rb.MovePosition(newPos);
+
+
+        if (chargeTimer > 3f)
+        {
+            Debug.Log("Charge 3");
+            currentState = BossState.Charge3;
+            chargeTimer = 0f;
+        }
+    }
+
+    void Charge3()
+    {
+        chargeTimer += Time.deltaTime;
+        Vector2 currentPos = rb.position;
+        Vector2 chargeEnd = (currentPos + new Vector2(-10, 0));
+
+        Vector2 newPos = Vector2.Lerp(currentPos, chargeEnd, 0.9f * Time.deltaTime);
+
+
+        rb.MovePosition(newPos);
+
+
+
+        if (chargeTimer > 2.75f)
+        {
+            Debug.Log("Idle");
+            currentState = BossState.Idle;
+            chargeTimer = 0f;
+            idleTimer = 0f;
+        }
 
     }
 
