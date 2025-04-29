@@ -165,7 +165,10 @@ public class Status : MonoBehaviour
 
     public void CreateDropItem()
     {
-        InstantiateItem(dropItem);
+        if (dropItem)
+        {
+            InstantiateItem(dropItem);
+        }
     }
     #endregion
 

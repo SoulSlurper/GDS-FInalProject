@@ -53,8 +53,10 @@ public class BossHp : Status
 
             healthBar.SetActiveState(false);
 
-            InstantiateItem(endDropItem);
-            
+            if (endDropItem)
+            {
+                InstantiateItem(endDropItem);
+            }
         }
         else
         {
