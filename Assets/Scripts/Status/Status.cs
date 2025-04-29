@@ -111,6 +111,8 @@ public class Status : MonoBehaviour
     public void InstantDeath()
     {
         currentHealth = 0;
+
+        UpdateHealthBar();
     }
 
     public void ResetHealth()
