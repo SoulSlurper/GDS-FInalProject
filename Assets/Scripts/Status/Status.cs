@@ -79,11 +79,20 @@ public class Status : MonoBehaviour
         IncreaseCurrentHealth(amount);
     }
 
+    private void SetupHealthBar()
+    {
+        if (healthBar)
+        {
+            healthBar.SetMaxValue(maxHealth);
+            healthBar.SetValue(maxHealth);
+        }
+    }
+
     private void UpdateHealthBar()
     {
         if (healthBar)
         {
-            healthBar.SetHealth(currentHealth);
+            healthBar.SetValue(currentHealth);
         }
     }
 
@@ -105,7 +114,7 @@ public class Status : MonoBehaviour
     { 
         this.health = currentHealth = maxHealth = health;
 
-        UpdateHealthBar();
+        SetupHealthBar();
     }
 
     public void IncreaseCurrentHealth(float currentHealth) 
