@@ -26,9 +26,9 @@ public class EyeBallBossManager : MonoBehaviour
     private float idleDistance = 5f;
 
     //Ranged
-    private float idleTimer = 0f;
-    private Vector2 rangedAttackPos;
-    private bool rangedPosSet = false;
+    float idleTimer = 0f;
+    Vector2 rangedAttackPos;
+    bool rangedPosSet = false;
 
     //Melee
     private float chargeTimer = 0f;
@@ -90,7 +90,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void pickState()
     {
-        /*switch (Random.Range(0, 2))
+        switch (Random.Range(0, 3))
         {
             case 0:
                 currentState = BossState.RangedAttack; break;
@@ -99,14 +99,16 @@ public class EyeBallBossManager : MonoBehaviour
             case 2:
                 currentState = BossState.SummonAttack; break;
 
-        }*/
-        currentState = BossState.SummonAttack;
+        }
+        
     }
     void Idle()
     {
         if (idleTimer > 7.5f)
         {
             pickState();
+            idleTimer = 0f;
+            chargeTimer = 0f;
             Debug.Log(currentState);
         }
         playerPos = Player.GetComponent<Rigidbody2D>().position;
@@ -125,15 +127,17 @@ public class EyeBallBossManager : MonoBehaviour
             rangedAttackPos = this.GetComponent<Rigidbody2D>().position + new Vector2(0, 3);
             rangedPosSet = true;
         }
-        
+
         Vector2 currentPos = rb.position;
-        Vector2 newPos = Vector2.Lerp(currentPos, rangedAttackPos, 8f*Time.deltaTime);
+        Vector2 newPos = Vector2.Lerp(currentPos, rangedAttackPos, 8f * Time.deltaTime);
         rb.MovePosition(newPos);
 
-        if (currentPos == newPos)
+
+        if (Vector2.Distance(currentPos, newPos) < 0.01f)
         {
             currentState = BossState.Shooting;
             StartCoroutine(shootLaser());
+            rangedPosSet = false;
             Debug.Log(currentState);
         }
     }
@@ -263,7 +267,7 @@ public class EyeBallBossManager : MonoBehaviour
         Vector2 newPos = Vector2.Lerp(currentPos, rangedAttackPos, 8f * Time.deltaTime);
         rb.MovePosition(newPos);
 
-        if (currentPos == newPos)
+        if (Vector2.Distance(currentPos, newPos) < 0.01f)
         {
             if (eyeballCount != 0)
             {

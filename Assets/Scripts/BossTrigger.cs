@@ -28,7 +28,7 @@ public class BossTrigger : MonoBehaviour
     {
         if (!hasSpawnedBoss && collision.CompareTag("Player"))
         {
-            Instantiate(boss);
+            Instantiate(boss, new Vector2(45f, 2f), Quaternion.identity);
             hasSpawnedBoss = true;
             
             // Set camera size for boss battle

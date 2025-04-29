@@ -43,6 +43,7 @@ public class BossHp : Status
         if (noHealth)
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
+            Destroy(gameObject);
 
             if (SoundManager.Instance != null)
             {
@@ -50,7 +51,7 @@ public class BossHp : Status
             }
 
             InstantiateItem(endDropItem);
-            Destroy(gameObject);
+            
         }
         else
         {
