@@ -32,7 +32,7 @@ public class Weapon : MonoBehaviour
     private Color _color;
     private SlimeKnightController playerController;
 
-    // Properties
+    #region Properties
     public Status weaponUser { get => _weaponUser; private set => _weaponUser = value; }
     public WeaponType type { get => _type; private set => _type = value; }
     public float damage { get => _damage; private set => _damage = value; }
@@ -49,7 +49,9 @@ public class Weapon : MonoBehaviour
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
     public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
+    #endregion
 
+    #region Unity
     void Awake()
     {
         GetTextDetailGameObjects();
@@ -67,8 +69,9 @@ public class Weapon : MonoBehaviour
     }
 
     void LateUpdate() => SetRealAmounts();
+    #endregion
 
-    // Text management
+    #region Text management
     private void GetTextDetailGameObjects()
     {
         Transform labelCanvas = transform.Find("LabelCanvas");
@@ -122,8 +125,9 @@ public class Weapon : MonoBehaviour
         SetActiveTextDetail(TDIndex.type, show);
         SetActiveTextDetail(TDIndex.cost, show);
     }
+    #endregion
 
-    // Weapon properties management
+    #region Weapon properties management
     public void SetWeaponUser(Status weaponUser) => this.weaponUser = weaponUser;
 
     public void IncreaseDamage(float amount) => damage += amount;
@@ -184,8 +188,9 @@ public class Weapon : MonoBehaviour
         realCost = GetRealAmount(cost, minCost);
         SetCostTextDetail(realCost);
     }
+    #endregion
 
-    // Attack methods
+    #region Attack methods
     public virtual void Attack() => Debug.Log("Attack");
 
     private bool CanAttack() => Input.GetMouseButtonDown(0) && enabledAttack;
@@ -208,7 +213,7 @@ public class Weapon : MonoBehaviour
         Status status = collision.GetComponent<Status>();
         if (status == null || (weaponUser != null && status.user == weaponUser.user)) 
             return;
-            
+
         // Apply damage
         status.TakeDamage(realDamage);
         
@@ -234,4 +239,5 @@ public class Weapon : MonoBehaviour
         if (playerController != null)
             playerController.ApplyKnockback(weaponPos, knockbackForce);
     }
+    #endregion
 }

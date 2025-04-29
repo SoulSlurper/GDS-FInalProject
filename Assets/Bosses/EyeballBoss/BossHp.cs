@@ -13,7 +13,7 @@ public class BossHp : Status
 
     private float healthPercentCheckpoint = 1f;
 
-    // Getters and Setters // // // //
+    #region Getters and Setters
     public int dropItemAmount
     {
         get { return _dropItemAmount; }
@@ -31,8 +31,9 @@ public class BossHp : Status
         get { return _endDropItem; }
         private set { _endDropItem = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity
     void Start()
     {
         SetHealthPercentCheckpoint();
@@ -49,7 +50,10 @@ public class BossHp : Status
                 SoundManager.Instance.ResumeBackgroundMusic();
             }
 
+            healthBar.SetActiveState(false);
+
             InstantiateItem(endDropItem);
+
             Destroy(gameObject);
         }
         else
@@ -64,14 +68,15 @@ public class BossHp : Status
             }
         }
     }
+    #endregion
 
-
-    // Boss DropItem Details // // // //
+    #region Boss DropItem Details
     public void SetDropItemAmount(int dropItemAmount) { this.dropItemAmount = dropItemAmount;}
 
     public void SetHealthDropItemPercentage(float healthDropItemPercentage) { this.healthDropItemPercentage = healthDropItemPercentage; }
+    #endregion
 
-    // Health Percentage // // // //
+    #region Health Percentage
     public void SetHealthPercentCheckpoint()
     {
         if (healthDropItemPercentage > 0f && healthDropItemPercentage < 1f)
@@ -80,4 +85,5 @@ public class BossHp : Status
         }
         else healthPercentCheckpoint = 1f;
     }
+    #endregion
 }

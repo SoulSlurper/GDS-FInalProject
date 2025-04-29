@@ -8,12 +8,12 @@ public class Status : MonoBehaviour
     [SerializeField] private StatusUser _user;
     [SerializeField] private float _health = 100f;
     [SerializeField] private HealthBar _healthBar;
-    [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
+    [SerializeField] private GameObject _dropItem; //object that appears midbattle or in death
 
     private float _currentHealth;
     private float _maxHealth;
 
-    // Getter and Setter // // // //
+    #region Getter and Setter 
     public StatusUser user
     { 
         get { return _user; }
@@ -61,28 +61,27 @@ public class Status : MonoBehaviour
         get { return _healthBar; }
         private set { _healthBar = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity functions
     void Awake()
     {
         SetNewHealth(health);
     }
 
-    // Health functions // // // //
-    public virtual void TakeDamage(float damage)
-    {
-        DecreaseCurrentHealth(damage);
-    }
+    #endregion
 
-    public virtual void TakeHealth(float amount)
+    #region HealthBar details
+    public void SetHealthBar(HealthBar healthBar)
     {
-        IncreaseCurrentHealth(amount);
+        this.healthBar = healthBar;
     }
 
     private void SetupHealthBar()
     {
         if (healthBar)
         {
+            healthBar.SetActiveState(true);
             healthBar.SetMaxValue(maxHealth);
             healthBar.SetValue(maxHealth);
         }
@@ -94,6 +93,24 @@ public class Status : MonoBehaviour
         {
             healthBar.SetValue(currentHealth);
         }
+    }
+
+    #endregion
+
+    #region Health functions 
+    public virtual void TakeDamage(float damage)
+    {
+        DecreaseCurrentHealth(damage);
+    }
+
+    public virtual void TakeHealth(float amount)
+    {
+        IncreaseCurrentHealth(amount);
+    }
+
+    public void InstantDeath()
+    {
+        currentHealth = 0;
     }
 
     public void ResetHealth()
@@ -132,13 +149,14 @@ public class Status : MonoBehaviour
 
         UpdateHealthBar();
     }
+    #endregion
 
-    // dropItem functions // // // //
+    #region dropItem functions 
     public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
 
     public void InstantiateItem(GameObject item)
     {
-        //Debug.Log(item.name + " Item created");
+        Debug.Log(item.name + " Item created");
 
         Instantiate(item, transform.position, Quaternion.identity);
     }
@@ -147,4 +165,6 @@ public class Status : MonoBehaviour
     {
         InstantiateItem(dropItem);
     }
+    #endregion
+
 }

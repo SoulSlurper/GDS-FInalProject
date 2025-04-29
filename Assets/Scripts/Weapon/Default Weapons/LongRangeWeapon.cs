@@ -19,7 +19,7 @@ public class LongRangeWeapon : Weapon
 
     private float _realProjectileCost;
 
-    // Getter and Setters // // // //
+    #region Getter and Setters // // // //
     public float launchForce
     {
         get { return _launchForce; }
@@ -55,14 +55,16 @@ public class LongRangeWeapon : Weapon
         get { return _stopGapHealth; }
         private set { _stopGapHealth = value; }
     }
+    #endregion
 
-    // Unity // // // // //
+    #region Unity // // // // //
     void Update()
     {
         PerformAttack();
     }
+    #endregion
 
-    // Long Range Details // // // // //
+    #region Long Range Details
     public void IncreaseLaunchForce(float amount) { launchForce += amount; }
 
     public void DecreaseLaunchForce(float amount) 
@@ -110,8 +112,9 @@ public class LongRangeWeapon : Weapon
         realProjectileCost = GetRealAmount(projectileCost, minProjectileCost);
         //Debug.Log("realProjectileCost: " + realProjectileCost);
     }
+    #endregion
 
-    // Attack Details // // // // //
+    #region Attack Details
     public override void Attack()
     {
         //whether the weapon can be used or not
@@ -150,4 +153,5 @@ public class LongRangeWeapon : Weapon
 
         wDetails.Attack();
     }
+    #endregion
 }

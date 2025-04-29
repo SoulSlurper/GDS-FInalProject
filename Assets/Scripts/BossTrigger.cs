@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class BossTrigger : MonoBehaviour
 {
-    [SerializeField]
-    public GameObject boss;
-    [SerializeField]
-    public Camera mainCamera;
-    [SerializeField]
-    private float bossCameraSize = 5f;
+    [SerializeField] public GameObject boss;
+    [SerializeField] private HealthBar healthBar;
+
+    [Header("Camera Details")]
+    [SerializeField] public Camera mainCamera;
+    [SerializeField] private float bossCameraSize = 5f;
     
     public static bool hasSpawnedBoss = false;
     private float originalCameraSize;
     
     void Start()
     {
+        healthBar.SetActiveState(false);
+        boss.GetComponent<Status>().SetHealthBar(healthBar);
+
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
@@ -28,9 +31,8 @@ public class BossTrigger : MonoBehaviour
     {
         if (!hasSpawnedBoss && collision.CompareTag("Player"))
         {
-            Instantiate(boss);
-            hasSpawnedBoss = true;
-            
+            SpawnBoss();
+
             // Set camera size for boss battle
             mainCamera.orthographicSize = bossCameraSize;
             
@@ -38,7 +40,13 @@ public class BossTrigger : MonoBehaviour
             //gameObject.SetActive(false);
         }
     }
-    
+
+    private void SpawnBoss()
+    {
+        Instantiate(boss);
+        hasSpawnedBoss = true;
+    }
+
     // Method to restore original camera settings (can be called when boss is defeated)
     public void RestoreOriginalCamera()
     {

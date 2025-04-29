@@ -15,7 +15,7 @@ public class ProjectileWeapon : Weapon
 
     private Rigidbody2D rb;
 
-    // Getter and Setters // // // //
+    #region Getter and Setters
     public bool isLaunched
     {
         get { return _isLaunched; }
@@ -39,8 +39,9 @@ public class ProjectileWeapon : Weapon
         get { return _dropItem; }
         private set { _dropItem = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity
     void Update()
     {
         if (isLaunched && !usesGravity) transform.position += transform.right * launchForce * Time.deltaTime;
@@ -74,8 +75,9 @@ public class ProjectileWeapon : Weapon
             Destroy(gameObject);
         }
     }
+    #endregion
 
-    // Projectile Details // // // // //
+    #region Projectile Details
     public void SetUsesGravity(bool usesGravity)
     {
         this.usesGravity = usesGravity;
@@ -103,8 +105,9 @@ public class ProjectileWeapon : Weapon
 
         Instantiate(dropItem, transform.position, Quaternion.identity);
     }
+    #endregion
 
-    // Attack Details // // // // //
+    #region Attack Details
     public override void Attack()
     {
         isLaunched = true;
@@ -116,4 +119,5 @@ public class ProjectileWeapon : Weapon
             rb.velocity = transform.right * launchForce;
         }
     }
+    #endregion
 }

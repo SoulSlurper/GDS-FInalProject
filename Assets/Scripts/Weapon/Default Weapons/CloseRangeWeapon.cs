@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class CloseRangeWeapon : Weapon
 {
-    //maybe make the weapon more flexiable for enemy use
-
     [Header("Close Range Details")]
     [SerializeField] public Animator animator; //sprite and collider animator
 
-
-    // Getter and Setters // // // //
-
-
-    // Unity // // // // //
+    #region Unity
     void Update()
     {
         PerformAttack();
@@ -27,8 +21,9 @@ public class CloseRangeWeapon : Weapon
 
         MakeDamage(collision);
     }
+    #endregion
 
-    // Attack Details // // // // //
+    #region Attack Details
     public override void Attack()
     {
         int randomAttack = Random.Range(1, 5);
@@ -59,4 +54,5 @@ public class CloseRangeWeapon : Weapon
             Debug.LogWarning("SoungManager instance is null");
         }
     }
+    #endregion
 }

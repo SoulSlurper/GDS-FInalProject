@@ -21,7 +21,7 @@ public class PlayerHealth : Status
     private Vector3 initialSize;
     private Camera mainCamera;
 
-    // Getter and Setter // // // //
+    #region Getter and Setter 
     public float enemyDamage
     {
         get { return _enemyDamage; }
@@ -46,7 +46,6 @@ public class PlayerHealth : Status
         private set { _spikeDamage = value; }
     }
 
-
     public float enemyProjectileDamage
     {
         get { return _enemyProjectileDamage; }
@@ -58,8 +57,9 @@ public class PlayerHealth : Status
         get { return _bossProjectileDamage; }
         private set { _bossProjectileDamage = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity 
     void Start()
     {
         initialPosition = transform.position;
@@ -97,13 +97,15 @@ public class PlayerHealth : Status
         if (collision.CompareTag("Lava"))
         {
             // Instantly kill the player when touching lava
-            TakeDamage(lavaDamage);
+            //TakeDamage(lavaDamage);
+            InstantDeath();
         }
 
         if (collision.gameObject.CompareTag("Spike"))
         {
-            // Instantly kill the player when touching lava
-            TakeDamage(spikeDamage);
+            // Instantly kill the player when touching the spikes
+            //TakeDamage(spikeDamage);
+            InstantDeath();
         }
     }
 
@@ -119,14 +121,16 @@ public class PlayerHealth : Status
             TakeDamage(enemyDamage);
         }
     }
+    #endregion
 
-    // Collision Damage // // // //
+    #region Collision Damage 
     public void SetEnemyDamage(float enemyDamage) { this.enemyDamage = enemyDamage; }
     public void SetBossDamage(float bossDamage) { this.bossDamage = bossDamage; }
     public void SetEnemyProjectileDamage(float enemyProjectileDamage) { this.enemyProjectileDamage = enemyProjectileDamage; }
     public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
+    #endregion
 
-    // Other functions // // // //
+    #region Other functions 
     private void Respawn()
     {
         if (!noHealth && !Input.GetKeyDown(KeyCode.R)) return;
@@ -139,6 +143,7 @@ public class PlayerHealth : Status
             GameObject Boss = GameObject.FindWithTag("Boss");
             if (Boss)
             {
+                Boss.GetComponent<Status>().healthBar.SetActiveState(false);
                 Destroy(Boss);
 
                 mainCamera.orthographicSize = 3f;
@@ -179,4 +184,5 @@ public class PlayerHealth : Status
 
         ChangeSize();
     }
+    #endregion
 }
