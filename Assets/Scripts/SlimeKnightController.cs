@@ -27,6 +27,8 @@ public class SlimeKnightController : MonoBehaviour
 
     [Header("Aiming Settings")]
     [SerializeField] private float aimMovementMultiplier = 0.6f; // Slow down to 60% when aiming
+    [SerializeField] private float aimJumpMultiplier = 0.7f; // Reduce jump height when aiming
+    [SerializeField] private bool allowJumpWhileAiming = true; // Option to enable/disable jumping while aiming
 
     [Header("Physics Materials")]
     [SerializeField] private PhysicsMaterial2D noFriction;
@@ -176,7 +178,7 @@ public class SlimeKnightController : MonoBehaviour
     private void HandleJumpInput()
     {
         // Handle jump buffer
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && (!isAiming || allowJumpWhileAiming))
         {
             jumpBufferCounter = jumpBufferTime;
         }
@@ -200,7 +202,15 @@ public class SlimeKnightController : MonoBehaviour
 
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        float currentJumpForce = jumpForce;
+        
+        // Apply jump reduction if aiming
+        if (isAiming && allowJumpWhileAiming)
+        {
+            currentJumpForce *= aimJumpMultiplier;
+        }
+        
+        rb.velocity = new Vector2(rb.velocity.x, currentJumpForce);
         animator.SetBool(IS_JUMPING, true);
         
         if (soundManager != null)
@@ -259,7 +269,9 @@ public class SlimeKnightController : MonoBehaviour
     {
         // Calculate target velocity with aiming slowdown if applicable
         float currentMoveSpeed = moveSpeed;
-        if (isAiming && isGrounded) // Only apply slowdown when on ground
+        
+        // Only apply aiming slowdown when on ground
+        if (isAiming && isGrounded)
         {
             currentMoveSpeed *= aimMovementMultiplier;
         }
