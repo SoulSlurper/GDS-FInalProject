@@ -22,24 +22,23 @@ public class EyeBallBossManager : MonoBehaviour
     //Boss Variables
     public BossState currentState;
     Rigidbody2D rb;
-    public float moveSpeed = 2f;
     [SerializeField]
-    public float idleDistance = 5f;
+    private float idleDistance = 5f;
 
     //Ranged
-    public float idleTimer = 0f;
-    public Vector2 rangedAttackPos;
-    public bool rangedPosSet = false;
+    private float idleTimer = 0f;
+    private Vector2 rangedAttackPos;
+    private bool rangedPosSet = false;
 
     //Melee
-    public float chargeTimer = 0f;
-    public bool chargePosSet = false;
+    private float chargeTimer = 0f;
+    private bool chargePosSet = false;
     Vector2 charge1Start;
 
     //Summon
     [SerializeField]
     public GameObject eyeball;
-    public int eyeballCount = 2;
+    private int eyeballCount = 2;
 
     [SerializeField]
     public GameObject Laser;
@@ -268,13 +267,15 @@ public class EyeBallBossManager : MonoBehaviour
         {
             if (eyeballCount != 0)
             {
-                //Instantiate(eyeball, new Vector2(rb.position.x, rb.position.y + 1));
-                eyeballCount--;
+                Instantiate(eyeball, rb.position + new Vector2(-1.5f, 1f), Quaternion.identity); 
+                Instantiate(eyeball, rb.position + new Vector2(1.5f, 1f), Quaternion.identity);
+                eyeballCount -= 2;
             }
             currentState = BossState.Idle;
             Debug.Log(currentState);
             rangedPosSet = false;
             idleTimer = 0f;
+            eyeballCount = 2;
         }
     }
 
