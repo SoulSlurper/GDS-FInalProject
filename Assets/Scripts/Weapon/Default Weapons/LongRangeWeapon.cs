@@ -9,6 +9,7 @@ public class LongRangeWeapon : Weapon
     [Header("Long Range Details")]
     [SerializeField] private ProjectileWeapon projectile;
     [SerializeField] private Transform launchLocation; //where the projectile will appear
+    [SerializeField] public Animator animator;
 
     [Header("Projectile Details")]
     [SerializeField] private float _launchForce = 1f;
@@ -76,6 +77,11 @@ public class LongRangeWeapon : Weapon
         else this.launchForce = launchForce;
     }
 
+    public void SetUseGravity(bool usesGravity) 
+    {
+        this.usesGravity = usesGravity;
+    }
+
     public void IncreaseProjectileCost(float amount) { projectileCost += amount; }
     
     public void DecreaseProjectileCost(float amount) 
@@ -117,6 +123,8 @@ public class LongRangeWeapon : Weapon
         {
             SpawnProjectile();
 
+            animator.SetTrigger("Fire");
+
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlayShootSound();
@@ -136,7 +144,9 @@ public class LongRangeWeapon : Weapon
         wDetails.SetWeaponUser(weaponUser);
         wDetails.SetUsesGravity(usesGravity);
         wDetails.SetLaunchForce(launchForce);
-        wDetails.SetDamage(damage);
+        
+        // Use realDamage instead of damage to apply aiming bonus to projectiles
+        wDetails.SetDamage(realDamage);
 
         wDetails.Attack();
     }

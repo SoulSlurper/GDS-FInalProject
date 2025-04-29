@@ -34,15 +34,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.25
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1317204189177611089, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -161,17 +161,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7950702557525354077, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4346244404228752641, guid: 615bc236476fce4449bd276b0f958e53, type: 3}
+    - target: {fileID: 7950702557525354077, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7950702557525354077, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_Color.g
-      value: 0.49803922
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7950702557525354077, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7950702557525354077, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ec0df419b7c1d4042b59ad86a66831c7, type: 2}
     - target: {fileID: 9175616864558051198, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -242,13 +250,15 @@ MonoBehaviour:
   _type: 5
   _damage: 0
   _cost: 0
+  _applyKnockback: 1
+  _knockbackForce: 8
+  _bossKnockbackMultiplier: 0.5
   _minDamage: 1
   _minCost: 1
   _isLaunched: 0
-  usesGravity: 1
-  launchForce: 1
-  _speed: 1
-  _dropItem: {fileID: 1988137186141514875, guid: 25d8914f988f4d549bb598fe3f9134ce, type: 3}
+  _usesGravity: 0
+  _launchForce: 1
+  _dropItem: {fileID: 1988137186141514875, guid: 8890f3f11b11e4044a79a7bc511da281, type: 3}
 --- !u!61 &-3486186417945426455
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -283,15 +293,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.2}
   m_EdgeRadius: 0

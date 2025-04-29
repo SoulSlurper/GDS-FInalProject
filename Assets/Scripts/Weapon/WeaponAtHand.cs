@@ -1,282 +1,327 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Handles weapon switching and selection for the player
+/// </summary>
 public class WeaponAtHand : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject player;
-    [SerializeField] private bool areWeaponsCosting = false;
-
-    [Header("Selection")]
+    
+    [Header("Weapon Settings")]
     [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
-    [SerializeField] private Color colorSelection = Color.grey;
-    [SerializeField] private bool skipOnMenuEnter = false;
+    [SerializeField][Range(1, 4)] private int _availableWeaponsLimit = 3;
+    
+    [Header("Health Regeneration")]
+    [SerializeField] private float healthRegenPerSecond = 1f; // HP regenerated per second when using None weapon
 
+    // Internal weapon tracking
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
-    private int tempWeaponIndex = -1;
+    private bool selectionRecentlyCanceled = false;
+    private float selectionCancelTime = 0f;
 
+    // Component references
     private Status playerStatus;
     private SpriteRenderer playerSpriteRenderer;
+    private Color playerColor;
 
-    private bool isSelecting = false;
-
-    void Awake()
+    // Properties
+    public int availableWeaponsLimit
     {
-        GetAvailableWeapons();
+        get { return _availableWeaponsLimit; }
+        private set { _availableWeaponsLimit = value; }
     }
 
-    void Start()
+    #region Unity Lifecycle Methods
+    
+    private void Awake()
     {
-        playerStatus = player.GetComponent<Status>();
-        playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
-        
+        FindAndCacheWeapons();
+    }
+
+    private void Start()
+    {
+        InitializeReferences();
         SelectWeaponByType(selectedWeapon);
     }
 
-    void Update()
+    private void Update()
     {
-        ChangingWeapon();
-
-        WeaponFacePointer();
+        HandleDirectWeaponSwitching();
+        UpdateWeaponOrientation();
+        HandleHealthRegeneration();
     }
+    
+    #endregion
 
-    //gets all the children gameobjects that have the Weapon component
-    private void GetAvailableWeapons()
+    #region Public Methods
+    
+    /// <summary>
+    /// Increases the number of weapons the player can access at once
+    /// </summary>
+    public void IncreaseAvailableWeaponLimit(int amount)
     {
-        foreach (Transform child in transform)
+        availableWeaponsLimit += amount;
+        if (availableWeaponsLimit > weapons.Count) 
+            availableWeaponsLimit = weapons.Count;
+    }
+    
+    /// <summary>
+    /// Returns whether the player is currently in weapon selection mode
+    /// Maintained for compatibility with SlimeKnightController
+    /// </summary>
+    public bool IsSelecting()
+    {
+        // Always false in the new implementation since we don't have a selection mode
+        return false;
+    }
+    
+    /// <summary>
+    /// Returns whether the weapon selection was recently canceled
+    /// Maintained for compatibility with SlimeKnightController
+    /// </summary>
+    public bool WasSelectionRecentlyCanceled()
+    {
+        // Check if it was canceled recently (within last 0.5 seconds)
+        if (selectionRecentlyCanceled && Time.time - selectionCancelTime < 0.5f)
         {
-            if (child.gameObject.GetComponent<Weapon>())
-            {
-                //Debug.Log(child.name);
-                weapons.Add(child.gameObject);
-            }
+            return true;
+        }
+        
+        selectionRecentlyCanceled = false;
+        return false;
+    }
+    
+    #endregion
 
-            child.gameObject.SetActive(false);
+    #region Weapon Management Methods
+    
+    /// <summary>
+    /// Finds all child objects with Weapon component and caches them
+    /// </summary>
+    private void FindAndCacheWeapons()
+    {
+        foreach (Transform t in transform)
+        {
+            GameObject child = t.gameObject;
+            Weapon weaponComponent = child.GetComponent<Weapon>();
+            
+            if (weaponComponent)
+            {
+                weapons.Add(child);
+                child.SetActive(false);
+            }
         }
     }
 
+    /// <summary>
+    /// Gets component references needed for operation
+    /// </summary>
+    private void InitializeReferences()
+    {
+        playerStatus = player.GetComponent<Status>();
+        playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        playerColor = playerSpriteRenderer.color;
+    }
+
+    /// <summary>
+    /// Gets the index from the weapons list based on the WeaponType enum
+    /// </summary>
     private int GetWeaponIndex(WeaponType type)
     {
-        for (int i = 0; i < weapons.Count; i++)
+        for (int i = 0; i < availableWeaponsLimit; i++)
         {
             if (weapons[i].GetComponent<Weapon>().type == type)
             {
                 return i;
             }
         }
-
         return -1;
     }
 
-    private void SelectWeapon(int index, bool confirm = true)
+    /// <summary>
+    /// Applies visual settings and enables attack for active weapon
+    /// </summary>
+    private void SetupSelectedWeapon(Weapon weaponDetails)
     {
+        playerSpriteRenderer.color = playerColor;
+        weaponDetails.GetComponent<SpriteRenderer>().color = weaponDetails.color;
+        weaponDetails.ShowAllTextDetails(false);
+        weaponDetails.enabledAttack = true;
+        selectedWeapon = weaponDetails.type;
+    }
+
+    /// <summary>
+    /// Deactivates the current weapon
+    /// </summary>
+    private void DeselectWeapon()
+    {
+        if (currentWeaponIndex < 0) return;
+
+        weapons[currentWeaponIndex].SetActive(false);
+        selectedWeapon = WeaponType.None;
+    }
+
+    /// <summary>
+    /// Activates a weapon by index and applies appropriate settings
+    /// </summary>
+    private void SelectWeapon(int index)
+    {
+        DeselectWeapon();
+        currentWeaponIndex = index;
+
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
 
         weapon.SetActive(true);
-
-        if (confirm)
-        {
-            playerSpriteRenderer.color = Color.white;
-
-            currentWeaponIndex = index;
-
-            weapon.GetComponent<SpriteRenderer>().color = Color.white;
-
-            wDetails.ShowAllTextDetails(false);
-
-            wDetails.enabledAttack = true;
-
-            selectedWeapon = wDetails.type;
-        }
-        else
-        {
-            playerSpriteRenderer.color = colorSelection;
-
-            tempWeaponIndex = index;
-
-            weapon.GetComponent<SpriteRenderer>().color = colorSelection;
-
-            if (areWeaponsCosting)
-            {
-                if (wDetails.type == WeaponType.None) wDetails.ShowTextDetails(true, false);
-                else wDetails.ShowTextDetails(true, true);
-            }
-            else wDetails.ShowTextDetails(true, false);
-            
-            wDetails.enabledAttack = false;
-        }
+        SetupSelectedWeapon(wDetails);
     }
 
-    private void DeselectWeapon(int index, bool confirm = true)
+    /// <summary>
+    /// Selects a weapon by its index in the weapons list
+    /// </summary>
+    private void SelectWeaponByIndex(int index)
     {
-        weapons[index].SetActive(false);
-
-        if (confirm)
+        if (index > -1 && index < availableWeaponsLimit)
+        {
+            SelectWeapon(index);
+        }
+        else
         {
             selectedWeapon = WeaponType.None;
-        }
-    }
-
-    private void SelectWeaponByIndex(int index, bool confirm = true)
-    {
-        //if a weapon is currently being held already
-        if (currentWeaponIndex > -1) DeselectWeapon(currentWeaponIndex);
-        if (tempWeaponIndex > -1) DeselectWeapon(tempWeaponIndex);
-
-        if (index > -1 && index < weapons.Count) //if the weapon can exist
-        {
-            int i;
-            if (confirm)
+            currentWeaponIndex = GetWeaponIndex(selectedWeapon);
+            
+            if (currentWeaponIndex > -1)
             {
-                i = currentWeaponIndex = index;
+                SelectWeapon(currentWeaponIndex);
             }
-            else
-            {
-                i = tempWeaponIndex = index;
-            }
-
-            SelectWeapon(i, confirm);
-        }
-        else // if weapon cannot exist
-        {
-            SelectWeaponByIndex(GetWeaponIndex(WeaponType.None), confirm);
         }
     }
 
-    private void SelectWeaponByType(WeaponType type, bool confirm = true)
+    /// <summary>
+    /// Selects a weapon by its type
+    /// </summary>
+    private void SelectWeaponByType(WeaponType type)
     {
-        SelectWeaponByIndex(GetWeaponIndex(type), confirm);
+        SelectWeaponByIndex(GetWeaponIndex(type));
     }
+    
+    #endregion
 
-    //checks and returns an index that is in the range of the weapons list, where it will be continously used until the newIndex is in range and is not the same as the indexSkip variable
-    private int GetIndexInRange(int index, bool isNextCheckIncrement = true, int indexSkip = -1)
+    #region Weapon Cycling Methods
+    
+    /// <summary>
+    /// Get next weapon index, cycling through all weapons
+    /// </summary>
+    private int GetNextWeaponIndex(int currentIndex)
     {
-        if (index > -1 && index < weapons.Count && !index.Equals(indexSkip)) return index;
-
-        int newIndex = index;
-
-        if (newIndex >= weapons.Count) newIndex = 0;
-        else if (newIndex < 0) newIndex = weapons.Count - 1;
+        int nextIndex = currentIndex + 1;
+        if (nextIndex >= availableWeaponsLimit)
+            nextIndex = 0;
         
-        if (newIndex.Equals(indexSkip))
-        {
-            if (isNextCheckIncrement) newIndex++;
-            else newIndex--;
-        }
-
-        return GetIndexInRange(newIndex, isNextCheckIncrement, indexSkip);
+        return nextIndex;
     }
-
-    //when the player enters the weapon selection
-    private void OnWeaponMenuEnter()
+    
+    /// <summary>
+    /// Get previous weapon index, cycling through all weapons
+    /// </summary>
+    private int GetPreviousWeaponIndex(int currentIndex)
     {
-        tempWeaponIndex = currentWeaponIndex;
-        if (skipOnMenuEnter)
-        {
-            tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1, true, GetWeaponIndex(WeaponType.None));
-        }
-
-        SelectWeaponByIndex(tempWeaponIndex, false);
-
-        isSelecting = true;
-
-        Debug.Log("Weapon Menu opened");
+        int prevIndex = currentIndex - 1;
+        if (prevIndex < 0)
+            prevIndex = availableWeaponsLimit - 1;
+        
+        return prevIndex;
     }
+    
+    #endregion
 
-    //increases and decreases the currentWeaponIndex int by the mouse scroll or the up and down arrow keys
-    private void OnWeaponMenu()
+    #region Direct Weapon Switching
+    
+    /// <summary>
+    /// Directly switches weapons based on mouse wheel input
+    /// </summary>
+    private void HandleDirectWeaponSwitching()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+        float scrollValue = Input.GetAxis("Mouse ScrollWheel");
+        
+        if (scrollValue == 0f || weapons.Count <= 1) 
+            return;
+            
+        if (scrollValue > 0f)
         {
-            DeselectWeapon(tempWeaponIndex);
-
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                tempWeaponIndex = GetIndexInRange(tempWeaponIndex - 1, false);
-            }
-
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                tempWeaponIndex = GetIndexInRange(tempWeaponIndex + 1);
-            }
-
-            SelectWeapon(tempWeaponIndex, false);
-        }
-    }
-
-    //when the player exits the weapon selection
-    private void OnWeaponMenuExit()
-    {
-        if (tempWeaponIndex == currentWeaponIndex || !isSelecting)
-        {
-            SelectWeaponByIndex(currentWeaponIndex);
+            // Scroll up = previous weapon (corrected direction)
+            int newIndex = GetPreviousWeaponIndex(currentWeaponIndex);
+            SelectWeaponByIndex(newIndex);
         }
         else
         {
-            SelectWeaponByIndex(tempWeaponIndex);
-
-            if (areWeaponsCosting)
-                playerStatus.TakeDamage(weapons[currentWeaponIndex].GetComponent<Weapon>().cost);
+            // Scroll down = next weapon (corrected direction)
+            int newIndex = GetNextWeaponIndex(currentWeaponIndex);
+            SelectWeaponByIndex(newIndex);
         }
-
-        isSelecting = false;
-
-        Debug.Log("Weapon Menu exit");
     }
-
-    private void ChangingWeapon()
+    
+    /// <summary>
+    /// Regenerates health over time when no weapon is equipped
+    /// </summary>
+    private void HandleHealthRegeneration()
     {
-        //enters selection and exit with the current weapon by mouse right click
-        if (Input.GetMouseButtonDown(1) && weapons.Count > 1)
+        if (selectedWeapon == WeaponType.None && playerStatus != null)
         {
-            isSelecting = !isSelecting;
-
-            if (isSelecting) OnWeaponMenuEnter();
-            else OnWeaponMenuExit();
-        }
-
-        if (isSelecting)
-        {
-            OnWeaponMenu();
-
-            //exit selection with the selected weapon by mouse left click
-            if (Input.GetMouseButtonDown(0)) OnWeaponMenuExit();
+            playerStatus.TakeHealth(healthRegenPerSecond * Time.deltaTime);
         }
     }
+    
+    #endregion
 
-    private Vector2 PointerPosition()
+    #region Weapon Orientation
+    
+    /// <summary>
+    /// Gets the normalized direction from weapon to mouse pointer
+    /// </summary>
+    private Vector2 GetPointerDirection()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         return (mousePosition - (Vector2)transform.position).normalized;
     }
 
-    private void WeaponFacePointer()
+    /// <summary>
+    /// Flips the text UI elements on weapons when facing direction changes
+    /// </summary>
+    private void FlipWeaponTexts()
     {
-        Vector2 direction = PointerPosition();
+        foreach (Transform child in transform)
+        {
+            Transform labelCanvas = child.Find("LabelCanvas");
+            if (labelCanvas == null) continue;
 
+            Vector2 scaleLabel = labelCanvas.localScale;
+            scaleLabel.x *= -1;
+            labelCanvas.localScale = scaleLabel;
+        }
+    }
+
+    /// <summary>
+    /// Makes the weapon face towards the pointer's position
+    /// </summary>
+    private void UpdateWeaponOrientation()
+    {
+        Vector2 direction = GetPointerDirection();
         transform.right = direction;
 
         Vector2 scale = transform.localScale;
-        if ((direction.x < 0 && scale.y > 0) || (direction.x > 0 && scale.y < 0))
+        bool shouldFlip = (direction.x < 0 && scale.y > 0) || (direction.x > 0 && scale.y < 0);
+        
+        if (shouldFlip)
         {
             scale.y *= -1;
-
-            foreach (Transform child in transform)
-            {
-                Transform labelCanvas = child.Find("LabelCanvas");
-
-                Vector2 scaleLabel = labelCanvas.localScale;
-
-                scaleLabel.x *= -1;
-
-                labelCanvas.localScale = scaleLabel;
-            }
+            transform.localScale = scale;
+            FlipWeaponTexts();
         }
-
-        transform.localScale = scale;
     }
+    
+    #endregion
 }

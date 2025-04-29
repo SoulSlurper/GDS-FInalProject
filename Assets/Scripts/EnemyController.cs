@@ -3,6 +3,15 @@ using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
+    // Define enemy states
+    public enum EnemyState
+    {
+        Idle,
+        Chase,
+        KnockBack,
+        Stunned
+    }
+
     [Header("Movement")]
     [SerializeField] private float idleSpeed = 1.5f;
     [SerializeField] private float chaseSpeed = 4f;
@@ -24,15 +33,14 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     
     // State variables
+    private EnemyState currentState = EnemyState.Idle;
     private Vector2 moveDirection;
-    private bool isChasing = false;
     private float hoverOffset;
     private bool hasDetectedPlayer = false;
-    private bool isKnockedBack = false;
-    private bool isInvincible = false;
     private Vector2 currentKnockbackVelocity;
     private float knockbackTimer = 0f;
     private float invincibilityTimer = 0f;
+    private Coroutine directionChangeCoroutine;
     
     // Animation parameters
     private readonly string IS_CHASING = "IsChasing";
@@ -54,113 +62,133 @@ public class EnemyController : MonoBehaviour
         
         // Initial direction and start behavior loop
         SetRandomDirection();
-        StartCoroutine(ChangeDirectionRoutine());
+        StartDirectionChangeRoutine();
+    }
+    
+    private void OnEnable()
+    {
+        StartDirectionChangeRoutine();
+    }
+    
+    private void OnDisable()
+    {
+        StopDirectionChangeRoutine();
     }
     
     private void Update()
     {
-        // Handle knockback and invincibility timers
-        UpdateKnockbackState();
-
-        // Only process AI behavior if not knocked back
-        if (!isKnockedBack && playerTransform != null)
-            UpdateAIBehavior();
+        UpdateState();
+        UpdateTimers();
+        
+        // Update visuals based on state
+        UpdateVisuals();
     }
     
     private void FixedUpdate()
     {
-        // Apply knockback if in knockback state
-        if (isKnockedBack)
+        // Execute behavior based on current state
+        switch (currentState)
         {
-            rb.velocity = currentKnockbackVelocity;
-            return;
+            case EnemyState.Idle:
+                IdleWander();
+                break;
+            case EnemyState.Chase:
+                ChasePlayer();
+                break;
+            case EnemyState.KnockBack:
+                // Knockback velocity is set when entering state
+                break;
+            case EnemyState.Stunned:
+                // No movement during stun
+                break;
         }
-        
-        // Normal movement behavior
-        if (isChasing)
-            ChasePlayer();
-        else
-            IdleWander();
     }
     
-    private void UpdateKnockbackState()
+    private void UpdateState()
+    {
+        // Skip state change if knocked back or stunned
+        if (currentState == EnemyState.KnockBack || currentState == EnemyState.Stunned)
+            return;
+            
+        // Check distance to player for state changes
+        if (playerTransform != null)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+            bool shouldChase = distanceToPlayer <= detectionRange;
+            
+            // Handle detection events
+            if (shouldChase && !hasDetectedPlayer)
+            {
+                hasDetectedPlayer = true;
+                PlayDetectionSound();
+            }
+            else if (!shouldChase)
+            {
+                hasDetectedPlayer = false;
+            }
+            
+            // Update state
+            currentState = shouldChase ? EnemyState.Chase : EnemyState.Idle;
+            
+            // Update animator
+            if (animator != null)
+                animator.SetBool(IS_CHASING, currentState == EnemyState.Chase);
+        }
+    }
+    
+    private void UpdateTimers()
     {
         // Update knockback timer
-        if (isKnockedBack)
+        if (currentState == EnemyState.KnockBack)
         {
             knockbackTimer -= Time.deltaTime;
             if (knockbackTimer <= 0f)
             {
-                isKnockedBack = false;
+                // Return to idle or chase based on player distance
+                if (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) <= detectionRange)
+                    currentState = EnemyState.Chase;
+                else
+                    currentState = EnemyState.Idle;
+                
                 if (animator != null) 
                     animator.SetBool(IS_HURT, false);
             }
         }
         
-        // Update invincibility timer and visual feedback
-        if (isInvincible)
+        // Update invincibility timer
+        if (invincibilityTimer > 0)
         {
             invincibilityTimer -= Time.deltaTime;
-            if (invincibilityTimer <= 0f)
-            {
-                isInvincible = false;
-                if (spriteRenderer != null) 
-                    spriteRenderer.color = Color.white;
-            }
-            else if (spriteRenderer != null)
-            {
-                float alpha = Mathf.PingPong(Time.time * 10f, 1f) * 0.5f + 0.5f;
-                spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
-            }
         }
     }
     
-    private void UpdateAIBehavior()
+    private void UpdateVisuals()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        bool currentlyChasing = distanceToPlayer <= detectionRange;
-
-        // Handle detection events
-        if (currentlyChasing && !hasDetectedPlayer)
+        // Update facing direction
+        if (spriteRenderer == null) return;
+        
+        // Direction to face
+        Vector2 direction;
+        
+        if (currentState == EnemyState.Chase && playerTransform != null)
+            direction = (Vector2)playerTransform.position - (Vector2)transform.position;
+        else
+            direction = rb.velocity;
+            
+        // Only flip if velocity is significant
+        if (Mathf.Abs(direction.x) > 0.1f)
+            spriteRenderer.flipX = direction.x < 0;
+            
+        // Flashing during invincibility
+        if (invincibilityTimer > 0)
         {
-            hasDetectedPlayer = true;
-            if (SoundManager.Instance != null)
-            {
-                SoundManager.Instance.PlayEnemyDetectedSound();
-                StartCoroutine(PlayDashAfterDelay(0.5f));
-            }
+            float alpha = Mathf.PingPong(Time.time * 10f, 1f) * 0.5f + 0.5f;
+            spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
         }
-        else if (!currentlyChasing)
+        else
         {
-            hasDetectedPlayer = false;
+            spriteRenderer.color = Color.white;
         }
-
-        // Update state
-        isChasing = currentlyChasing;
-        if (animator != null)
-            animator.SetBool(IS_CHASING, isChasing);
-
-        UpdateFacingDirection();
-    }
-    
-    public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
-    {
-        if (isKnockedBack || isInvincible) return;
-        
-        // Calculate knockback
-        float knockbackStrength = force > 0 ? force : knockbackForce;
-        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
-        currentKnockbackVelocity = direction * knockbackStrength + Vector2.up * knockbackStrength * 0.3f;
-        
-        // Set state
-        isKnockedBack = true;
-        isInvincible = true;
-        knockbackTimer = knockbackDuration;
-        invincibilityTimer = invincibilityDuration;
-        
-        // Set animation
-        if (animator != null) 
-            animator.SetBool(IS_HURT, true);
     }
     
     private void IdleWander()
@@ -194,29 +222,54 @@ public class EnemyController : MonoBehaviour
         moveDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
     }
     
+    private void StartDirectionChangeRoutine()
+    {
+        StopDirectionChangeRoutine();
+        directionChangeCoroutine = StartCoroutine(ChangeDirectionRoutine());
+    }
+    
+    private void StopDirectionChangeRoutine()
+    {
+        if (directionChangeCoroutine != null)
+            StopCoroutine(directionChangeCoroutine);
+    }
+    
     private IEnumerator ChangeDirectionRoutine()
     {
         while (true)
         {
-            // Only change direction when not chasing
-            if (!isChasing)
+            // Only change direction when idle
+            if (currentState == EnemyState.Idle)
                 SetRandomDirection();
             
             yield return new WaitForSeconds(directionChangeTime);
         }
     }
     
-    private void UpdateFacingDirection()
+    private void PlayDetectionSound()
     {
-        if (spriteRenderer == null) return;
+        SoundManager.Instance?.PlayEnemyDetectedSound();
+        StartCoroutine(PlayDashAfterDelay(0.5f));
+    }
+    
+    public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
+    {
+        if (currentState == EnemyState.KnockBack || invincibilityTimer > 0) return;
         
-        // Direction to face
-        Vector2 direction = isChasing ? 
-            (Vector2)playerTransform.position - (Vector2)transform.position : 
-            rb.velocity;
-            
-        // Flip sprite based on direction
-        spriteRenderer.flipX = direction.x < -0.1f;
+        // Calculate knockback
+        float knockbackStrength = force > 0 ? force : knockbackForce;
+        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
+        currentKnockbackVelocity = direction * knockbackStrength + Vector2.up * knockbackStrength * 0.3f;
+        
+        // Set state
+        currentState = EnemyState.KnockBack;
+        invincibilityTimer = invincibilityDuration;
+        knockbackTimer = knockbackDuration;
+        rb.velocity = currentKnockbackVelocity;
+        
+        // Set animation
+        if (animator != null) 
+            animator.SetBool(IS_HURT, true);
     }
     
     private void OnCollisionEnter2D(Collision2D collision)
@@ -240,8 +293,8 @@ public class EnemyController : MonoBehaviour
         SoundManager.Instance?.PlayEnemyDashSound();
     }
     
-    public bool IsKnockedBack() => isKnockedBack;
-    public bool IsInvincible() => isInvincible;
+    public bool IsKnockedBack() => currentState == EnemyState.KnockBack;
+    public bool IsInvincible() => invincibilityTimer > 0;
     
     // Visualize detection range in editor
     private void OnDrawGizmosSelected()

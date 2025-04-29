@@ -56,7 +56,7 @@ public class ProjectileWeapon : Weapon
     {
         //Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        if (collision.gameObject.CompareTag("Weapon")) return;
+        if (collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item")) return;
 
         MakeDamage(collision);
 
