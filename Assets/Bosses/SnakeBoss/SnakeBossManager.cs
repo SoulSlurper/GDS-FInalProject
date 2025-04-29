@@ -35,7 +35,7 @@ public class SnakeBossManager : MonoBehaviour
         currentState = BossState.Idle;
         Debug.Log("Boss Idle");
         Player = GameObject.FindGameObjectWithTag("Player");
-        tailStartY = Tail.GetComponent<Rigidbody2D>().position.x - 9;
+        tailStartY = Tail.GetComponent<Rigidbody2D>().position.x - 10;
 
     }
 
