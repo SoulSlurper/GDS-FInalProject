@@ -8,6 +8,7 @@ public class FallToGround : MonoBehaviour
     [SerializeField] private float checkGroundDistance = 0.1f;
 
     private Rigidbody2D rb;
+    private RigidbodyConstraints2D initialConstraints;
     private bool _onGround = false;
 
     // Getter and Setters // // // //
@@ -21,26 +22,32 @@ public class FallToGround : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        initialConstraints = rb.constraints;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("SavePoint") || collision.collider.CompareTag("Item")) return;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy") || collision.CompareTag("SavePoint") || collision.CompareTag("Item")) return;
+        //if (collision.CompareTag("Enemy") || collision.CompareTag("SavePoint") || collision.CompareTag("Item")) return;
 
-        if (!onGround) 
-        {
-            RigidbodyConstraints2D initialConstraints = rb.constraints;
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        //if (!onGround) 
+        //{
+        //    RigidbodyConstraints2D initialConstraints = rb.constraints;
+        //    rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-            if (CheckForGround())
-            {
-                onGround = true;
-            }
-            else
-            {
-                rb.constraints = initialConstraints;
-            }
-        }
+        //    if (CheckForGround())
+        //    {
+        //        onGround = true;
+        //    }
+        //    else
+        //    {
+        //        rb.constraints = initialConstraints;
+        //    }
+        //}
     }
 
     void OnDrawGizmosSelected()
