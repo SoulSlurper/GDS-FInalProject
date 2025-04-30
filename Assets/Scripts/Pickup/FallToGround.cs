@@ -27,6 +27,7 @@ public class FallToGround : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //ignores collisions from any objects with specific tags
         Collider2D collider = collision.collider;
         if (collider.CompareTag("Enemy") || collider.CompareTag("SavePoint") || collider.CompareTag("Item"))
         {
@@ -41,26 +42,6 @@ public class FallToGround : MonoBehaviour
 
             if (!onGround) rb.constraints = initialConstraints;
         }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        //if (collision.CompareTag("Enemy") || collision.CompareTag("SavePoint") || collision.CompareTag("Item")) return;
-
-        //if (!onGround) 
-        //{
-        //    RigidbodyConstraints2D initialConstraints = rb.constraints;
-        //    rb.constraints = RigidbodyConstraints2D.FreezeAll;
-
-        //    if (CheckForBottom())
-        //    {
-        //        onGround = true;
-        //    }
-        //    else
-        //    {
-        //        rb.constraints = initialConstraints;
-        //    }
-        //}
     }
 
     void OnDrawGizmosSelected()
