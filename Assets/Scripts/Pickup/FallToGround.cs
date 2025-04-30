@@ -27,7 +27,20 @@ public class FallToGround : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("SavePoint") || collision.collider.CompareTag("Item")) return;
+        Collider2D collider = collision.collider;
+        if (collider.CompareTag("Enemy") || collider.CompareTag("SavePoint") || collider.CompareTag("Item"))
+        {
+            Physics2D.IgnoreCollision(collider, GetComponent<Collider2D>());
+            return;
+        }
+
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        if (!onGround)
+        {
+            onGround = CheckForBottom();
+
+            if (!onGround) rb.constraints = initialConstraints;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -39,7 +52,7 @@ public class FallToGround : MonoBehaviour
         //    RigidbodyConstraints2D initialConstraints = rb.constraints;
         //    rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-        //    if (CheckForGround())
+        //    if (CheckForBottom())
         //    {
         //        onGround = true;
         //    }
@@ -58,7 +71,7 @@ public class FallToGround : MonoBehaviour
     }
 
     // Functions // // // //
-    public bool CheckForGround()
+    public bool CheckForBottom()
     {
         RaycastHit2D[] hit = Physics2D.RaycastAll((Vector2)raycastOrigin.position, Vector2.down, checkGroundDistance);
 
