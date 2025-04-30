@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 267c504c0939021498f92e52c4d54af3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156972
+  packageName: Water Waves 2D
+  packageVersion: 1.05
+  assetPath: Assets/WaterWaves2D/Demo/DemoSceneAssets/Circle.asset
+  uploadId: 492342

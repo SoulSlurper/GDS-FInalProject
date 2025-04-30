@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 843e0c8ea5f61724a9fe1337b7d575bd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156972
+  packageName: Water Waves 2D
+  packageVersion: 1.05
+  assetPath: Assets/WaterWaves2D/Resources/WaterWaves2DLit.mat
+  uploadId: 492342
