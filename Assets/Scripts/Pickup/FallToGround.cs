@@ -11,14 +11,15 @@ public class FallToGround : MonoBehaviour
     private RigidbodyConstraints2D initialConstraints;
     private bool _onGround = false;
 
-    // Getter and Setters // // // //
+    #region Getter and Setters
     public bool onGround
     {
         get { return _onGround; }
         private set { _onGround = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,18 +30,15 @@ public class FallToGround : MonoBehaviour
     {
         //ignores collisions from any objects with specific tags
         Collider2D collider = collision.collider;
-        if (collider.CompareTag("Enemy") || collider.CompareTag("Boss") || collider.CompareTag("SavePoint") || collider.CompareTag("Item"))
+        if (DetectInvalidObjects(collider))
         {
             Physics2D.IgnoreCollision(collider, GetComponent<Collider2D>());
             return;
         }
 
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         if (!onGround)
         {
             onGround = CheckForBottom();
-
-            if (!onGround) rb.constraints = initialConstraints;
         }
     }
 
@@ -50,12 +48,20 @@ public class FallToGround : MonoBehaviour
 
         Gizmos.DrawLine((Vector2)raycastOrigin.position, (Vector2)raycastOrigin.position + Vector2.down * checkGroundDistance);
     }
+    #endregion
 
-    // Functions // // // //
+    #region Detection functions
+    private bool DetectInvalidObjects(Collider2D collider)
+    {
+        return collider.CompareTag("Enemy") || collider.CompareTag("Boss") || collider.CompareTag("SavePoint") || collider.CompareTag("Item");
+    }
+
     public bool CheckForBottom()
     {
-        RaycastHit2D[] hit = Physics2D.RaycastAll((Vector2)raycastOrigin.position, Vector2.down, checkGroundDistance);
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)raycastOrigin.position, Vector2.down, checkGroundDistance);
+        if (hit) return !DetectInvalidObjects(hit.collider);
 
-        return hit.Length > 1;
+        return false;
     }
+    #endregion
 }

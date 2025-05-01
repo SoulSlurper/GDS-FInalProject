@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2598021768038600937, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
       propertyPath: checkGroundDistance
-      value: 0.6
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2620841364145924244, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.535
       objectReference: {fileID: 0}
     - target: {fileID: 4331164391878461402, guid: 725a7c061ed907a40a7f980a79e0c9d3, type: 3}
       propertyPath: m_LocalScale.x
