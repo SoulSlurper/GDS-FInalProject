@@ -6,11 +6,10 @@ using UnityEngine;
 public class Status : MonoBehaviour
 {
     [SerializeField] private StatusUser _user;
-    [SerializeField] private float _health = 100f;
+    [SerializeField] private float health = 100f;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private GameObject _dropItem; //object that appears midbattle or in death
 
-    private float _currentHealth;
     private float _maxHealth;
 
     #region Getter and Setter 
@@ -26,16 +25,10 @@ public class Status : MonoBehaviour
         private set { _dropItem = value; }
     }
 
-    public float health
-    { 
-        get { return _health; }
-        private set { _health = value; }
-    }
-
     public float currentHealth
     { 
-        get { return _currentHealth; }
-        private set { _currentHealth = value; }
+        get { return health; }
+        private set { health = value; }
     }
 
     public bool noHealth
@@ -131,7 +124,7 @@ public class Status : MonoBehaviour
 
     public void SetNewHealth(float health) 
     { 
-        this.health = currentHealth = maxHealth = health;
+        currentHealth = maxHealth = health;
 
         SetupHealthBar();
     }

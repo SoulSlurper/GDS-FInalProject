@@ -29,7 +29,7 @@ public class FallToGround : MonoBehaviour
     {
         //ignores collisions from any objects with specific tags
         Collider2D collider = collision.collider;
-        if (collider.CompareTag("Enemy") || collider.CompareTag("SavePoint") || collider.CompareTag("Item"))
+        if (collider.CompareTag("Enemy") || collider.CompareTag("Boss") || collider.CompareTag("SavePoint") || collider.CompareTag("Item"))
         {
             Physics2D.IgnoreCollision(collider, GetComponent<Collider2D>());
             return;

@@ -15,6 +15,7 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private float _launchForce = 1f;
     [SerializeField] private bool _usesGravity = false;
     [SerializeField] private float _projectileCost = 0f;
+    [SerializeField] private bool _healthItemMatchesProjectileCost = true;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
 
     private float _realProjectileCost;
@@ -42,6 +43,12 @@ public class LongRangeWeapon : Weapon
     {
         get { return _minProjectileCost; }
         private set { _minProjectileCost = value; }
+    }
+
+    public bool healthItemMatchesProjectileCost
+    {
+        get { return _healthItemMatchesProjectileCost; }
+        private set { _healthItemMatchesProjectileCost = value; }
     }
 
     public float realProjectileCost
@@ -147,7 +154,13 @@ public class LongRangeWeapon : Weapon
         wDetails.SetWeaponUser(weaponUser);
         wDetails.SetUsesGravity(usesGravity);
         wDetails.SetLaunchForce(launchForce);
-        
+
+        if (healthItemMatchesProjectileCost)
+        {
+            HealthItem healthItem;
+            if (healthItem = wDetails.dropItem.GetComponent<HealthItem>()) { healthItem.SetHealthAmount(projectileCost); }
+        }
+
         // Use realDamage instead of damage to apply aiming bonus to projectiles
         wDetails.SetDamage(realDamage);
 
