@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 1
-  _health: 100
+  health: 100
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
   _enemyDamage: 20

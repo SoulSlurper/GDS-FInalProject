@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 0
-  _health: 1110
+  health: 750
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
   _dropItemAmount: 1

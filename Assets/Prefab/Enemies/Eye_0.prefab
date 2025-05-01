@@ -110,6 +110,9 @@ MonoBehaviour:
   hoverFrequency: 2
   directionChangeTime: 3
   contactDamage: 10
+  knockbackForce: 8
+  knockbackDuration: 0.25
+  invincibilityDuration: 0.5
 --- !u!58 &4414380379387218028
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -186,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 2
-  _health: 50
+  health: 50
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 1988137186141514875, guid: 25d8914f988f4d549bb598fe3f9134ce, type: 3}
 --- !u!114 &-4010415764205632723
