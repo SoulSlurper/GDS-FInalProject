@@ -26,7 +26,7 @@ public class FallToGround : MonoBehaviour
         initialConstraints = rb.constraints;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         //ignores collisions from any objects with specific tags
         Collider2D collider = collision.collider;
@@ -36,10 +36,7 @@ public class FallToGround : MonoBehaviour
             return;
         }
 
-        if (!onGround)
-        {
-            onGround = CheckForBottom();
-        }
+        onGround = CheckForBottom();
     }
 
     void OnDrawGizmosSelected()
