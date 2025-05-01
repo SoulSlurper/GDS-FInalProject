@@ -8,6 +8,7 @@ public class HealthItem : MonoBehaviour
     [SerializeField] private StatusUser itemUser; //identifies who can use the item
     [SerializeField] private float healthAmount;
 
+    #region Unity
     void OnTriggerEnter2D(Collider2D collision)
     {
         Status status;
@@ -22,4 +23,9 @@ public class HealthItem : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region Functions
+    public void SetHealthAmount(float healthAmount) { this.healthAmount = healthAmount < 0 ? 0 : healthAmount; }
+    #endregion
 }
