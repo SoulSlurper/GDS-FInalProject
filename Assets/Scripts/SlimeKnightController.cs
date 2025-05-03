@@ -153,15 +153,7 @@ public class SlimeKnightController : MonoBehaviour
             if (weaponHandler == null) return;
         }
         
-        // Check if weapon selection is active or was recently canceled with right-click
-        if (weaponHandler.IsSelecting() || weaponHandler.WasSelectionRecentlyCanceled())
-        {
-            isAiming = false;
-        }
-        else
-        {
-            isAiming = Input.GetMouseButton(1); // Right mouse button
-        }
+        isAiming = Input.GetMouseButton(1);
     }
 
     private void CalculateCollisionPoints()

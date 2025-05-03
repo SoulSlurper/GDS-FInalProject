@@ -19,8 +19,6 @@ public class WeaponAtHand : MonoBehaviour
     // Internal weapon tracking
     private List<GameObject> weapons = new List<GameObject>();
     private int currentWeaponIndex = -1;
-    private bool selectionRecentlyCanceled = false;
-    private float selectionCancelTime = 0f;
 
     // Component references
     private Status playerStatus;
@@ -74,7 +72,6 @@ public class WeaponAtHand : MonoBehaviour
     /// </summary>
     public bool IsSelecting()
     {
-        // Always false in the new implementation since we don't have a selection mode
         return false;
     }
     
@@ -84,13 +81,6 @@ public class WeaponAtHand : MonoBehaviour
     /// </summary>
     public bool WasSelectionRecentlyCanceled()
     {
-        // Check if it was canceled recently (within last 0.5 seconds)
-        if (selectionRecentlyCanceled && Time.time - selectionCancelTime < 0.5f)
-        {
-            return true;
-        }
-        
-        selectionRecentlyCanceled = false;
         return false;
     }
     
