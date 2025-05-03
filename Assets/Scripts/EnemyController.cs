@@ -19,12 +19,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float hoverAmplitude = 0.5f;
     [SerializeField] private float hoverFrequency = 2f;
     [SerializeField] private float directionChangeTime = 3f;
+    
+    [Header("Player Interaction")]
     [SerializeField] private int contactDamage = 10;
+    [SerializeField] private float attackCooldown = 0.5f;
     
     [Header("Knockback")]
     [SerializeField] private float knockbackForce = 8f;
     [SerializeField] private float knockbackDuration = 0.25f;
-    [SerializeField] private float flashDuration = 0.5f; // Renamed from invincibilityDuration
+    [SerializeField] private float flashDuration = 0.5f;
     
     // References
     private Rigidbody2D rb;
@@ -39,8 +42,9 @@ public class EnemyController : MonoBehaviour
     private bool hasDetectedPlayer = false;
     private Vector2 currentKnockbackVelocity;
     private float knockbackTimer = 0f;
-    private float flashTimer = 0f; // Renamed from invincibilityTimer
+    private float flashTimer = 0f;
     private Coroutine directionChangeCoroutine;
+    private float lastAttackTime = 0f;
     
     // Animation parameters
     private readonly string IS_CHASING = "IsChasing";
@@ -254,7 +258,8 @@ public class EnemyController : MonoBehaviour
     
     public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
     {
-        if (currentState == EnemyState.KnockBack) return; // Removed invincibility check
+        // If already knocked back, don't interrupt
+        if (currentState == EnemyState.KnockBack) return;
         
         // Calculate knockback
         float knockbackStrength = force > 0 ? force : knockbackForce;
@@ -263,7 +268,7 @@ public class EnemyController : MonoBehaviour
         
         // Set state
         currentState = EnemyState.KnockBack;
-        flashTimer = flashDuration; // Start flash effect but not invincibility
+        flashTimer = flashDuration; // Start flash effect
         knockbackTimer = knockbackDuration;
         rb.velocity = currentKnockbackVelocity;
         
@@ -275,15 +280,44 @@ public class EnemyController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Bounce off surfaces
-        ContactPoint2D contact = collision.contacts[0];
+        ContactPoint2D contact = collision.GetContact(0);
         rb.velocity = Vector2.Reflect(rb.velocity, contact.normal) * 0.7f;
         
-        // Damage and knockback player on contact
-        if (collision.gameObject.CompareTag("Player"))
+        // Only damage player if it's a player and we're not cooling down
+        if (collision.gameObject.CompareTag("Player") && Time.time > lastAttackTime + attackCooldown)
         {
             SlimeKnightController playerController = collision.gameObject.GetComponent<SlimeKnightController>();
-            if (playerController != null)
-                playerController.ApplyKnockback(transform.position);
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            
+            // Only damage if player isn't invincible
+            if (playerHealth != null && playerController != null && !playerController.IsInvincible())
+            {
+                // Apply damage with this enemy's position as the damage source
+                playerHealth.TakeDamage(contactDamage, transform.position);
+                
+                // Update last attack time
+                lastAttackTime = Time.time;
+            }
+        }
+    }
+    
+    // Stay collision - for continuous damage sources
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // Only apply damage at intervals
+        if (collision.gameObject.CompareTag("Player") && Time.time > lastAttackTime + attackCooldown)
+        {
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            SlimeKnightController playerController = collision.gameObject.GetComponent<SlimeKnightController>();
+            
+            if (playerHealth != null && playerController != null && !playerController.IsInvincible())
+            {
+                // Apply damage with position
+                playerHealth.TakeDamage(contactDamage, transform.position);
+                
+                // Update last attack time
+                lastAttackTime = Time.time;
+            }
         }
     }
     
@@ -293,6 +327,7 @@ public class EnemyController : MonoBehaviour
         SoundManager.Instance?.PlayEnemyDashSound();
     }
     
+    // State queries
     public bool IsKnockedBack() => currentState == EnemyState.KnockBack;
     
     // This method is kept for compatibility but always returns false now

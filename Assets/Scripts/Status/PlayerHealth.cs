@@ -1,198 +1,181 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHealth : Status
 {
-    //may change where enemies could have weapons
-    [Header("Collision Damage")]
-    [SerializeField] private float _enemyDamage;
-    [SerializeField] private float _bossDamage;
-    [SerializeField] private float _lavaDamage;
-    [SerializeField] private float _spikeDamage = 20f; // Changed damage from insta-death to fixed amount
-    [SerializeField] private float _spikeKnockbackForce = 5f; // New variable for spike knockback force
-    [SerializeField] private float _enemyProjectileDamage;
-    [SerializeField] private float _bossProjectileDamage;
-
+    [Header("Damage Sources")]
+    [SerializeField] private float _enemyDamage = 10f;
+    [SerializeField] private float _bossDamage = 20f;
+    [SerializeField] private float _lavaDamage = 100f; // Instant death
+    [SerializeField] private float _spikeDamage = 15f;
+    [SerializeField] private float _enemyProjectileDamage = 10f;
+    [SerializeField] private float _bossProjectileDamage = 15f;
+    
     [Header("Size by Health")]
-    [SerializeField] [Range(0, 1f)] private float minSize = 1f;
-
+    [SerializeField] [Range(0, 1f)] private float minSize = 0.7f;
+    
+    // References
     private SavePoint savePoint;
     private Vector2 initialPosition;
     private Vector3 initialSize;
     private Camera mainCamera;
     private SlimeKnightController playerController;
+    
+    // Status effect trackers
+    private Coroutine currentDamageFlashRoutine;
 
-    #region Getter and Setter 
-    public float enemyDamage
-    {
-        get { return _enemyDamage; }
-        private set { _enemyDamage = value; }
-    }
-
-    public float bossDamage
-    {
-        get { return _bossDamage; }
-        private set { _bossDamage = value; }
-    }
-
-    public float lavaDamage
-    {
-        get { return _lavaDamage; }
-        private set { _lavaDamage = value; }
-    }
-
-    public float spikeDamage
-    {
-        get { return _spikeDamage; }
-        private set { _spikeDamage = value; }
-    }
-
-    public float enemyProjectileDamage
-    {
-        get { return _enemyProjectileDamage; }
-        private set { _enemyProjectileDamage = value; }
-    }
-
-    public float bossProjectileDamage
-    {
-        get { return _bossProjectileDamage; }
-        private set { _bossProjectileDamage = value; }
-    }
-    #endregion
-
-    #region Unity 
     void Start()
     {
         initialPosition = transform.position;
         initialSize = transform.localScale;
         mainCamera = Camera.main;
         playerController = GetComponent<SlimeKnightController>();
+        
+        // Subscribe to damage events
+        OnDamageTaken += HandleDamageTaken;
+    }
+    
+    void OnDestroy()
+    {
+        // Unsubscribe from events
+        OnDamageTaken -= HandleDamageTaken;
     }
 
     void Update()
     {
-        Respawn();
-        ChangeSize();
+        // Handle death/respawn
+        if (noHealth || Input.GetKeyDown(KeyCode.R))
+        {
+            Respawn();
+        }
+        
+        // Update player size based on health
+        UpdatePlayerSize();
     }
-
+    
+    // Handles damage event with knockback
+    private void HandleDamageTaken(float amount, Vector2 damageSource)
+    {
+        if (playerController != null)
+        {
+            // Apply knockback when damage is taken
+            float knockbackForce = amount / 5f; // Force proportional to damage
+            playerController.ApplyKnockback(damageSource, knockbackForce);
+        }
+    }
+    
+    // Override base damage method to check invincibility
+    public override float TakeDamage(float damage, Vector2? damageSource = null)
+    {
+        // Skip damage if player is invincible
+        if (playerController != null && playerController.IsInvincible())
+        {
+            return 0;
+        }
+        
+        return base.TakeDamage(damage, damageSource);
+    }
+    
+    // Handle various collision types
     void OnTriggerEnter2D(Collider2D collision)
     {
+        // Save point logic
         if (collision.CompareTag("SavePoint"))
         {
             SavePoint encounteredSavePoint = collision.gameObject.GetComponent<SavePoint>();
-            if (!encounteredSavePoint.Equals(savePoint))
+            if (encounteredSavePoint != null && !encounteredSavePoint.Equals(savePoint))
             {
                 if (savePoint) savePoint.isActive = false;
-
                 savePoint = encounteredSavePoint;
                 savePoint.isActive = true;
+                Debug.Log("SavePoint Recorded: " + savePoint.position);
             }
-
-            Debug.Log("SavePoint Recorded: " + savePoint.position);
         }
-
+        
+        // Handle damage from various sources
+        Vector2 contactPoint = collision.ClosestPoint(transform.position);
+        
         if (collision.CompareTag("BossProjectile"))
         {
-            TakeDamage(bossProjectileDamage);
+            TakeDamage(_bossProjectileDamage, contactPoint);
         }
-
-        if (collision.CompareTag("Lava"))
+        else if (collision.CompareTag("EnemyProjectile"))
         {
-            // Lava still causes instant death
-            InstantDeath();
+            TakeDamage(_enemyProjectileDamage, contactPoint);
         }
-
-        if (collision.gameObject.CompareTag("Spike"))
+        else if (collision.CompareTag("Lava"))
         {
-            // Spikes now cause damage and knockback instead of instant death
-            TakeDamage(spikeDamage);
-            
-            // Apply knockback if the player controller is available
-            if (playerController != null)
-            {
-                // Calculate knockback direction based on spike position
-                Vector2 knockbackDirection = (Vector2)transform.position - (Vector2)collision.transform.position;
-                playerController.ApplyKnockback(collision.transform.position, _spikeKnockbackForce);
-            }
+            // Instant death from lava
+            TakeDamage(_lavaDamage, contactPoint);
+        }
+        else if (collision.CompareTag("Spike"))
+        {
+            TakeDamage(_spikeDamage, contactPoint);
         }
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // Get contact point for knockback direction
+        Vector2 contactPoint = collision.GetContact(0).point;
+        
         if (collision.collider.CompareTag("Boss"))
         {
-            TakeDamage(bossDamage);
+            TakeDamage(_bossDamage, contactPoint);
         }
-
-        if (collision.collider.CompareTag("Enemy"))
+        else if (collision.collider.CompareTag("Enemy"))
         {
-            TakeDamage(enemyDamage);
+            TakeDamage(_enemyDamage, contactPoint);
         }
     }
-    #endregion
-
-    #region Collision Damage 
-    public void SetEnemyDamage(float enemyDamage) { this.enemyDamage = enemyDamage; }
-    public void SetBossDamage(float bossDamage) { this.bossDamage = bossDamage; }
-    public void SetSpikeDamage(float spikeDamage) { this.spikeDamage = spikeDamage; }
-    public void SetEnemyProjectileDamage(float enemyProjectileDamage) { this.enemyProjectileDamage = enemyProjectileDamage; }
-    public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
-    #endregion
-
-    #region Other functions 
+    
+    // Player respawn logic
     private void Respawn()
     {
-        if (!noHealth && !Input.GetKeyDown(KeyCode.R)) return;
-
-        if (savePoint) this.transform.position = savePoint.position;
-        else this.transform.position = initialPosition;
-
-        if (noHealth) 
+        // Move player to save point or initial position
+        transform.position = (savePoint != null) ? savePoint.position : initialPosition;
+        
+        // If player died, reset everything
+        if (noHealth)
         {
-            GameObject Boss = GameObject.FindWithTag("Boss");
-            if (Boss)
+            // Remove boss if present
+            GameObject boss = GameObject.FindWithTag("Boss");
+            if (boss)
             {
-                Boss.GetComponent<Status>().healthBar.SetActiveState(false);
-                Destroy(Boss);
-
+                boss.GetComponent<Status>().healthBar.SetActiveState(false);
+                Destroy(boss);
+                
+                // Reset camera
                 mainCamera.orthographicSize = 3f;
-
                 BossTrigger.hasSpawnedBoss = false;
+                
+                // Reset any background music
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.ResumeBackgroundMusic();
+                }
             }
-
+            
+            // Reset health and player state
             ResetHealth();
+            if (playerController != null)
+            {
+                playerController.ResetPlayerState();
+            }
         }
     }
-
-    private void ChangeSize()
+    
+    // Update player size based on health percentage
+    private void UpdatePlayerSize()
     {
-        //Debug.Log(gameObject.name + " size updated");
-
         Vector3 newSize = initialSize;
         if (currentHealth < maxHealth)
         {
             Vector3 actualMinSize = initialSize * minSize;
             Vector3 remainingSize = initialSize - actualMinSize;
-
             newSize = actualMinSize + remainingSize * currentHealthPercentage;
         }
-
+        
         transform.localScale = newSize;
     }
-
-    public override void TakeDamage(float damage)
-    {
-        base.TakeDamage(damage);
-
-        ChangeSize();
-    }
-
-    public override void TakeHealth(float amount)
-    {
-        base.TakeHealth(amount);
-
-        ChangeSize();
-    }
-    #endregion
 }

@@ -1,21 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserManager : MonoBehaviour
 {
-    // Laser damage amount
     [SerializeField] private float damage = 15f;
-    
-    // Knockback settings
     [SerializeField] private float knockbackForce = 12f;
     
-    // Reference to the boss transform for knockback direction
     private Transform bossTransform;
     
     void Start()
     {
-        // Find the boss to use as knockback source
+        // Find boss for knockback direction
         GameObject boss = GameObject.FindWithTag("Boss");
         if (boss != null)
         {
@@ -25,33 +19,30 @@ public class LaserManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Destroy laser if it hits a clear object
-        if (collider.gameObject.CompareTag("BossProjectileClear")) 
+        // Destroy laser if hits a clear object
+        if (collider.gameObject.CompareTag("BossProjectileClear"))
         {
             Destroy(gameObject);
             return;
         }
         
-        // Player hit detection
+        // Handle player collision
         if (collider.CompareTag("Player"))
         {
-            // Get player controller and check if not invincible
+            PlayerHealth playerHealth = collider.GetComponent<PlayerHealth>();
             SlimeKnightController playerController = collider.GetComponent<SlimeKnightController>();
-            if (playerController != null && !playerController.IsInvincible())
+            
+            // Only damage if player isn't invincible
+            if (playerHealth != null && playerController != null && !playerController.IsInvincible())
             {
-                // Apply damage to player
-                Status playerStatus = collider.GetComponent<Status>();
-                if (playerStatus != null)
-                {
-                    playerStatus.TakeDamage(damage);
-                }
-                
-                // Apply knockback - use boss position as source if available
-                Vector2 knockbackSource = bossTransform != null ? 
+                // Determine knockback source position
+                Vector2 sourcePosition = bossTransform != null ? 
                     bossTransform.position : transform.position;
-                playerController.ApplyKnockback(knockbackSource, knockbackForce);
                 
-                // Play laser hit sound if available
+                // Apply damage - this will also trigger knockback via the damage event
+                playerHealth.TakeDamage(damage, sourcePosition);
+                
+                // Play sound
                 if (SoundManager.Instance != null)
                 {
                     SoundManager.Instance.PlayEnemyLaserShootSound(transform.position);
