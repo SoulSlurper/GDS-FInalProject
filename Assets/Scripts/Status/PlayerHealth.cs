@@ -9,7 +9,8 @@ public class PlayerHealth : Status
     [SerializeField] private float _enemyDamage;
     [SerializeField] private float _bossDamage;
     [SerializeField] private float _lavaDamage;
-    [SerializeField] private float _spikeDamage;
+    [SerializeField] private float _spikeDamage = 20f; // Changed damage from insta-death to fixed amount
+    [SerializeField] private float _spikeKnockbackForce = 5f; // New variable for spike knockback force
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
@@ -20,6 +21,7 @@ public class PlayerHealth : Status
     private Vector2 initialPosition;
     private Vector3 initialSize;
     private Camera mainCamera;
+    private SlimeKnightController playerController;
 
     #region Getter and Setter 
     public float enemyDamage
@@ -65,6 +67,7 @@ public class PlayerHealth : Status
         initialPosition = transform.position;
         initialSize = transform.localScale;
         mainCamera = Camera.main;
+        playerController = GetComponent<SlimeKnightController>();
     }
 
     void Update()
@@ -96,16 +99,22 @@ public class PlayerHealth : Status
 
         if (collision.CompareTag("Lava"))
         {
-            // Instantly kill the player when touching lava
-            //TakeDamage(lavaDamage);
+            // Lava still causes instant death
             InstantDeath();
         }
 
         if (collision.gameObject.CompareTag("Spike"))
         {
-            // Instantly kill the player when touching the spikes
-            //TakeDamage(spikeDamage);
-            InstantDeath();
+            // Spikes now cause damage and knockback instead of instant death
+            TakeDamage(spikeDamage);
+            
+            // Apply knockback if the player controller is available
+            if (playerController != null)
+            {
+                // Calculate knockback direction based on spike position
+                Vector2 knockbackDirection = (Vector2)transform.position - (Vector2)collision.transform.position;
+                playerController.ApplyKnockback(collision.transform.position, _spikeKnockbackForce);
+            }
         }
     }
 
@@ -126,6 +135,7 @@ public class PlayerHealth : Status
     #region Collision Damage 
     public void SetEnemyDamage(float enemyDamage) { this.enemyDamage = enemyDamage; }
     public void SetBossDamage(float bossDamage) { this.bossDamage = bossDamage; }
+    public void SetSpikeDamage(float spikeDamage) { this.spikeDamage = spikeDamage; }
     public void SetEnemyProjectileDamage(float enemyProjectileDamage) { this.enemyProjectileDamage = enemyProjectileDamage; }
     public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
     #endregion

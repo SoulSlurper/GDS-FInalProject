@@ -21,7 +21,7 @@ public class SlimeKnightController : MonoBehaviour
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float knockbackDuration = 0.25f;
-    [SerializeField] private float invincibilityDuration = 1f;
+    [SerializeField] private float flashDuration = 1f; // Renamed from invincibilityDuration
     [SerializeField] private float flashInterval = 0.1f;
     [SerializeField] private bool playHurtAnimation = true;
 
@@ -59,8 +59,9 @@ public class SlimeKnightController : MonoBehaviour
     private bool hasJumped = false;
     
     // Hit state variables
-    private bool isKnockedBack = false, isInvincible = false;
-    private float knockbackTimer = 0f, invincibilityTimer = 0f;
+    private bool isKnockedBack = false;
+    private float knockbackTimer = 0f;
+    private float flashTimer = 0f; // Renamed from invincibilityTimer
     private Vector2 currentKnockbackVelocity;
 
     // Animation parameters
@@ -97,7 +98,7 @@ public class SlimeKnightController : MonoBehaviour
 
     private void Update()
     {
-        // Handle knockback and invincibility states
+        // Handle knockback and flash states
         UpdateKnockbackState();
         
         // Skip input processing if knocked back
@@ -305,13 +306,12 @@ public class SlimeKnightController : MonoBehaviour
             }
         }
         
-        // Update invincibility timer and visual effect
-        if (isInvincible)
+        // Update flash timer and visual effect
+        if (flashTimer > 0)
         {
-            invincibilityTimer -= Time.deltaTime;
-            if (invincibilityTimer <= 0f)
+            flashTimer -= Time.deltaTime;
+            if (flashTimer <= 0f)
             {
-                isInvincible = false;
                 if (spriteRenderer != null) 
                     spriteRenderer.color = Color.white;
             }
@@ -380,26 +380,26 @@ public class SlimeKnightController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
+        // No longer checking invincible state here
+        if (collision.gameObject.CompareTag("Enemy"))
             ApplyKnockback(collision.transform.position);
 
         if (collision.gameObject.CompareTag("Spike"))
             ApplyKnockback(collision.transform.position);
     }
     
-    // Apply knockback with configurable force
+    // Apply knockback with configurable force - removed invincibility
     public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
     {
-        if (isKnockedBack || isInvincible) return;
+        if (isKnockedBack) return; // Only check for knockback state, not invincibility
         
         float knockbackStrength = force > 0 ? force : knockbackForce;
         Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
         currentKnockbackVelocity = direction * knockbackStrength + Vector2.up * knockbackStrength * 0.5f;
         
         isKnockedBack = true;
-        isInvincible = true;
         knockbackTimer = knockbackDuration;
-        invincibilityTimer = invincibilityDuration;
+        flashTimer = flashDuration; // Start flash effect but no invincibility
         
         if (animator != null && playHurtAnimation) 
             animator.SetBool(IS_HURT, true);
@@ -408,5 +408,7 @@ public class SlimeKnightController : MonoBehaviour
     }
     
     public bool IsKnockedBack() => isKnockedBack;
-    public bool IsInvincible() => isInvincible;
+    
+    // This method is kept for compatibility, but always returns false now
+    public bool IsInvincible() => false;
 }

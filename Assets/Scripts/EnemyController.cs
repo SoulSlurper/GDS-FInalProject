@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
     [Header("Knockback")]
     [SerializeField] private float knockbackForce = 8f;
     [SerializeField] private float knockbackDuration = 0.25f;
-    [SerializeField] private float invincibilityDuration = 0.5f;
+    [SerializeField] private float flashDuration = 0.5f; // Renamed from invincibilityDuration
     
     // References
     private Rigidbody2D rb;
@@ -39,7 +39,7 @@ public class EnemyController : MonoBehaviour
     private bool hasDetectedPlayer = false;
     private Vector2 currentKnockbackVelocity;
     private float knockbackTimer = 0f;
-    private float invincibilityTimer = 0f;
+    private float flashTimer = 0f; // Renamed from invincibilityTimer
     private Coroutine directionChangeCoroutine;
     
     // Animation parameters
@@ -155,10 +155,10 @@ public class EnemyController : MonoBehaviour
             }
         }
         
-        // Update invincibility timer
-        if (invincibilityTimer > 0)
+        // Update flash timer
+        if (flashTimer > 0)
         {
-            invincibilityTimer -= Time.deltaTime;
+            flashTimer -= Time.deltaTime;
         }
     }
     
@@ -179,8 +179,8 @@ public class EnemyController : MonoBehaviour
         if (Mathf.Abs(direction.x) > 0.1f)
             spriteRenderer.flipX = direction.x < 0;
             
-        // Flashing during invincibility
-        if (invincibilityTimer > 0)
+        // Flashing during damage effect period
+        if (flashTimer > 0)
         {
             float alpha = Mathf.PingPong(Time.time * 10f, 1f) * 0.5f + 0.5f;
             spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
@@ -254,7 +254,7 @@ public class EnemyController : MonoBehaviour
     
     public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
     {
-        if (currentState == EnemyState.KnockBack || invincibilityTimer > 0) return;
+        if (currentState == EnemyState.KnockBack) return; // Removed invincibility check
         
         // Calculate knockback
         float knockbackStrength = force > 0 ? force : knockbackForce;
@@ -263,7 +263,7 @@ public class EnemyController : MonoBehaviour
         
         // Set state
         currentState = EnemyState.KnockBack;
-        invincibilityTimer = invincibilityDuration;
+        flashTimer = flashDuration; // Start flash effect but not invincibility
         knockbackTimer = knockbackDuration;
         rb.velocity = currentKnockbackVelocity;
         
@@ -282,7 +282,7 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             SlimeKnightController playerController = collision.gameObject.GetComponent<SlimeKnightController>();
-            if (playerController != null && !playerController.IsInvincible())
+            if (playerController != null)
                 playerController.ApplyKnockback(transform.position);
         }
     }
@@ -294,7 +294,9 @@ public class EnemyController : MonoBehaviour
     }
     
     public bool IsKnockedBack() => currentState == EnemyState.KnockBack;
-    public bool IsInvincible() => invincibilityTimer > 0;
+    
+    // This method is kept for compatibility but always returns false now
+    public bool IsInvincible() => false;
     
     // Visualize detection range in editor
     private void OnDrawGizmosSelected()
