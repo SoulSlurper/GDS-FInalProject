@@ -241,7 +241,7 @@ public class SoundManager : MonoBehaviour
     {
         if (shootSound != null)
         {
-            PlaySoundAtPosition(shootSound, GetPlayerPosition(), sfxVolume * 0.6f);
+            PlaySoundAtPosition(shootSound, GetPlayerPosition(), sfxVolume * 5f);
         }
     }
     
