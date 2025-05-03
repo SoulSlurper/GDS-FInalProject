@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
     
     [Header("UI Sounds")]
     [SerializeField] private AudioClip buttonSound;
+    [SerializeField] private AudioClip UIButtonSound;
     
     [Header("Environment Sounds")]
     [SerializeField] private AudioClip doorOpenSound;
@@ -164,6 +165,15 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(buttonSound, sfxVolume);
     }
+    
+    public void PlayCustomButtonSound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            PlaySound(clip, sfxVolume);
+        }
+    }
+
     
     // Environment Sounds
     public void PlayDoorOpenSound()
