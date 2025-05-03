@@ -100,7 +100,7 @@ public class SlimeKnightController : MonoBehaviour
 
     private void Start()
     {
-        soundManager = FindObjectOfType<SoundManager>();
+        soundManager = FindFirstObjectByType<SoundManager>();
     }
 
     private void Update()
