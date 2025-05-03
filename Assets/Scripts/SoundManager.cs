@@ -165,6 +165,14 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(buttonSound, sfxVolume);
     }
+    public void PlayCustomButtonSound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            PlaySound(clip, sfxVolume);
+        }
+    }
+
     
     public void PlayCustomButtonSound(AudioClip clip)
     {
