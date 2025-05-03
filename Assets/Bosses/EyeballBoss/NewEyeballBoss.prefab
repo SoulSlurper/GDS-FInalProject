@@ -200,7 +200,7 @@ MonoBehaviour:
   _user: 0
   health: 750
   _healthBar: {fileID: 0}
-  _dropItem: {fileID: 0}
+  _dropItem: {fileID: 4927328159137090590, guid: f060894ebeaaea0429305c6af44e17fe, type: 3}
   _dropItemAmount: 1
   _healthDropItemPercentage: 0
   _endDropItem: {fileID: 0}
