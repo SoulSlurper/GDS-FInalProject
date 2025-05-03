@@ -20,6 +20,7 @@ TagManager:
   - SavePoint
   - BreakableWall
   - Spike
+  - Button
   layers:
   - Default
   - TransparentFX
