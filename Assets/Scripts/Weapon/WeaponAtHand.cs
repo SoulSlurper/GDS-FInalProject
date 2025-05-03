@@ -259,7 +259,8 @@ public class WeaponAtHand : MonoBehaviour
     /// </summary>
     private void HandleHealthRegeneration()
     {
-        if (selectedWeapon == WeaponType.None && playerStatus != null)
+        // Add a check to prevent regeneration if the player's health is 0 or below
+        if (selectedWeapon == WeaponType.None && playerStatus != null && !playerStatus.noHealth)
         {
             playerStatus.TakeHealth(healthRegenPerSecond * Time.deltaTime);
         }
