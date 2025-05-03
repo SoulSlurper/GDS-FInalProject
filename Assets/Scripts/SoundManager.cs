@@ -174,15 +174,6 @@ public class SoundManager : MonoBehaviour
     }
 
     
-    public void PlayCustomButtonSound(AudioClip clip)
-    {
-        if (clip != null)
-        {
-            PlaySound(clip, sfxVolume);
-        }
-    }
-
-    
     // Environment Sounds
     public void PlayDoorOpenSound()
     {
