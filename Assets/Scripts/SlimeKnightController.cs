@@ -18,10 +18,11 @@ public class SlimeKnightController : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.1f; // Time player can jump after leaving a platform
     [SerializeField] private float jumpBufferTime = 0.1f; // Time to buffer jump input before landing
 
-    [Header("Knockback Settings")]
+    [Header("Knockback & Invincibility Settings")]
     [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float knockbackDuration = 0.25f;
-    [SerializeField] private float invincibilityDuration = 1f;
+    [SerializeField] private float invincibilityDuration = 1.5f;
+    [SerializeField] private float flashDuration = 1.5f;
     [SerializeField] private float flashInterval = 0.1f;
     [SerializeField] private bool playHurtAnimation = true;
 
@@ -58,10 +59,17 @@ public class SlimeKnightController : MonoBehaviour
     private float jumpBufferCounter;
     private bool hasJumped = false;
     
-    // Hit state variables
-    private bool isKnockedBack = false, isInvincible = false;
-    private float knockbackTimer = 0f, invincibilityTimer = 0f;
+    // Knockback state
+    private bool isKnockedBack = false;
+    private float knockbackTimer = 0f;
     private Vector2 currentKnockbackVelocity;
+    
+    // Invincibility state
+    private bool isInvincible = false;
+    private float invincibilityTimer = 0f;
+    
+    // Visual effect state
+    private Coroutine flashRoutine;
 
     // Animation parameters
     private readonly string IS_RUNNING = "IsRunning";
@@ -69,7 +77,7 @@ public class SlimeKnightController : MonoBehaviour
     private readonly string IS_FALLING = "IsFalling";
     private readonly string IS_GROUNDED = "IsGrounded";
     private readonly string IS_HURT = "IsHurt";
-    private readonly string IS_AIMING = "IsAiming"; // New animation parameter for aiming
+    private readonly string IS_AIMING = "IsAiming";
 
     private void Awake()
     {
@@ -92,13 +100,13 @@ public class SlimeKnightController : MonoBehaviour
 
     private void Start()
     {
-        soundManager = FindAnyObjectByType<SoundManager>();
+        soundManager = FindFirstObjectByType<SoundManager>();
     }
 
     private void Update()
     {
-        // Handle knockback and invincibility states
-        UpdateKnockbackState();
+        // Update state timers
+        UpdateStateTimers();
         
         // Skip input processing if knocked back
         if (isKnockedBack) return;
@@ -134,6 +142,8 @@ public class SlimeKnightController : MonoBehaviour
         if (isKnockedBack)
         {
             rb.velocity = currentKnockbackVelocity;
+            // Allow deceleration over time for more natural feeling
+            currentKnockbackVelocity *= 0.92f;  // Gradual reduction
             return;
         }
         
@@ -144,6 +154,35 @@ public class SlimeKnightController : MonoBehaviour
         HandleMovementPhysics();
     }
 
+    // Update state timers and effects
+    private void UpdateStateTimers()
+    {
+        // Update knockback timer
+        if (isKnockedBack)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if (knockbackTimer <= 0f)
+            {
+                isKnockedBack = false;
+                // Reset animation if needed
+                if (animator != null && playHurtAnimation)
+                {
+                    animator.SetBool(IS_HURT, false);
+                }
+            }
+        }
+        
+        // Update invincibility timer
+        if (isInvincible)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            if (invincibilityTimer <= 0f)
+            {
+                EndInvincibility();
+            }
+        }
+    }
+
     private void UpdateAimingState()
     {
         if (weaponHandler == null)
@@ -152,15 +191,7 @@ public class SlimeKnightController : MonoBehaviour
             if (weaponHandler == null) return;
         }
         
-        // Check if weapon selection is active or was recently canceled with right-click
-        if (weaponHandler.IsSelecting() || weaponHandler.WasSelectionRecentlyCanceled())
-        {
-            isAiming = false;
-        }
-        else
-        {
-            isAiming = Input.GetMouseButton(1); // Right mouse button
-        }
+        isAiming = Input.GetMouseButton(1);
     }
 
     private void CalculateCollisionPoints()
@@ -291,38 +322,6 @@ public class SlimeKnightController : MonoBehaviour
         rb.velocity = Vector2.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothMovementTime);
     }
 
-    private void UpdateKnockbackState()
-    {
-        // Update knockback timer
-        if (isKnockedBack)
-        {
-            knockbackTimer -= Time.deltaTime;
-            if (knockbackTimer <= 0f)
-            {
-                isKnockedBack = false;
-                if (animator != null && playHurtAnimation) 
-                    animator.SetBool(IS_HURT, false);
-            }
-        }
-        
-        // Update invincibility timer and visual effect
-        if (isInvincible)
-        {
-            invincibilityTimer -= Time.deltaTime;
-            if (invincibilityTimer <= 0f)
-            {
-                isInvincible = false;
-                if (spriteRenderer != null) 
-                    spriteRenderer.color = Color.white;
-            }
-            else if (spriteRenderer != null)
-            {
-                float alpha = Mathf.PingPong(Time.time * (1f/flashInterval), 1f) * 0.5f + 0.5f;
-                spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
-            }
-        }
-    }
-
     private void HandleCharacterFlip()
     {
         // Handle character flipping
@@ -374,39 +373,114 @@ public class SlimeKnightController : MonoBehaviour
         }
     }
     
-    public bool IsMoving() => Mathf.Abs(horizontalInput) > 0.1f;
-    
-    public bool IsAiming() => isAiming;
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
-            ApplyKnockback(collision.transform.position);
-
-        if (collision.gameObject.CompareTag("Spike"))
-            ApplyKnockback(collision.transform.position);
-    }
-    
     // Apply knockback with configurable force
     public void ApplyKnockback(Vector2 sourcePosition, float force = 0f)
     {
+        // If already knocked back or invincible, don't apply again
         if (isKnockedBack || isInvincible) return;
         
+        // Calculate knockback
         float knockbackStrength = force > 0 ? force : knockbackForce;
         Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
-        currentKnockbackVelocity = direction * knockbackStrength + Vector2.up * knockbackStrength * 0.5f;
+        currentKnockbackVelocity = direction * knockbackStrength + Vector2.up * (knockbackStrength * 0.5f);
         
+        // Set knockback state
         isKnockedBack = true;
-        isInvincible = true;
         knockbackTimer = knockbackDuration;
-        invincibilityTimer = invincibilityDuration;
         
+        // Set invincibility
+        StartInvincibility(invincibilityDuration);
+        
+        // Set animation
         if (animator != null && playHurtAnimation) 
             animator.SetBool(IS_HURT, true);
         
+        // Play sound effect
         SoundManager.Instance?.PlaySlimeHitSound(transform.position);
     }
     
+    // Start invincibility period
+    public void StartInvincibility(float duration)
+    {
+        isInvincible = true;
+        invincibilityTimer = duration;
+        
+        // Start flash effect
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+        flashRoutine = StartCoroutine(FlashEffect(duration));
+    }
+    
+    // End invincibility
+    private void EndInvincibility()
+    {
+        isInvincible = false;
+        
+        // Ensure sprite is fully visible
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.white;
+        }
+        
+        // Stop flash effect if still running
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+        }
+    }
+    
+    // Flash effect coroutine
+    private IEnumerator FlashEffect(float duration)
+    {
+        if (spriteRenderer == null) yield break;
+        
+        float timer = 0;
+        
+        // Flash between visible and partially transparent
+        while (timer < duration)
+        {
+            // Toggle visibility
+            spriteRenderer.color = spriteRenderer.color.a >= 1.0f ? 
+                new Color(1f, 1f, 1f, 0.3f) : Color.white;
+            
+            yield return new WaitForSeconds(flashInterval);
+            timer += flashInterval;
+        }
+        
+        // Ensure sprite is visible at the end
+        spriteRenderer.color = Color.white;
+        flashRoutine = null;
+    }
+    
+    // Public state checks
+    public bool IsMoving() => Mathf.Abs(horizontalInput) > 0.1f;
+    public bool IsAiming() => isAiming;
     public bool IsKnockedBack() => isKnockedBack;
     public bool IsInvincible() => isInvincible;
+    
+    // Reset player state (called after respawn)
+    public void ResetPlayerState()
+    {
+        // Reset knockback state
+        isKnockedBack = false;
+        knockbackTimer = 0f;
+        
+        // Reset invincibility
+        EndInvincibility();
+        
+        // Reset animations
+        if (animator != null)
+        {
+            animator.SetBool(IS_HURT, false);
+        }
+        
+        // Reset velocity
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
 }

@@ -1,25 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private float damage = 15f;
+    [SerializeField] private float knockbackForce = 12f;
+    
+    private Transform bossTransform;
+    
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Find boss for knockback direction
+        GameObject boss = GameObject.FindWithTag("Boss");
+        if (boss != null)
+        {
+            bossTransform = boss.transform;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("BossProjectileClear")) {
+        // Destroy laser if hits a clear object
+        if (collider.gameObject.CompareTag("BossProjectileClear"))
+        {
             Destroy(gameObject);
+            return;
+        }
+        
+        // Handle player collision
+        if (collider.CompareTag("Player"))
+        {
+            PlayerHealth playerHealth = collider.GetComponent<PlayerHealth>();
+            SlimeKnightController playerController = collider.GetComponent<SlimeKnightController>();
+            
+            // Only damage if player isn't invincible
+            if (playerHealth != null && playerController != null && !playerController.IsInvincible())
+            {
+                // Determine knockback source position
+                Vector2 sourcePosition = bossTransform != null ? 
+                    bossTransform.position : transform.position;
+                
+                // Apply damage - this will also trigger knockback via the damage event
+                playerHealth.TakeDamage(damage, sourcePosition);
+                
+                // Play sound
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayEnemyLaserShootSound(transform.position);
+                }
+            }
         }
     }
 }
