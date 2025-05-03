@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     [Header("UI Fade Settings")]
     public Image fadeImage; // Drag the full-screen black Image here
-    public float fadeDuration = 1f;
+    public float fadeDuration = 4f;
 
     public void LoadSceneWithFade(string sceneName)
     {
