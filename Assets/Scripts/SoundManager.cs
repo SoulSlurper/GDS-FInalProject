@@ -1,345 +1,401 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance;
+    // Singleton instance
+    public static SoundManager Instance { get; private set; }
 
-    public AudioClip backgroundMusic;
-    public AudioClip walkSound;
-    public AudioClip jumpSound;
-    public AudioClip buttonSound;
-    public AudioClip doorOpenSound;
-    public AudioClip doorCloseSound;
-    public AudioClip splatterSound;
-    public AudioClip swordSound;
-    public AudioClip shootSound;
-    public AudioClip enemyDetectedSound;
-    public AudioClip teleportEnterSound;
-    public AudioClip teleportExitSound;
-    public AudioClip enemyDashSound;
-    public AudioClip wallBreakSound;
-    public AudioClip enemyLaserShootSound;
-    public AudioClip slimeHitSound;
-    public AudioClip bossMusic;
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioClip bossMusic;
+    
+    [Header("UI Sounds")]
+    [SerializeField] private AudioClip buttonSound;
+    
+    [Header("Environment Sounds")]
+    [SerializeField] private AudioClip doorOpenSound;
+    [SerializeField] private AudioClip doorCloseSound;
+    [SerializeField] private AudioClip wallBreakSound;
+    [SerializeField] private AudioClip teleportEnterSound;
+    [SerializeField] private AudioClip teleportExitSound;
+    
+    [Header("Player Sounds")]
+    [SerializeField] private AudioClip walkSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip splatterSound;
+    [SerializeField] private AudioClip swordSound;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip slimeHitSound;
+    
+    [Header("Enemy Sounds")]
+    [SerializeField] private AudioClip enemyDetectedSound;
+    [SerializeField] private AudioClip enemyDashSound;
+    [SerializeField] private AudioClip enemyLaserShootSound;
 
+    [Header("Volume Settings")]
+    [Range(0f, 1f)]
+    [SerializeField] private float masterVolume = 1f;
+    [Range(0f, 1f)]
+    [SerializeField] private float musicVolume = 0.6f;
+    [Range(0f, 1f)]
+    [SerializeField] private float sfxVolume = 1.0f;
+
+    [Header("Audio Source Pool")]
+    [SerializeField] private int initialPoolSize = 5;
+    [SerializeField] private int maxPoolSize = 15;
+
+    // Audio sources
     private AudioSource musicSource;
-    private AudioSource audioSource;
-    private GameObject player;
-    private float targetVolume = 1f;
+    private AudioSource loopSource;
+    
+    // Pooling system
+    private Queue<AudioSource> audioSourcePool = new Queue<AudioSource>();
+    private List<AudioSource> activeAudioSources = new List<AudioSource>();
+    
+    // State tracking
     private bool isWalking = false;
     private bool isSplattering = false;
+    private GameObject player;
 
     private void Awake()
     {
+        // Singleton pattern implementation
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            InitializeSoundSystem();
         }
         else
         {
             Debug.LogWarning("Multiple SoundManager instances found! Destroying the duplicate.");
-            Destroy(gameObject); // Prevent multiple SoundManagers
-            return;
+            Destroy(gameObject);
         }
     }
+    
     private void Start()
     {
+        // Get player reference
         player = GameObject.FindWithTag("Player");
-
-        if (player == null)
-        {
-            return;
-        }
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
         
-        musicSource = gameObject.AddComponent<AudioSource>();
-        musicSource.clip = backgroundMusic;
-        musicSource.loop = true;
-        musicSource.volume = 0.6f;
-        musicSource.playOnAwake = false;
-        musicSource.ignoreListenerVolume = true;
-
+        // Play background music
         if (backgroundMusic != null)
         {
-            musicSource.Play();
+            PlayMusic(backgroundMusic, musicVolume);
         }
     }
+    
+    private void Update()
+    {
+        // Cleanup finished audio sources
+        CleanupFinishedAudioSources();
+    }
+    
+    private void InitializeSoundSystem()
+    {
+        // Create music source
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.loop = true;
+        musicSource.playOnAwake = false;
+        musicSource.ignoreListenerVolume = true;
+        
+        // Create loop source for walking etc.
+        loopSource = gameObject.AddComponent<AudioSource>();
+        loopSource.loop = true;
+        loopSource.playOnAwake = false;
+        
+        // Initialize audio source pool
+        for (int i = 0; i < initialPoolSize; i++)
+        {
+            CreatePooledAudioSource();
+        }
+    }
+    
+    private AudioSource CreatePooledAudioSource()
+    {
+        AudioSource newSource = gameObject.AddComponent<AudioSource>();
+        newSource.playOnAwake = false;
+        newSource.loop = false;
+        audioSourcePool.Enqueue(newSource);
+        return newSource;
+    }
+    
+    private AudioSource GetAudioSource()
+    {
+        if (audioSourcePool.Count == 0 && activeAudioSources.Count < maxPoolSize)
+        {
+            return CreatePooledAudioSource();
+        }
+        
+        if (audioSourcePool.Count > 0)
+        {
+            AudioSource source = audioSourcePool.Dequeue();
+            activeAudioSources.Add(source);
+            return source;
+        }
+        
+        // If pool is empty and at max capacity, reuse the oldest active source
+        AudioSource oldestSource = activeAudioSources[0];
+        activeAudioSources.RemoveAt(0);
+        activeAudioSources.Add(oldestSource);
+        oldestSource.Stop();
+        return oldestSource;
+    }
+    
+    private void CleanupFinishedAudioSources()
+    {
+        for (int i = activeAudioSources.Count - 1; i >= 0; i--)
+        {
+            if (!activeAudioSources[i].isPlaying)
+            {
+                audioSourcePool.Enqueue(activeAudioSources[i]);
+                activeAudioSources.RemoveAt(i);
+            }
+        }
+    }
+    
+    #region Public Sound Methods
+    
+    // UI Sounds
     public void PlayButtonSound()
     {
-        if (buttonSound != null)
-        {
-            audioSource.PlayOneShot(buttonSound, targetVolume);
-        }
+        PlaySound(buttonSound, sfxVolume);
     }
-
+    
+    // Environment Sounds
     public void PlayDoorOpenSound()
     {
-        if (doorOpenSound != null)
-        {
-            audioSource.PlayOneShot(doorOpenSound, targetVolume);
-        }
+        PlaySound(doorOpenSound, sfxVolume);
     }
-
+    
     public void PlayDoorCloseSound()
     {
-        if (doorCloseSound != null)
-        {
-            audioSource.PlayOneShot(doorCloseSound, targetVolume);
-        }
+        PlaySound(doorCloseSound, sfxVolume);
     }
-
+    
+    public void PlayWallBreakSound(Vector3 position)
+    {
+        PlaySoundAtPosition(wallBreakSound, position, sfxVolume);
+    }
+    
+    public void PlayTeleportEnterSound()
+    {
+        PlaySound(teleportEnterSound, sfxVolume);
+    }
+    
+    public void PlayTeleportExitSound()
+    {
+        PlaySound(teleportExitSound, sfxVolume);
+    }
+    
+    // Player Sounds
     public void PlayWalkSound()
     {
         if (walkSound != null && !isWalking && !isSplattering)
         {
             isWalking = true;
-            audioSource.clip = walkSound;
-            audioSource.loop = true;
-            audioSource.volume = targetVolume;
-            audioSource.Play();
+            loopSource.clip = walkSound;
+            loopSource.volume = sfxVolume * masterVolume;
+            loopSource.Play();
         }
     }
-
+    
     public void StopWalkSound()
     {
         if (isWalking)
         {
             isWalking = false;
-            audioSource.Stop();
+            loopSource.Stop();
         }
     }
-
+    
     public void PlayJumpSound()
     {
         if (jumpSound != null)
         {
-            audioSource.clip = jumpSound;
-            audioSource.loop = false;
-            audioSource.Play();
+            loopSource.Stop();
+            PlaySound(jumpSound, sfxVolume);
         }
     }
-
     
     public void PlaySplatterSound()
     {
         if (splatterSound != null)
         {
-            GameObject tempGO = new GameObject("TempSplatterSound");
-            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = splatterSound;
-            tempSource.volume = targetVolume / 2f;
-            tempSource.Play();
-
-            Destroy(tempGO, splatterSound.length);
+            PlaySoundAtPosition(splatterSound, GetPlayerPosition(), sfxVolume * 0.5f);
         }
     }
-
+    
     public void PlaySwordSound()
     {
         if (swordSound != null)
         {
-            GameObject tempGO = new GameObject("TempSwordSound");
-            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = swordSound;
-            tempSource.volume = targetVolume * 2f;
-            tempSource.Play();
-
-            Destroy(tempGO, swordSound.length);
+            PlaySoundAtPosition(swordSound, GetPlayerPosition(), sfxVolume * 2f);
         }
     }
-
+    
     public void PlayShootSound()
     {
         if (shootSound != null)
         {
-            GameObject tempGO = new GameObject("TempShootSound");
-            tempGO.transform.position = player != null ? player.transform.position : Vector3.zero;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = shootSound;
-            tempSource.volume = targetVolume * 0.6f;
-            tempSource.Play();
-
-            Destroy(tempGO, shootSound.length);
+            PlaySoundAtPosition(shootSound, GetPlayerPosition(), sfxVolume * 0.6f);
         }
     }
     
-    public void PlayEnemyDetectedSound()
-    {
-        if (enemyDetectedSound != null)
-        {
-            audioSource.PlayOneShot(enemyDetectedSound, targetVolume * 1.2f);
-        }
-    }
-    
-    public void PlayTeleportEnterSound()
-    {
-        if (teleportEnterSound != null)
-        {
-            audioSource.PlayOneShot(teleportEnterSound, targetVolume);
-        }
-    }
-
-    public void PlayTeleportExitSound()
-    {
-        if (teleportExitSound != null)
-        {
-            audioSource.PlayOneShot(teleportExitSound, targetVolume);
-        }
-    }
-    
-    public void PlayEnemyDashSound()
-    {
-        if (enemyDashSound != null)
-        {
-            audioSource.PlayOneShot(enemyDashSound, targetVolume * 1.1f);
-        }
-    }
-
-    public void PlayWallBreakSound(Vector3 position)
-    {
-        if (wallBreakSound != null)
-        {
-            GameObject tempGO = new GameObject("TempWallBreakSound");
-            tempGO.transform.position = position;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = wallBreakSound;
-            tempSource.spatialBlend = 0f; // Set to 1 for 3D spatial audio
-            tempSource.volume = targetVolume;
-            tempSource.Play();
-
-            Destroy(tempGO, wallBreakSound.length);
-        }
-    }
-
     public void PlaySlimeHitSound(Vector3 position)
     {
         if (slimeHitSound != null)
         {
-            GameObject tempGO = new GameObject("TempSlimeHitSound");
-            tempGO.transform.position = position;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = slimeHitSound;
-            tempSource.volume = targetVolume;
-            tempSource.Play();
-
-            Destroy(tempGO, slimeHitSound.length);
+            PlaySoundAtPosition(slimeHitSound, position, sfxVolume);
         }
     }
-
+    
+    // Enemy Sounds
+    public void PlayEnemyDetectedSound()
+    {
+        PlaySound(enemyDetectedSound, sfxVolume * 1.2f);
+    }
+    
+    public void PlayEnemyDashSound()
+    {
+        PlaySound(enemyDashSound, sfxVolume * 1.1f);
+    }
+    
     public void PlayEnemyLaserShootSound(Vector3 position)
     {
-        if (enemyLaserShootSound != null)
-        {
-            GameObject tempGO = new GameObject("TempLaserShootSound");
-            tempGO.transform.position = position;
-
-            AudioSource tempSource = tempGO.AddComponent<AudioSource>();
-            tempSource.clip = enemyLaserShootSound;
-            tempSource.volume = 1f;
-            tempSource.Play();
-
-            Destroy(tempGO, enemyLaserShootSound.length);
-        }
+        PlaySoundAtPosition(enemyLaserShootSound, position, sfxVolume);
     }
+    
+    // Music Control
     public void PlayBossMusic()
     {
         if (musicSource != null && bossMusic != null)
         {
-            StartCoroutine(FadeOutAndSwitchToBossMusic(1.5f));
+            StartCoroutine(FadeOutAndSwitchMusic(bossMusic, 1.5f, musicVolume * 1.15f));
         }
     }
+    
     public void ResumeBackgroundMusic()
     {
         if (musicSource != null && backgroundMusic != null)
         {
-            StartCoroutine(FadeOutAndSwitchToBackgroundMusic(1.5f)); // 1.5s fade
+            StartCoroutine(FadeOutAndSwitchMusic(backgroundMusic, 1.5f, musicVolume));
         }
     }
-    private IEnumerator FadeOutAndSwitchToBackgroundMusic(float fadeDuration)
+    
+    #endregion
+    
+    #region Private Helper Methods
+    
+    private void PlaySound(AudioClip clip, float volume)
+    {
+        if (clip == null)
+            return;
+            
+        AudioSource source = GetAudioSource();
+        source.clip = clip;
+        source.volume = volume * masterVolume;
+        source.spatialBlend = 0f; // 2D sound
+        source.Play();
+    }
+    
+    private void PlaySoundAtPosition(AudioClip clip, Vector3 position, float volume)
+    {
+        if (clip == null)
+            return;
+            
+        AudioSource source = GetAudioSource();
+        source.transform.position = position;
+        source.clip = clip;
+        source.volume = volume * masterVolume;
+        source.spatialBlend = 0.5f; // Mix of 2D and 3D sound
+        source.Play();
+    }
+    
+    private Vector3 GetPlayerPosition()
+    {
+        return player != null ? player.transform.position : Vector3.zero;
+    }
+    
+    private void PlayMusic(AudioClip music, float volume)
+    {
+        musicSource.clip = music;
+        musicSource.volume = volume * masterVolume;
+        musicSource.Play();
+    }
+    
+    private IEnumerator FadeOutAndSwitchMusic(AudioClip newMusic, float fadeDuration, float targetVolume)
     {
         float startVolume = musicSource.volume;
 
-        // Fade out boss music
+        // Fade out current music
         while (musicSource.volume > 0f)
         {
             musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
             yield return null;
         }
 
+        // Change clip and reset volume
         musicSource.Stop();
-        musicSource.clip = backgroundMusic;
-        musicSource.volume = 0f; // Start silent
-
-        musicSource.loop = true;
+        musicSource.clip = newMusic;
+        musicSource.volume = 0f;
         musicSource.Play();
 
-        // Fade in background music
-        float targetVolume = 0.6f;
-        while (musicSource.volume < targetVolume)
+        // Fade in new music
+        while (musicSource.volume < targetVolume * masterVolume)
         {
-            musicSource.volume += targetVolume * Time.deltaTime / fadeDuration;
+            musicSource.volume += targetVolume * masterVolume * Time.deltaTime / fadeDuration;
             yield return null;
         }
 
-        musicSource.volume = targetVolume;
+        musicSource.volume = targetVolume * masterVolume;
     }
-    private IEnumerator FadeOutAndSwitchToBossMusic(float fadeDuration)
+    
+    #endregion
+    
+    #region Volume Control
+    
+    public void SetMasterVolume(float volume)
     {
-        float startVolume = musicSource.volume;
-
-        // Fade out background music
-        while (musicSource.volume > 0f)
-        {
-            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
-            yield return null;
-        }
-
-        musicSource.Stop();
-        musicSource.clip = bossMusic;
-        musicSource.volume = 0f; // Start at silence for fade-in
-        musicSource.loop = true;
-        musicSource.Play();
-
-        // Fade in boss music
-        float targetVolume = 0.7f;
-        while (musicSource.volume < targetVolume)
-        {
-            musicSource.volume += targetVolume * Time.deltaTime / fadeDuration;
-            yield return null;
-        }
-
-        musicSource.volume = targetVolume;
+        masterVolume = Mathf.Clamp01(volume);
+        UpdateAllVolumes();
     }
-
-
-
-
-    // private IEnumerator WaitForSplatterToEnd()
-    // {
-    //     yield return new WaitForSeconds(splatterSound.length);
-    //     isSplattering = false;
-    //
-    //     if (GameObject.FindWithTag("Player") != null)
-    //     {
-    //         SlimeKnightController playerController = GameObject.FindWithTag("Player").GetComponent<SlimeKnightController>();
-    //         if (playerController != null && playerController.IsMoving())
-    //         {
-    //             PlayWalkSound();  // Resume walking only if the player is still moving
-    //         }
-    //     }
-    // }
-
+    
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = Mathf.Clamp01(volume);
+        if (musicSource != null)
+        {
+            musicSource.volume = musicVolume * masterVolume;
+        }
+    }
+    
+    public void SetSfxVolume(float volume)
+    {
+        sfxVolume = Mathf.Clamp01(volume);
+        if (loopSource != null && loopSource.isPlaying)
+        {
+            loopSource.volume = sfxVolume * masterVolume;
+        }
+    }
+    
+    private void UpdateAllVolumes()
+    {
+        if (musicSource != null)
+        {
+            musicSource.volume = musicVolume * masterVolume;
+        }
+        
+        if (loopSource != null && loopSource.isPlaying)
+        {
+            loopSource.volume = sfxVolume * masterVolume;
+        }
+        
+        // Active sound effects will update on their next play
+    }
+    
+    #endregion
 }

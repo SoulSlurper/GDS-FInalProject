@@ -19,6 +19,7 @@ TagManager:
   - Lava
   - SavePoint
   - BreakableWall
+  - Spike
   layers:
   - Default
   - TransparentFX
@@ -64,4 +65,7 @@ TagManager:
     locked: 0
   - name: ForeGround
     uniqueID: 1739652315
+    locked: 0
+  - name: SortingTexture
+    uniqueID: 4182754845
     locked: 0

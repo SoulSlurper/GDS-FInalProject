@@ -1,0 +1,864 @@
+fileFormatVersion: 2
+guid: b2456594c2517e6499997795bbfb2087
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3288821521461203266
+    second: ElectricityEmmisionMap_0
+  - first:
+      213: 1533945025037976278
+    second: ElectricityEmmisionMap_1
+  - first:
+      213: 7705873128597957241
+    second: ElectricityEmmisionMap_2
+  - first:
+      213: 3783951111337511295
+    second: ElectricityEmmisionMap_3
+  - first:
+      213: -8492534458222981888
+    second: ElectricityEmmisionMap_4
+  - first:
+      213: 5588839510561904300
+    second: ElectricityEmmisionMap_5
+  - first:
+      213: 727870847397910927
+    second: ElectricityEmmisionMap_6
+  - first:
+      213: -8447065910014788667
+    second: ElectricityEmmisionMap_7
+  - first:
+      213: -5454453056554222852
+    second: ElectricityEmmisionMap_8
+  - first:
+      213: 8351869848456933602
+    second: ElectricityEmmisionMap_9
+  - first:
+      213: 145468620489989822
+    second: ElectricityEmmisionMap_10
+  - first:
+      213: -2488763506953050717
+    second: ElectricityEmmisionMap_11
+  - first:
+      213: -7546229758800951915
+    second: ElectricityEmmisionMap_12
+  - first:
+      213: -8558874073331625927
+    second: ElectricityEmmisionMap_13
+  - first:
+      213: -4458069644620537727
+    second: ElectricityEmmisionMap_14
+  - first:
+      213: -3405082405326339701
+    second: ElectricityEmmisionMap_15
+  - first:
+      213: -8365677418392361961
+    second: ElectricityEmmisionMap_16
+  - first:
+      213: -2218318719530009221
+    second: ElectricityEmmisionMap_17
+  - first:
+      213: -2375222532886968139
+    second: ElectricityEmmisionMap_18
+  - first:
+      213: -3004315083769941603
+    second: ElectricityEmmisionMap_19
+  - first:
+      213: 4066656532832856895
+    second: ElectricityEmmisionMap_20
+  - first:
+      213: -1284154765920145995
+    second: ElectricityEmmisionMap_21
+  - first:
+      213: 5848556587453749620
+    second: ElectricityEmmisionMap_22
+  - first:
+      213: 8013665714576141762
+    second: ElectricityEmmisionMap_23
+  - first:
+      213: 3590272699662024635
+    second: ElectricityEmmisionMap_24
+  - first:
+      213: 8984845137592650363
+    second: ElectricityEmmisionMap_25
+  - first:
+      213: -545306989974292919
+    second: ElectricityEmmisionMap_26
+  - first:
+      213: -3916757891518166308
+    second: ElectricityEmmisionMap_27
+  - first:
+      213: -7414024799815015275
+    second: ElectricityEmmisionMap_28
+  - first:
+      213: 6097327687669435635
+    second: ElectricityEmmisionMap_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 516
+        width: 58
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 241da54bfbd34ad20800000000000000
+      internalID: 3288821521461203266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 516
+        width: 54
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d2cd528fdaa94510800000000000000
+      internalID: 1533945025037976278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_2
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 513
+        width: 58
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97a2f4278c2c0fa60800000000000000
+      internalID: 7705873128597957241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_3
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 510
+        width: 75
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7987becc7b438430800000000000000
+      internalID: 3783951111337511295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_4
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 512
+        width: 59
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00dcad6d7e4742a80800000000000000
+      internalID: -8492534458222981888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_5
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 408
+        width: 29
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca6d5b58ceb8f8d40800000000000000
+      internalID: 5588839510561904300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_6
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 408
+        width: 22
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f89d385edaae91a00800000000000000
+      internalID: 727870847397910927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_7
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 409
+        width: 54
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cbb14f2f4ef5ca80800000000000000
+      internalID: -8447065910014788667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_8
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 409
+        width: 31
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfaba0018d3ed44b0800000000000000
+      internalID: -5454453056554222852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_9
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 407
+        width: 32
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e03297806dc7e370800000000000000
+      internalID: 8351869848456933602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_10
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 309
+        width: 18
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebe954a80fec40200800000000000000
+      internalID: 145468620489989822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_11
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 309
+        width: 15
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a5ab16c6c2267dd0800000000000000
+      internalID: -2488763506953050717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_12
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 309
+        width: 20
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59500391408664790800000000000000
+      internalID: -7546229758800951915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_13
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 309
+        width: 22
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93094cd8065c83980800000000000000
+      internalID: -8558874073331625927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_14
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 308
+        width: 36
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 180e0703741c122c0800000000000000
+      internalID: -4458069644620537727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_15
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 204
+        width: 71
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b81479fd797beb0d0800000000000000
+      internalID: -3405082405326339701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_16
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 204
+        width: 73
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 714673316b427eb80800000000000000
+      internalID: -8365677418392361961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_17
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 204
+        width: 75
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7d70d3b0e2f631e0800000000000000
+      internalID: -2218318719530009221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_18
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 201
+        width: 73
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b8c4c8d0b3890fd0800000000000000
+      internalID: -2375222532886968139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_19
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 200
+        width: 69
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d917b8e49578e46d0800000000000000
+      internalID: -3004315083769941603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_20
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 101
+        width: 60
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3b260f029aaf6830800000000000000
+      internalID: 4066656532832856895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_21
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 100
+        width: 57
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bd64bc4b04cd2ee0800000000000000
+      internalID: -1284154765920145995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_22
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 100
+        width: 77
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47993f3ba3f3a2150800000000000000
+      internalID: 5848556587453749620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_23
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 99
+        width: 56
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cda90a5282463f60800000000000000
+      internalID: 8013665714576141762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_24
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 100
+        width: 65
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbf332e8ff533d130800000000000000
+      internalID: 3590272699662024635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_25
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 3
+        width: 55
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7a0b148c0590bc70800000000000000
+      internalID: 8984845137592650363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_26
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 3
+        width: 53
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9467b098e2eae68f0800000000000000
+      internalID: -545306989974292919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_27
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 3
+        width: 58
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cda0ad41371e4a9c0800000000000000
+      internalID: -3916757891518166308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_28
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 2
+        width: 58
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 594e61bc9b71c1990800000000000000
+      internalID: -7414024799815015275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElectricityEmmisionMap_29
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 1
+        width: 47
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fcc0b61a3f0e9450800000000000000
+      internalID: 6097327687669435635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      ElectricityEmmisionMap_0: 3288821521461203266
+      ElectricityEmmisionMap_1: 1533945025037976278
+      ElectricityEmmisionMap_10: 145468620489989822
+      ElectricityEmmisionMap_11: -2488763506953050717
+      ElectricityEmmisionMap_12: -7546229758800951915
+      ElectricityEmmisionMap_13: -8558874073331625927
+      ElectricityEmmisionMap_14: -4458069644620537727
+      ElectricityEmmisionMap_15: -3405082405326339701
+      ElectricityEmmisionMap_16: -8365677418392361961
+      ElectricityEmmisionMap_17: -2218318719530009221
+      ElectricityEmmisionMap_18: -2375222532886968139
+      ElectricityEmmisionMap_19: -3004315083769941603
+      ElectricityEmmisionMap_2: 7705873128597957241
+      ElectricityEmmisionMap_20: 4066656532832856895
+      ElectricityEmmisionMap_21: -1284154765920145995
+      ElectricityEmmisionMap_22: 5848556587453749620
+      ElectricityEmmisionMap_23: 8013665714576141762
+      ElectricityEmmisionMap_24: 3590272699662024635
+      ElectricityEmmisionMap_25: 8984845137592650363
+      ElectricityEmmisionMap_26: -545306989974292919
+      ElectricityEmmisionMap_27: -3916757891518166308
+      ElectricityEmmisionMap_28: -7414024799815015275
+      ElectricityEmmisionMap_29: 6097327687669435635
+      ElectricityEmmisionMap_3: 3783951111337511295
+      ElectricityEmmisionMap_4: -8492534458222981888
+      ElectricityEmmisionMap_5: 5588839510561904300
+      ElectricityEmmisionMap_6: 727870847397910927
+      ElectricityEmmisionMap_7: -8447065910014788667
+      ElectricityEmmisionMap_8: -5454453056554222852
+      ElectricityEmmisionMap_9: 8351869848456933602
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

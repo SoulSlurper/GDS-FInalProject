@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1177301876468277641, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.65999997
       objectReference: {fileID: 0}
     - target: {fileID: 1177301876468277641, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -257,11 +257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908b96fcd28383948a3f13c50431d0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponUser: {fileID: 0}
   _type: 0
   _damage: 0
   _cost: 0
-  isAttackContinuous: 0
-  _attackDelay: 1
+  minDamage: 0.3
   animator: {fileID: 5975837197817639905}
-  raycastOrigin: {fileID: 7854761387545770886}
-  _raycastRadius: 1

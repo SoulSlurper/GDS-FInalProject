@@ -5,16 +5,51 @@ using UnityEngine;
 public class SavePoint : MonoBehaviour
 {
     [SerializeField] private Status player;
+    [SerializeField] private Color _activeColor = Color.black;
 
-    // Start is called before the first frame update
-    void Start()
+    private Color _initialColor;
+    private bool _isActive;
+    private Vector2 _position;
+    public Animator animator;
+
+    private SpriteRenderer spriteRenderer;
+
+    // Getters and Setters // // // //
+
+
+    public bool isActive
     {
-        
+        get { return _isActive; }
+        set { _isActive = value; }
     }
 
-    // Update is called once per frame
+    public Vector2 position
+    {
+        get { return _position; }
+        set { _position = value; }
+    }
+
+    // Unity // // // //
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        position = transform.position;
+    }
+
     void Update()
     {
-        
+        if (isActive)
+        {
+            animator.SetBool("SavePointOn", true);
+        }
+
+        else
+        {
+            animator.SetBool("SavePointOn", false);
+        }
     }
 }

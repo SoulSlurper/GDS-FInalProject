@@ -5,16 +5,14 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    //[SerializeField] private StatusAmount _health;
-    //[SerializeField] private StatusAmount _stamina;
     [SerializeField] private StatusUser _user;
-    [SerializeField] private float _health = 100f;
-    [SerializeField] private HealthBar healthBar;
-    [SerializeField] private GameObject _dropItem; // object that appears midbattle or in death
+    [SerializeField] private float health = 100f;
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private GameObject _dropItem; //object that appears midbattle or in death
 
     private float _maxHealth;
 
-    // Getter and Setter // // // //
+    #region Getter and Setter 
     public StatusUser user
     { 
         get { return _user; }
@@ -27,15 +25,15 @@ public class Status : MonoBehaviour
         private set { _dropItem = value; }
     }
 
-    public float health
+    public float currentHealth
     { 
-        get { return _health; }
-        private set { _health = value; }
+        get { return health; }
+        private set { health = value; }
     }
 
     public bool noHealth
     { 
-        get { return health <= 0f; }
+        get { return currentHealth <= 0f; }
         private set { }
     }
 
@@ -45,66 +43,110 @@ public class Status : MonoBehaviour
         private set { _maxHealth = value; }
     }
 
-    // Unity // // // //
+    public float currentHealthPercentage
+    {
+        get { return currentHealth / maxHealth; }
+        private set { }
+    }
+
+    public HealthBar healthBar
+    { 
+        get { return _healthBar; }
+        private set { _healthBar = value; }
+    }
+    #endregion
+
+    #region Unity functions
     void Awake()
     {
-        maxHealth = health;
+        SetNewHealth(health);
+    }
 
+    #endregion
+
+    #region HealthBar details
+    public void SetHealthBar(HealthBar healthBar)
+    {
+        this.healthBar = healthBar;
+    }
+
+    private void SetupHealthBar()
+    {
         if (healthBar)
         {
-            healthBar.SetMaxHealth(health);
+            healthBar.SetActiveState(true);
+            healthBar.SetMaxValue(maxHealth);
+            healthBar.SetValue(maxHealth);
         }
     }
 
-    // Health functions // // // //
-    public void TakeDamage(float damage)
+    private void UpdateHealthBar()
     {
-        DecreaseHealth(damage);
+        if (healthBar)
+        {
+            healthBar.SetValue(currentHealth);
+        }
     }
 
-    public void TakeHealth(float amount)
+    #endregion
+
+    #region Health functions 
+    public virtual void TakeDamage(float damage)
     {
-        IncreaseHealth(amount);
+        DecreaseCurrentHealth(damage);
+    }
+
+    public virtual void TakeHealth(float amount)
+    {
+        IncreaseCurrentHealth(amount);
+    }
+
+    public void InstantDeath()
+    {
+        currentHealth = 0;
+
+        UpdateHealthBar();
     }
 
     public void ResetHealth()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
 
-        healthBar.SetHealth(health);
+        UpdateHealthBar();
     }
 
-    public void SetHealth(float health) 
+    public void SetCurrentHealth(float currentHealth) 
     { 
-        this.health = health >= 0 && health <= maxHealth ? health : this.health;
+        this.currentHealth = currentHealth >= 0 && currentHealth <= maxHealth ? currentHealth : this.currentHealth;
 
-        healthBar.SetHealth(this.health);
+        UpdateHealthBar();
     }
 
     public void SetNewHealth(float health) 
     { 
-        this.health = maxHealth = health;
+        currentHealth = maxHealth = health;
 
-        healthBar.SetHealth(this.health);
+        SetupHealthBar();
     }
 
-    public void IncreaseHealth(float health) 
+    public void IncreaseCurrentHealth(float currentHealth) 
     { 
-        this.health += health;
-        if (health > maxHealth) health = maxHealth;
+        this.currentHealth += currentHealth;
+        if (this.currentHealth > maxHealth) this.currentHealth = maxHealth;
 
-        healthBar.SetHealth(this.health);
+        UpdateHealthBar();
     }
 
-    public void DecreaseHealth(float health) 
+    public void DecreaseCurrentHealth(float currentHealth) 
     { 
-        this.health -= health;
-        if (health < 0) health = 0;
+        this.currentHealth -= currentHealth;
+        if (this.currentHealth < 0) this.currentHealth = 0;
 
-        healthBar.SetHealth(this.health);
+        UpdateHealthBar();
     }
+    #endregion
 
-    // dropItem functions // // // //
+    #region dropItem functions 
     public void SetDropItem(GameObject dropItem) { this.dropItem = dropItem; }
 
     public void InstantiateItem(GameObject item)
@@ -116,6 +158,11 @@ public class Status : MonoBehaviour
 
     public void CreateDropItem()
     {
-        InstantiateItem(dropItem);
+        if (dropItem)
+        {
+            InstantiateItem(dropItem);
+        }
     }
+    #endregion
+
 }

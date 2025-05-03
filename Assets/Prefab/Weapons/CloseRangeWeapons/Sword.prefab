@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: _cost
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: _type
@@ -98,7 +98,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: _damage
-      value: 20
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: _minCost
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: _minDamage
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2705259768829651630, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: _raycastRadius
@@ -184,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7518731880690734406, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 49d05346d166f7445be3b22a32cfb637, type: 2}
     - target: {fileID: 7843326297192796978, guid: dbf020ca3ad476b4984dde877a36710d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

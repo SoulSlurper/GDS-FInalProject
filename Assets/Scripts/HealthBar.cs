@@ -5,15 +5,20 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public Slider slider;
-    public void SetMaxHealth(float health)
+    [SerializeField] private Slider slider;
+
+    public void SetMaxValue(float max)
     {
-        slider.maxValue = health;
-        slider.value = health;
+        slider.maxValue = max;
     }
 
-    public void SetHealth(float health) 
+    public void SetValue(float value) 
     {
-        slider.value = health;
+        slider.value = value;
+    }
+
+    public void SetActiveState(bool active)
+    {
+        gameObject.SetActive(active);
     }
 }

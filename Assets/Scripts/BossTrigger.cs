@@ -4,32 +4,58 @@ using UnityEngine;
 
 public class BossTrigger : MonoBehaviour
 {
-    [SerializeField]
-    public GameObject boss;
-    [SerializeField]
-    public Camera mainCamera;
+    [SerializeField] public GameObject boss;
+    [SerializeField] private HealthBar healthBar;
+
+    [Header("Camera Details")]
+    [SerializeField] public Camera mainCamera;
+    [SerializeField] private float bossCameraSize = 5f;
+    
     public static bool hasSpawnedBoss = false;
-    // Start is called before the first frame update
+    private float originalCameraSize;
+    
     void Start()
     {
-       
-    }
+        healthBar.SetActiveState(false);
+        boss.GetComponent<Status>().SetHealthBar(healthBar);
 
-    // Update is called once per frame
-    void Update()
-    {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
         
+        originalCameraSize = mainCamera.orthographicSize;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasSpawnedBoss)
+        if (!hasSpawnedBoss && collision.CompareTag("Player"))
         {
-            Instantiate(boss);
-            hasSpawnedBoss = true;
-            SoundManager.Instance?.PlayBossMusic();
-            //mainCamera.orthographicSize += 2f;
+            SpawnBoss();
+
+            // Set camera size for boss battle
+            mainCamera.orthographicSize = bossCameraSize;
+            
+            // Optional: Disable the trigger after spawning
             //gameObject.SetActive(false);
         }
+    }
+
+    private void SpawnBoss()
+    {
+        Instantiate(boss, new Vector2(45f, 2f), Quaternion.identity);
+        hasSpawnedBoss = true;
+    }
+
+    // Method to restore original camera settings (can be called when boss is defeated)
+    public void RestoreOriginalCamera()
+    {
+        if (mainCamera != null)
+        {
+            mainCamera.orthographicSize = originalCameraSize;
+        }
+        
+        // Reset the static flag if needed for future boss encounters
+        hasSpawnedBoss = false;
     }
 }

@@ -9,12 +9,19 @@ public class PlayerHealth : Status
     [SerializeField] private float _enemyDamage;
     [SerializeField] private float _bossDamage;
     [SerializeField] private float _lavaDamage;
+    [SerializeField] private float _spikeDamage;
     [SerializeField] private float _enemyProjectileDamage;
     [SerializeField] private float _bossProjectileDamage;
 
-    private Vector3 savePointPosition;
+    [Header("Size by Health")]
+    [SerializeField] [Range(0, 1f)] private float minSize = 1f;
 
-    // Getter and Setter // // // //
+    private SavePoint savePoint;
+    private Vector2 initialPosition;
+    private Vector3 initialSize;
+    private Camera mainCamera;
+
+    #region Getter and Setter 
     public float enemyDamage
     {
         get { return _enemyDamage; }
@@ -33,6 +40,11 @@ public class PlayerHealth : Status
         private set { _lavaDamage = value; }
     }
 
+    public float spikeDamage
+    {
+        get { return _spikeDamage; }
+        private set { _spikeDamage = value; }
+    }
 
     public float enemyProjectileDamage
     {
@@ -45,25 +57,36 @@ public class PlayerHealth : Status
         get { return _bossProjectileDamage; }
         private set { _bossProjectileDamage = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity 
     void Start()
     {
-        savePointPosition = transform.position;
+        initialPosition = transform.position;
+        initialSize = transform.localScale;
+        mainCamera = Camera.main;
     }
 
     void Update()
     {
         Respawn();
+        ChangeSize();
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("SavePoint"))
         {
-            savePointPosition = collision.transform.position;
+            SavePoint encounteredSavePoint = collision.gameObject.GetComponent<SavePoint>();
+            if (!encounteredSavePoint.Equals(savePoint))
+            {
+                if (savePoint) savePoint.isActive = false;
 
-            Debug.Log("SavePoint Recorded: " + savePointPosition);
+                savePoint = encounteredSavePoint;
+                savePoint.isActive = true;
+            }
+
+            Debug.Log("SavePoint Recorded: " + savePoint.position);
         }
 
         if (collision.CompareTag("BossProjectile"))
@@ -74,7 +97,15 @@ public class PlayerHealth : Status
         if (collision.CompareTag("Lava"))
         {
             // Instantly kill the player when touching lava
-            TakeDamage(lavaDamage);
+            //TakeDamage(lavaDamage);
+            InstantDeath();
+        }
+
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            // Instantly kill the player when touching the spikes
+            //TakeDamage(spikeDamage);
+            InstantDeath();
         }
     }
 
@@ -90,27 +121,68 @@ public class PlayerHealth : Status
             TakeDamage(enemyDamage);
         }
     }
+    #endregion
 
-    // Collision Damage // // // //
+    #region Collision Damage 
     public void SetEnemyDamage(float enemyDamage) { this.enemyDamage = enemyDamage; }
     public void SetBossDamage(float bossDamage) { this.bossDamage = bossDamage; }
     public void SetEnemyProjectileDamage(float enemyProjectileDamage) { this.enemyProjectileDamage = enemyProjectileDamage; }
     public void SetBossProjectileDamage(float bossProjectileDamage) { this.bossProjectileDamage = bossProjectileDamage; }
+    #endregion
 
-    // Other functions // // // //
-    public void Respawn()
+    #region Other functions 
+    private void Respawn()
     {
-        if (!noHealth) return;
+        if (!noHealth && !Input.GetKeyDown(KeyCode.R)) return;
 
-        GameObject Boss = GameObject.FindWithTag("Boss");
-        if (Boss)
+        if (savePoint) this.transform.position = savePoint.position;
+        else this.transform.position = initialPosition;
+
+        if (noHealth) 
         {
-            Destroy(Boss);
-            
-            BossTrigger.hasSpawnedBoss = false;
+            GameObject Boss = GameObject.FindWithTag("Boss");
+            if (Boss)
+            {
+                Boss.GetComponent<Status>().healthBar.SetActiveState(false);
+                Destroy(Boss);
+
+                mainCamera.orthographicSize = 3f;
+
+                BossTrigger.hasSpawnedBoss = false;
+            }
+
+            ResetHealth();
+        }
+    }
+
+    private void ChangeSize()
+    {
+        //Debug.Log(gameObject.name + " size updated");
+
+        Vector3 newSize = initialSize;
+        if (currentHealth < maxHealth)
+        {
+            Vector3 actualMinSize = initialSize * minSize;
+            Vector3 remainingSize = initialSize - actualMinSize;
+
+            newSize = actualMinSize + remainingSize * currentHealthPercentage;
         }
 
-        this.transform.position = savePointPosition;
-        ResetHealth();
+        transform.localScale = newSize;
     }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+
+        ChangeSize();
+    }
+
+    public override void TakeHealth(float amount)
+    {
+        base.TakeHealth(amount);
+
+        ChangeSize();
+    }
+    #endregion
 }

@@ -6,16 +6,14 @@ public class BossHp : Status
 {
     [Header("Boss DropItem Details")]
     [SerializeField] private int _dropItemAmount = 1;
-    [SerializeField] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
-                                                                   //Note: must be below or equal to 1
+    [SerializeField] [Range(0f, 1f)] private float _healthDropItemPercentage = 0f; //the percentage that indicates when the boss will drop the item
 
     [Header("Death Drop Item Details")]
     [SerializeField] private GameObject _endDropItem;
 
     private float healthPercentCheckpoint = 1f;
-    private float healthCheckpoint;
 
-    // Getters and Setters // // // //
+    #region Getters and Setters
     public int dropItemAmount
     {
         get { return _dropItemAmount; }
@@ -33,14 +31,12 @@ public class BossHp : Status
         get { return _endDropItem; }
         private set { _endDropItem = value; }
     }
+    #endregion
 
-    // Unity // // // //
+    #region Unity
     void Start()
     {
-        GetHealthCheckpoint();
-
-        Debug.Log("HealthPercentCheckpoint: " + healthPercentCheckpoint);
-        Debug.Log("HealthCheckpoint: " + healthCheckpoint);
+        SetHealthPercentCheckpoint();
     }
 
     void Update()
@@ -48,42 +44,48 @@ public class BossHp : Status
         if (noHealth)
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
+            Destroy(gameObject);
 
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.ResumeBackgroundMusic();
             }
 
-            InstantiateItem(endDropItem);
-            Destroy(gameObject);
+            healthBar.SetActiveState(false);
+
+            if (endDropItem)
+            {
+                InstantiateItem(endDropItem);
+            }
         }
         else
         {
-            if (health <= healthCheckpoint)
+            if (currentHealthPercentage <= healthPercentCheckpoint)
             {
-                Debug.Log("Reached HealthCheckpoint: " + healthCheckpoint);
+                Debug.Log("Reached HealthCheckpoint: " + healthPercentCheckpoint);
 
-                for (int i = 0; i < _dropItemAmount; i++) CreateDropItem();
+                for (int i = 0; i < dropItemAmount; i++) CreateDropItem();
 
-                GetHealthCheckpoint();
+                SetHealthPercentCheckpoint();
             }
         }
     }
+    #endregion
 
-
-    // Boss DropItem Details // // // //
+    #region Boss DropItem Details
     public void SetDropItemAmount(int dropItemAmount) { this.dropItemAmount = dropItemAmount;}
 
     public void SetHealthDropItemPercentage(float healthDropItemPercentage) { this.healthDropItemPercentage = healthDropItemPercentage; }
+    #endregion
 
-    // Health Percentage // // // //
-    public void GetHealthCheckpoint()
+    #region Health Percentage
+    public void SetHealthPercentCheckpoint()
     {
         if (healthDropItemPercentage > 0f && healthDropItemPercentage < 1f)
         {
             healthPercentCheckpoint -= healthDropItemPercentage;
-            healthCheckpoint = maxHealth * healthPercentCheckpoint;
         }
-        else healthCheckpoint = 0f;
+        else healthPercentCheckpoint = 1f;
     }
+    #endregion
 }
