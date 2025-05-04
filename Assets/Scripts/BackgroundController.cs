@@ -1,35 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    private float startPos, length;
+    private Vector3 initialPos;
     public GameObject cam;
-    public float parallaxEffect;
+    public Vector2 parallaxEffect;
 
-    void Start()
+    private Renderer rend;
+
+    private void Start()
     {
-        startPos = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        initialPos = transform.position;
+        rend = GetComponent<Renderer>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        float distance = cam.transform.position.x * parallaxEffect;
-        transform.position = new Vector3(startPos + distance, transform.position.y, transform.position.z);
+        if (rend == null) return;
 
-        float camPosition = cam.transform.position.x;
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        bool isVisible = GeometryUtility.TestPlanesAABB(planes, rend.bounds);
 
-        // Wrap the background properly
-        if (camPosition > startPos + length)
+        if (isVisible)
         {
-            startPos += length;
-        }
-        else if (camPosition < startPos - length)
-        {
-            startPos -= length;
+            float distX = (cam.transform.position.x - initialPos.x) * parallaxEffect.x;
+            float distY = (cam.transform.position.y - initialPos.y) * parallaxEffect.y;
+
+            transform.position = new Vector3(initialPos.x + distX, initialPos.y + distY, initialPos.z);
         }
     }
 }
+
+
+
 
