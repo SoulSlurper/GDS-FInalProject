@@ -24,6 +24,7 @@ public class EyeBallBossManager : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField]
     private float idleDistance = 5f;
+    BoxCollider2D bc;
 
     //Ranged
     float idleTimer = 0f;
@@ -50,6 +51,7 @@ public class EyeBallBossManager : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        bc = GetComponent<BoxCollider2D>();
         currentState = BossState.Idle;
         Debug.Log("Boss Idle");
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -172,7 +174,6 @@ public class EyeBallBossManager : MonoBehaviour
 
     void MeleeAttackStart() 
     {
-
         chargeTimer += Time.deltaTime;
         playerPos = Player.GetComponent<Rigidbody2D>().position;
         charge1Start = playerPos + new Vector2(10, -1);
