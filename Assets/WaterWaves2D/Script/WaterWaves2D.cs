@@ -342,37 +342,41 @@ public class WaterWaves2D:MonoBehaviour{
 		}
 	}
 
-	#endregion
-	
-	#region Impact
+    #endregion
 
-	private void OnTriggerEnter2D(Collider2D other){
-		Vector2 closest=new Vector2();
-		#if UNIT2019_0_1_OR_NEWER
-			closest=other.ClosestPoint(other.transform.position)
-		#else
-			closest=other.bounds.ClosestPoint(other.transform.position);
-		#endif
-		StartCoroutine(DelayedImpact(
-			closest,
-			(Vector2)other.bounds.extents,
-			other.GetComponent<Rigidbody2D>().velocity,
-			0.1f
-		));
-		PlayEnterSound();
-	}
+    #region Impact
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Vector2 closest = new Vector2();
+#if UNIT2019_0_1_OR_NEWER
+        closest = other.ClosestPoint(other.transform.position);
+#else
+        closest = other.bounds.ClosestPoint(other.transform.position);
+#endif
+
+        Vector2 velocity = other.attachedRigidbody != null ? other.attachedRigidbody.velocity : Vector2.zero;
+
+        StartCoroutine(DelayedImpact(
+            closest,
+            (Vector2)other.bounds.extents,
+            velocity,
+            0.1f
+        ));
+        PlayEnterSound();
+    }
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
         Vector2 closest = new Vector2();
-		#if UNIT2019_0_1_OR_NEWER
-			closest = other.ClosestPoint(other.transform.position);
-		#else
-			closest = other.bounds.ClosestPoint(other.transform.position);
-		#endif
+#if UNIT2019_0_1_OR_NEWER
+        closest = other.ClosestPoint(other.transform.position);
+#else
+        closest = other.bounds.ClosestPoint(other.transform.position);
+#endif
 
-        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-        Vector2 velocity = rb != null ? rb.velocity : Vector2.zero;
+        Vector2 velocity = other.attachedRigidbody != null ? other.attachedRigidbody.velocity : Vector2.zero;
 
         Impact(
             closest,
@@ -382,6 +386,7 @@ public class WaterWaves2D:MonoBehaviour{
 
         PlayExitSound();
     }
+
 
 
     private void ScheduleImpact(Vector2 position,Vector2 size,Vector2 force,float delay){
