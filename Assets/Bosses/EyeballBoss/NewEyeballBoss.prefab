@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5791403254082096914}
   - component: {fileID: 8287046816392048949}
   - component: {fileID: 7635316670714390653}
+  - component: {fileID: 8220856423829702025}
   m_Layer: 0
   m_Name: NewEyeballBoss
   m_TagString: Boss
@@ -59,7 +60,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f1b28dcf47030fb4598a453cade3066e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -158,6 +159,7 @@ MonoBehaviour:
   Laser: {fileID: 5182014147571137551, guid: b332bfaf7e27a3c4e94656d1ba9d678f, type: 3}
   Player: {fileID: 0}
   playerPos: {x: 0, y: 0}
+  animator: {fileID: 8220856423829702025}
 --- !u!50 &8287046816392048949
 Rigidbody2D:
   serializedVersion: 4
@@ -204,3 +206,25 @@ MonoBehaviour:
   _dropItemAmount: 1
   _healthDropItemPercentage: 0.914
   _endDropItem: {fileID: 0}
+--- !u!95 &8220856423829702025
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4403761913455458771}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9cd00ee9c07b05e4690097d32750bbdd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -48,6 +48,8 @@ public class EyeBallBossManager : MonoBehaviour
     public GameObject Player;
     public Vector2 playerPos;
 
+    public Animator animator;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -158,7 +160,7 @@ public class EyeBallBossManager : MonoBehaviour
         {
             Vector2 shootDirection = (Player.GetComponent<Rigidbody2D>().position - rb.position).normalized;
             GameObject laser = Instantiate(Laser, rb.position, Quaternion.identity);
-
+            animator.SetTrigger("Shoot");
             laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 8f;
 
             yield return new WaitForSeconds(0.5f);
