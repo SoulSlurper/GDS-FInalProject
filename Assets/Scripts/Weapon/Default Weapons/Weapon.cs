@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _damage;
     [SerializeField] private float _cost;
     [SerializeField] private float _cooldown;
+    [SerializeField] private int _attackMaxLimit = 0; //thet number of attacks that can be made before the cooldown starts
     
     [Header("Knockback Settings")]
     [SerializeField] private bool _applyKnockback = true;
@@ -27,7 +28,10 @@ public class Weapon : MonoBehaviour
     private bool _enabledAttack = true;
     private float _realDamage;
     private float _realCost;
-    private float cooldownTimer;
+    
+    private float cooldownTimer = 0f;
+    private int attackCount = 0;
+
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
 
@@ -49,6 +53,7 @@ public class Weapon : MonoBehaviour
     public float minCost { get => _minCost; private set => _minCost = value; }
     public float realCost { get => _realCost; private set => _realCost = value; }
     public float cooldown { get => _cooldown; private set => _cooldown = value; }
+    public int attackMaxLimit { get => _attackMaxLimit; private set => _attackMaxLimit = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
     public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
@@ -75,7 +80,8 @@ public class Weapon : MonoBehaviour
     {
         if (cooldownTimer > cooldown) enabledAttack = true;
         else cooldownTimer += Time.deltaTime;
-        Debug.Log("enabledAttack: " + enabledAttack);
+        Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
+        Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
 
         SetRealAmounts();
     }
@@ -209,10 +215,15 @@ public class Weapon : MonoBehaviour
         {
             if (enabledAttack)
             {
-                enabledAttack = false;
-                cooldownTimer = 0f;
+                attackCount++;
 
-                return true;
+                if (attackCount > attackMaxLimit && !attackMaxLimit.Equals(0))
+                {
+                    enabledAttack = false;
+                    cooldownTimer = 0f;
+                    attackCount = 0;
+                }
+                else return true;
             }
         }
 
