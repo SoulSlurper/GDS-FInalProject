@@ -50,6 +50,11 @@ public class EyeBallBossManager : MonoBehaviour
 
     public Animator animator;
 
+    public Vector2 CalculatedVelocity { get; private set; }
+
+    private Vector2 lastPosition;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -57,10 +62,15 @@ public class EyeBallBossManager : MonoBehaviour
         currentState = BossState.Idle;
         Debug.Log("Boss Idle");
         Player = GameObject.FindGameObjectWithTag("Player");
+        lastPosition = rb.position;
     }
 
     void FixedUpdate()
     {
+        Vector2 currentPosition = rb.position;
+        CalculatedVelocity = (currentPosition - lastPosition) / Time.deltaTime;
+        lastPosition = currentPosition;
+
         switch (currentState)
         {
             case BossState.Idle:
