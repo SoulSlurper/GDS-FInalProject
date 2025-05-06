@@ -67,7 +67,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 currentPosition = rb.position;
+        Vector2 currentPosition = rb.position;    //line 62 and 70-72 enables velocity so the water knows how much displacement the boss has on it
         CalculatedVelocity = (currentPosition - lastPosition) / Time.deltaTime;
         lastPosition = currentPosition;
 
