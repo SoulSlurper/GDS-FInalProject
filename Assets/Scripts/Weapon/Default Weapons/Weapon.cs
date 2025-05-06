@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
     [SerializeField] private float _cost;
+    [SerializeField] private float _cooldown;
     
     [Header("Knockback Settings")]
     [SerializeField] private bool _applyKnockback = true;
@@ -26,6 +27,7 @@ public class Weapon : MonoBehaviour
     private bool _enabledAttack = true;
     private float _realDamage;
     private float _realCost;
+    private float cooldownTimer;
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
 
@@ -46,6 +48,7 @@ public class Weapon : MonoBehaviour
     public float cost { get => _cost; private set => _cost = value; }
     public float minCost { get => _minCost; private set => _minCost = value; }
     public float realCost { get => _realCost; private set => _realCost = value; }
+    public float cooldown { get => _cooldown; private set => _cooldown = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
     public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
@@ -68,7 +71,14 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void LateUpdate() => SetRealAmounts();
+    void LateUpdate()
+    {
+        if (cooldownTimer > cooldown) enabledAttack = true;
+        else cooldownTimer += Time.deltaTime;
+        Debug.Log("enabledAttack: " + enabledAttack);
+
+        SetRealAmounts();
+    }
     #endregion
 
     #region Text management
@@ -193,15 +203,31 @@ public class Weapon : MonoBehaviour
     #region Attack methods
     public virtual void Attack() => Debug.Log("Attack");
 
-    private bool CanAttack() => Input.GetMouseButtonDown(0) && enabledAttack;
+    private bool CanAttack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (enabledAttack)
+            {
+                enabledAttack = false;
+                cooldownTimer = 0f;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool PerformAttack()
     {
         if (CanAttack())
         {
             Attack();
+
             return true;
         }
+
         return false;
     }
 
