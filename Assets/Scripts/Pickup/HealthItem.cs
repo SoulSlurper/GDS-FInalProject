@@ -16,7 +16,7 @@ public class HealthItem : MonoBehaviour
         {
             if (status.user == itemUser)
             {
-                Debug.Log(collision.gameObject.name + " Health increased");
+                Debug.Log(collision.gameObject.name + " Health increased by " + healthAmount);
 
                 status.TakeHealth(healthAmount);
                 Destroy(gameObject);
