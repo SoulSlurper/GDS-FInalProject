@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3800209444295200231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.35, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -286,6 +286,10 @@ MonoBehaviour:
   _type: 4
   _damage: 30
   _cost: 10
+  isHeld: 1
+  _cooldown: 0
+  _cooldownColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _attackMaxLimit: 0
   _applyKnockback: 1
   _knockbackForce: 8
   _bossKnockbackMultiplier: 0.5
@@ -299,6 +303,7 @@ MonoBehaviour:
   _launchForce: 6
   _usesGravity: 1
   _projectileCost: 15
+  _healthItemMatchesProjectileCost: 1
   _stopGapHealth: 0.3
 --- !u!95 &9093831433728672568
 Animator:
