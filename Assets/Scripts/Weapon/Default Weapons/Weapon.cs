@@ -10,8 +10,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
     [SerializeField] private float _cost;
-    [SerializeField] private float _cooldown;
-    [SerializeField] private int _attackMaxLimit = 0; //thet number of attacks that can be made before the cooldown starts
+    [SerializeField] private float _cooldown; //the time taken for the user to use the weapon again
+    [SerializeField] private int _attackMaxLimit = 0; //the number of attacks that can be made before the cooldown starts
+    public bool isHeld = true; //whether the user is holding the weapon to use
     
     [Header("Knockback Settings")]
     [SerializeField] private bool _applyKnockback = true;
@@ -80,7 +81,7 @@ public class Weapon : MonoBehaviour
     {
         if (cooldownTimer > cooldown) enabledAttack = true;
         else cooldownTimer += Time.deltaTime;
-        Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
+        //Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
         Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
 
         SetRealAmounts();
@@ -211,7 +212,7 @@ public class Weapon : MonoBehaviour
 
     private bool CanAttack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && isHeld)
         {
             if (enabledAttack)
             {
