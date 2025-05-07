@@ -21,6 +21,7 @@ TagManager:
   - BreakableWall
   - Spike
   - Button
+  - OneWayPlatform
   layers:
   - Default
   - TransparentFX
