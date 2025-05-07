@@ -100,7 +100,14 @@ public class WeaponAtHand : MonoBehaviour
             
             if (weaponComponent)
             {
+                child.SetActive(true);
+                child.GetComponent<SpriteRenderer>().enabled = false;
+                weaponComponent.isHeld = false;
+
                 weapons.Add(child);
+            }
+            else
+            {
                 child.SetActive(false);
             }
         }
@@ -139,7 +146,7 @@ public class WeaponAtHand : MonoBehaviour
         playerSpriteRenderer.color = playerColor;
         weaponDetails.GetComponent<SpriteRenderer>().color = weaponDetails.color;
         weaponDetails.ShowAllTextDetails(false);
-        weaponDetails.enabledAttack = true;
+        weaponDetails.isHeld = true;
         selectedWeapon = weaponDetails.type;
     }
 
@@ -150,7 +157,9 @@ public class WeaponAtHand : MonoBehaviour
     {
         if (currentWeaponIndex < 0) return;
 
-        weapons[currentWeaponIndex].SetActive(false);
+        //weapons[currentWeaponIndex].SetActive(false);
+        weapons[currentWeaponIndex].GetComponent<SpriteRenderer>().enabled = false;
+        weapons[currentWeaponIndex].GetComponent<Weapon>().isHeld = false;
         selectedWeapon = WeaponType.None;
     }
 
@@ -161,11 +170,12 @@ public class WeaponAtHand : MonoBehaviour
     {
         DeselectWeapon();
         currentWeaponIndex = index;
+        weapons[index].GetComponent<SpriteRenderer>().enabled = true;
 
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
 
-        weapon.SetActive(true);
+        //weapon.SetActive(true);
         SetupSelectedWeapon(wDetails);
     }
 

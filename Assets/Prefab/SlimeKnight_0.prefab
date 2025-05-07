@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 1554260181763405561}
   - component: {fileID: 380340996724195687}
   - component: {fileID: 2556274459256270731}
+  - component: {fileID: 6575998043804767380}
   m_Layer: 0
   m_Name: SlimeKnight_0
   m_TagString: Player
@@ -258,6 +259,7 @@ MonoBehaviour:
   knockbackForce: 10
   knockbackDuration: 0.25
   invincibilityDuration: 1
+  flashDuration: 1.5
   flashInterval: 0.1
   playHurtAnimation: 1
   aimMovementMultiplier: 0.6
@@ -471,6 +473,19 @@ MonoBehaviour:
   _enemyProjectileDamage: 10
   _bossProjectileDamage: 20
   minSize: 0.5
+--- !u!114 &6575998043804767380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8328409611633574170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7326bc7a8fc484b8bace390826ddcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCollider: {fileID: 1554260181763405561}
 --- !u!1001 &1670717139393854849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,6 +587,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
+      propertyPath: _cooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: _minDamage
       value: 1
       objectReference: {fileID: 0}
@@ -579,6 +598,10 @@ PrefabInstance:
       propertyPath: _weaponUser
       value: 
       objectReference: {fileID: 2556274459256270731}
+    - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
+      propertyPath: _attackMaxLimit
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: _knockbackForce
       value: 5
@@ -826,12 +849,8 @@ PrefabInstance:
       value: -0.17
       objectReference: {fileID: 0}
     - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
-      propertyPath: _cost
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
-      propertyPath: _damage
-      value: 20
+      propertyPath: isHeld
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
       propertyPath: _weaponUser
@@ -839,10 +858,6 @@ PrefabInstance:
       objectReference: {fileID: 2556274459256270731}
     - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
       propertyPath: _launchForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
-      propertyPath: _projectileCost
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9199337148527217218, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
@@ -1004,6 +1019,18 @@ PrefabInstance:
     - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: _projectileCost
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: _cooldownColor.b
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: _cooldownColor.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 232509539418276803, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
+      propertyPath: _cooldownColor.r
+      value: 0.5019608
       objectReference: {fileID: 0}
     - target: {fileID: 1611059506882731309, guid: 5fb1ec3a359a275429173427e45ff92f, type: 3}
       propertyPath: m_AnchorMax.y

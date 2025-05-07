@@ -10,6 +10,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType _type;
     [SerializeField] private float _damage;
     [SerializeField] private float _cost;
+    public bool isHeld = true; //whether the user is holding the weapon to use
+
+    [Header("Cooldown")]
+    [SerializeField] private float _cooldown; //the time taken for the user to use the weapon again
+    [SerializeField] private Color _cooldownColor = Color.gray; //the color state of when the weapon is in cooldown
+    [SerializeField] private int _attackMaxLimit = 0; //the number of attacks that can be made before the cooldown starts
     
     [Header("Knockback Settings")]
     [SerializeField] private bool _applyKnockback = true;
@@ -26,11 +32,17 @@ public class Weapon : MonoBehaviour
     private bool _enabledAttack = true;
     private float _realDamage;
     private float _realCost;
+    
+    private float cooldownTimer = 0f;
+    private int attackCount = 0;
+
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
 
     private Color _color;
     private SlimeKnightController playerController;
+
+    private SpriteRenderer spriteRenderer;
 
     #region Properties
     public Status weaponUser { get => _weaponUser; private set => _weaponUser = value; }
@@ -46,6 +58,9 @@ public class Weapon : MonoBehaviour
     public float cost { get => _cost; private set => _cost = value; }
     public float minCost { get => _minCost; private set => _minCost = value; }
     public float realCost { get => _realCost; private set => _realCost = value; }
+    public float cooldown { get => _cooldown; private set => _cooldown = value; }
+    public Color cooldownColor { get => _cooldownColor; private set => _cooldownColor = value; }
+    public int attackMaxLimit { get => _attackMaxLimit; private set => _attackMaxLimit = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
     public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
@@ -58,7 +73,8 @@ public class Weapon : MonoBehaviour
         SetAllTextDetails();
         ShowAllTextDetails(false);
 
-        color = GetComponent<SpriteRenderer>().color;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        color = spriteRenderer.color;
         
         // Find player controller for aim check
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -68,7 +84,19 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void LateUpdate() => SetRealAmounts();
+    void LateUpdate()
+    {
+        if (cooldownTimer > cooldown)
+        {
+            enabledAttack = true;
+            spriteRenderer.color = color;
+        }
+        else cooldownTimer += Time.deltaTime;
+        //Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
+        Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
+
+        SetRealAmounts();
+    }
     #endregion
 
     #region Text management
@@ -193,15 +221,37 @@ public class Weapon : MonoBehaviour
     #region Attack methods
     public virtual void Attack() => Debug.Log("Attack");
 
-    private bool CanAttack() => Input.GetMouseButtonDown(0) && enabledAttack;
+    private bool CanAttack()
+    {
+        if (Input.GetMouseButtonDown(0) && isHeld)
+        {
+            if (enabledAttack)
+            {
+                attackCount++;
+
+                if (attackCount > attackMaxLimit && !attackMaxLimit.Equals(0))
+                {
+                    enabledAttack = false;
+                    cooldownTimer = 0f;
+                    attackCount = 0;
+                    spriteRenderer.color = cooldownColor;
+                }
+                else return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool PerformAttack()
     {
         if (CanAttack())
         {
             Attack();
+
             return true;
         }
+
         return false;
     }
 

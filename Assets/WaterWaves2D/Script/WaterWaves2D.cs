@@ -355,7 +355,23 @@ public class WaterWaves2D:MonoBehaviour{
         closest = other.bounds.ClosestPoint(other.transform.position);
 #endif
 
-        Vector2 velocity = other.attachedRigidbody != null ? other.attachedRigidbody.velocity : Vector2.zero;
+        Vector2 velocity = Vector2.zero;
+
+        if (other.attachedRigidbody != null)
+        {
+            velocity = other.attachedRigidbody.velocity;
+
+            // Fallback to calculated velocity if it's zero
+            if (velocity.magnitude < 0.01f)
+            {
+                var boss = other.GetComponent<EyeBallBossManager>(); // Replace with actual boss class name
+                if (boss != null)
+                {
+                    velocity = boss.CalculatedVelocity;
+                }
+            }
+        }
+
 
         StartCoroutine(DelayedImpact(
             closest,
@@ -376,7 +392,23 @@ public class WaterWaves2D:MonoBehaviour{
         closest = other.bounds.ClosestPoint(other.transform.position);
 #endif
 
-        Vector2 velocity = other.attachedRigidbody != null ? other.attachedRigidbody.velocity : Vector2.zero;
+        Vector2 velocity = Vector2.zero;
+
+        if (other.attachedRigidbody != null)
+        {
+            velocity = other.attachedRigidbody.velocity;
+
+            // Fallback to calculated velocity if it's zero
+            if (velocity.magnitude < 0.01f)
+            {
+                var boss = other.GetComponent<EyeBallBossManager>(); // Replace with actual boss class name
+                if (boss != null)
+                {
+                    velocity = boss.CalculatedVelocity;
+                }
+            }
+        }
+
 
         Impact(
             closest,
