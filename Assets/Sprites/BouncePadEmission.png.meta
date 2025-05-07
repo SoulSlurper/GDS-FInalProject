@@ -17,6 +17,9 @@ TextureImporter:
   - first:
       213: 1891644834019191635
     second: BouncePadEmission_4
+  - first:
+      213: -3582359549238862756
+    second: BouncePadEmission_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -79,7 +82,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
-  swizzle: 50462976
+  swizzle: 50529027
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -115,12 +118,12 @@ TextureImporter:
       name: BouncePadEmission_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 200
-        width: 200
-        height: 200
+        x: 247
+        y: 317
+        width: 113
+        height: 22
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -136,12 +139,12 @@ TextureImporter:
       name: BouncePadEmission_1
       rect:
         serializedVersion: 2
-        x: 200
-        y: 200
-        width: 200
-        height: 200
+        x: 456
+        y: 325
+        width: 95
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -157,12 +160,12 @@ TextureImporter:
       name: BouncePadEmission_2
       rect:
         serializedVersion: 2
-        x: 400
-        y: 200
-        width: 200
-        height: 200
+        x: 680
+        y: 338
+        width: 47
+        height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -178,12 +181,12 @@ TextureImporter:
       name: BouncePadEmission_3
       rect:
         serializedVersion: 2
-        x: 600
-        y: 200
-        width: 200
-        height: 200
+        x: 42
+        y: 313
+        width: 123
+        height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -199,12 +202,12 @@ TextureImporter:
       name: BouncePadEmission_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 200
-        height: 200
+        x: 23
+        y: 81
+        width: 162
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -216,10 +219,31 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: BouncePadEmission_5
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 104
+        width: 113
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5c93e958f6e84ec0800000000000000
+      internalID: -3582359549238862756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2e4611539cf33d94e82a6282c6acd51b
+    spriteID: 5769c5c21bd72af4eaaa493f88f7b4a4
     internalID: 0
     vertices: []
     indices: 
@@ -232,6 +256,7 @@ TextureImporter:
       BouncePadEmission_2: -6602929394818225984
       BouncePadEmission_3: -3862606511397702826
       BouncePadEmission_4: 1891644834019191635
+      BouncePadEmission_5: -3582359549238862756
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
