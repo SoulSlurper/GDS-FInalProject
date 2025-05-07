@@ -99,10 +99,10 @@ public class PlayerHealth : Status
         {
             TakeDamage(_bossProjectileDamage, contactPoint);
         }
-        else if (collision.CompareTag("EnemyProjectile"))
-        {
-            TakeDamage(_enemyProjectileDamage, contactPoint);
-        }
+        //else if (collision.CompareTag("EnemyProjectile"))
+        //{
+        //    TakeDamage(_enemyProjectileDamage, contactPoint);
+        //}
         else if (collision.CompareTag("Lava"))
         {
             // Instant death from lava
