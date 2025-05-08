@@ -15,10 +15,7 @@ public class PlayerHealth : Status
     [SerializeField] [Range(0, 1f)] private float minSize = 0.7f;
     
     // References
-    private SavePoint savePoint;
-    private Vector2 initialPosition;
     private Vector3 initialSize;
-    private Camera mainCamera;
     private SlimeKnightController playerController;
     
     // Status effect trackers
@@ -26,9 +23,7 @@ public class PlayerHealth : Status
 
     void Start()
     {
-        initialPosition = transform.position;
         initialSize = transform.localScale;
-        mainCamera = Camera.main;
         playerController = GetComponent<SlimeKnightController>();
         
         // Subscribe to damage events
@@ -43,12 +38,7 @@ public class PlayerHealth : Status
 
     void Update()
     {
-        // Handle death/respawn
-        if (noHealth || Input.GetKeyDown(KeyCode.R))
-        {
-            Respawn();
-        }
-        
+       
         // Update player size based on health
         UpdatePlayerSize();
     }
@@ -79,19 +69,6 @@ public class PlayerHealth : Status
     // Handle various collision types
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // Save point logic
-        if (collision.CompareTag("SavePoint"))
-        {
-            SavePoint encounteredSavePoint = collision.gameObject.GetComponent<SavePoint>();
-            if (encounteredSavePoint != null && !encounteredSavePoint.Equals(savePoint))
-            {
-                if (savePoint) savePoint.isActive = false;
-                savePoint = encounteredSavePoint;
-                savePoint.isActive = true;
-                Debug.Log("SavePoint Recorded: " + savePoint.position);
-            }
-        }
-        
         // Handle damage from various sources
         Vector2 contactPoint = collision.ClosestPoint(transform.position);
         
@@ -126,42 +103,6 @@ public class PlayerHealth : Status
         else if (collision.collider.CompareTag("Enemy"))
         {
             TakeDamage(_enemyDamage, contactPoint);
-        }
-    }
-    
-    // Player respawn logic
-    private void Respawn()
-    {
-        // Move player to save point or initial position
-        transform.position = (savePoint != null) ? savePoint.position : initialPosition;
-        
-        // If player died, reset everything
-        if (noHealth)
-        {
-            // Remove boss if present
-            GameObject boss = GameObject.FindWithTag("Boss");
-            if (boss)
-            {
-                boss.GetComponent<Status>().healthBar.SetActiveState(false);
-                Destroy(boss);
-                
-                // Reset camera
-                mainCamera.orthographicSize = 3f;
-                BossTrigger.hasSpawnedBoss = false;
-                
-                // Reset any background music
-                if (SoundManager.Instance != null)
-                {
-                    SoundManager.Instance.ResumeBackgroundMusic();
-                }
-            }
-            
-            // Reset health and player state
-            ResetHealth();
-            if (playerController != null)
-            {
-                playerController.ResetPlayerState();
-            }
         }
     }
     
