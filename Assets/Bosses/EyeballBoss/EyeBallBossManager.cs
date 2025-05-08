@@ -8,6 +8,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     public enum BossState
     {
+        Spawn,
         Idle,
         RangedAttack,
         Shooting,
@@ -25,6 +26,10 @@ public class EyeBallBossManager : MonoBehaviour
     [SerializeField]
     private float idleDistance = 5f;
     BoxCollider2D bc;
+
+    //Spawn
+    float spawnTimer = 0f;
+    Vector2 spawnPos = new Vector2(150,-3);
 
     //Ranged
     float idleTimer = 0f;
@@ -59,10 +64,11 @@ public class EyeBallBossManager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
-        currentState = BossState.Idle;
-        Debug.Log("Boss Idle");
+        currentState = BossState.Spawn;
+        Debug.Log(currentState);
         Player = GameObject.FindGameObjectWithTag("Player");
         lastPosition = rb.position;
+
     }
 
     void FixedUpdate()
@@ -73,6 +79,9 @@ public class EyeBallBossManager : MonoBehaviour
 
         switch (currentState)
         {
+            case BossState.Spawn:
+                Spawn();
+                break;
             case BossState.Idle:
                 Idle();
                 break;
@@ -102,6 +111,25 @@ public class EyeBallBossManager : MonoBehaviour
         }
     }
 
+    void Spawn()
+    {
+        
+        Vector2 currentPos = rb.position;
+        Vector2 newPos = Vector2.Lerp(currentPos, spawnPos, 1.5f * Time.deltaTime);
+        rb.MovePosition(newPos);
+
+        if (Vector2.Distance(currentPos, spawnPos) < 0.1f)
+        {
+            spawnTimer += Time.deltaTime;
+        }
+
+        if (spawnTimer > 3f)
+        {
+            currentState = BossState.Idle;
+            Debug.Log(currentState);
+        }
+    }
+
     void pickState()
     {
         switch (Random.Range(0, 3))
@@ -118,7 +146,7 @@ public class EyeBallBossManager : MonoBehaviour
     }
     void Idle()
     {
-        if (idleTimer > 7.5f)
+        if (idleTimer > 7f)
         {
             pickState();
             idleTimer = 0f;

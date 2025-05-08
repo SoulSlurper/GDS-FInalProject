@@ -44,7 +44,7 @@ public class BossTrigger : MonoBehaviour
     private void SpawnBoss()
     {
         //don't change position
-        Instantiate(boss, new Vector2(160f, -240f), Quaternion.identity);
+        Instantiate(boss, new Vector2(180f, -2f), Quaternion.identity);
         hasSpawnedBoss = true;
     }
 
