@@ -6,7 +6,7 @@ public class CharacterRespawn : MonoBehaviour
 {
     private Status status;
     private SlimeKnightController playerController;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rb;
     private Vector2 initialPosition;
     private Vector2 initialVelocity;
     private Vector3 initialSize;
@@ -22,9 +22,9 @@ public class CharacterRespawn : MonoBehaviour
     {
         status = GetComponent<Status>();
         playerController = GetComponent<SlimeKnightController>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         initialPosition = transform.position;
-        initialVelocity = rigidbody.velocity;
+        initialVelocity = rb.velocity;
         initialSize = transform.localScale;
 
         mainCamera = Camera.main;
@@ -110,7 +110,7 @@ public class CharacterRespawn : MonoBehaviour
     {
         //PauseScene();
 
-        rigidbody.velocity = initialVelocity;
+        rb.velocity = initialVelocity;
     }
 
     // when the player returns to the save point
