@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 380340996724195687}
   - component: {fileID: 2556274459256270731}
   - component: {fileID: 6575998043804767380}
+  - component: {fileID: 810651818567229203}
   m_Layer: 0
   m_Name: SlimeKnight_0
   m_TagString: Player
@@ -486,6 +487,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCollider: {fileID: 1554260181763405561}
+--- !u!114 &810651818567229203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8328409611633574170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5baa8e66202cb4e9f0630168ee9018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shrinkDuration: 0.5
+  cameraTravelDuration: 0.25
 --- !u!1001 &1670717139393854849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -858,6 +873,10 @@ PrefabInstance:
       objectReference: {fileID: 2556274459256270731}
     - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
       propertyPath: _launchForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8990777200340076907, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}
+      propertyPath: _projectileCost
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9199337148527217218, guid: 997a1f62b2afd8c4395dc3c6c1648046, type: 3}

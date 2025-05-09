@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CharacterRespawn : MonoBehaviour
 {
     [SerializeField] private float shrinkDuration = 1f; //the time taken when the player shrinks
+    [SerializeField] private float cameraTravelDuration = 1f; //the time taken when the player shrinks
 
     //player details
     private Status status;
@@ -129,6 +131,25 @@ public class CharacterRespawn : MonoBehaviour
 
         return false;
     }
+
+    //positions the camera as the camera from the CameraFollow script does not follow in FixedUpdate
+    private IEnumerator PositionCameraToCharacter(float duration)
+    {
+        Vector3 startScale = mainCamera.transform.position;
+        Vector3 endScale = transform.position;
+        endScale.z = startScale.z; //maintains the camera view
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            mainCamera.transform.position = Vector3.Lerp(startScale, endScale, t);
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        mainCamera.transform.position = endScale;
+    }
     #endregion
 
     #region Respawn functions
@@ -166,6 +187,8 @@ public class CharacterRespawn : MonoBehaviour
     {
         // Move player to save point or initial position
         transform.position = (savePoint != null) ? savePoint.position : initialPosition;
+
+        StartCoroutine(PositionCameraToCharacter(cameraTravelDuration));
 
         startLerpScale = transform.localScale;
         endLerpScale = initialSize;
