@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharacterRespawn : MonoBehaviour
 {
+    [SerializeField] private float shrinkDuration = 1f; //the time taken when the player shrinks
+
+    //player details
     private Status status;
     private SlimeKnightController playerController;
     private Rigidbody2D rb;
@@ -11,11 +14,20 @@ public class CharacterRespawn : MonoBehaviour
     private Vector2 initialVelocity;
     private Vector3 initialSize;
 
+    //on scene details
     private SavePoint savePoint;
     private Camera mainCamera;
 
+    //time details
     private bool isSceneFrozen = false;
     private float originalTimeScale;
+
+    //lerping details
+    private float t = 0f;
+    private Vector3 startLerpScale;
+    private Vector3 endLerpScale;
+
+    private bool isDespawning = false;
 
     #region Unity functions
     void Start()
@@ -34,12 +46,27 @@ public class CharacterRespawn : MonoBehaviour
 
     void Update()
     {
-        // Handle OnDeath/respawn
-        if (status.noHealth || Input.GetKeyDown(KeyCode.R))
+        // Handle death/respawn
+        if (!isSceneFrozen && (status.noHealth || Input.GetKeyDown(KeyCode.R)))
         {
-            OnDeath();
-            OnRevive();
-            OnReturn();
+            PauseScene();
+
+            Revive();
+
+            OnDespawning();
+        }
+
+        // the process of respawning in frozen time
+        if (isSceneFrozen)
+        {
+            t += Time.unscaledDeltaTime / shrinkDuration;
+            transform.localScale = Vector3.Lerp(startLerpScale, endLerpScale, t);
+
+            if (t > 1f)
+            {
+                if (isDespawning) OnSpawning(); //switches to when the player spawns at the savepoint or beginning position
+                else ResumeScene();
+            }
         }
     }
 
@@ -105,30 +132,13 @@ public class CharacterRespawn : MonoBehaviour
     #endregion
 
     #region Respawn functions
-    // when the player dies
-    private void OnDeath()
-    {
-        //PauseScene();
-
-        rb.velocity = initialVelocity;
-    }
-
-    // when the player returns to the save point
-    private void OnReturn()
-    {
-        // Move player to save point or initial position
-        transform.position = (savePoint != null) ? savePoint.position : initialPosition;
-
-        RemoveBoss();
-
-        //ResumeScene();
-    }
-
-    // Player respawn logic
-    private void OnRevive()
+    // restores the player's health and scene if the player does not have any health left
+    private void Revive()
     {
         if (status.noHealth)
         {
+            RemoveBoss();
+
             // Reset health and player state
             status.ResetHealth();
             if (playerController != null)
@@ -136,6 +146,32 @@ public class CharacterRespawn : MonoBehaviour
                 playerController.ResetPlayerState();
             }
         }
+    }
+
+    // when the player dies, where it sets up the player and lerping details
+    private void OnDespawning()
+    {
+        initialSize = transform.localScale;
+        rb.velocity = initialVelocity;
+
+        startLerpScale = initialSize;
+        endLerpScale = Vector3.zero;
+        t = 0f;
+
+        isDespawning = true;
+    }
+
+    // when the player returns to the save point, where it sets up the player and lerping details
+    private void OnSpawning()
+    {
+        // Move player to save point or initial position
+        transform.position = (savePoint != null) ? savePoint.position : initialPosition;
+
+        startLerpScale = transform.localScale;
+        endLerpScale = initialSize;
+        t = 0f;
+
+        isDespawning = false;
     }
     #endregion
 }
