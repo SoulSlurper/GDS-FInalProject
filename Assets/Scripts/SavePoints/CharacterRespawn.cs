@@ -6,12 +6,15 @@ public class CharacterRespawn : MonoBehaviour
 {
     private Status status;
     private SlimeKnightController playerController;
+    private Rigidbody2D rigidbody;
     private Vector2 initialPosition;
+    private Vector2 initialVelocity;
+    private Vector3 initialSize;
 
     private SavePoint savePoint;
     private Camera mainCamera;
 
-    private bool isSceneFrozen = true;
+    private bool isSceneFrozen = false;
     private float originalTimeScale;
 
     #region Unity functions
@@ -19,8 +22,13 @@ public class CharacterRespawn : MonoBehaviour
     {
         status = GetComponent<Status>();
         playerController = GetComponent<SlimeKnightController>();
+        rigidbody = GetComponent<Rigidbody2D>();
         initialPosition = transform.position;
+        initialVelocity = rigidbody.velocity;
+        initialSize = transform.localScale;
+
         mainCamera = Camera.main;
+        
         originalTimeScale = Time.timeScale;
     }
 
@@ -55,7 +63,7 @@ public class CharacterRespawn : MonoBehaviour
     }
     #endregion
 
-    #region Scene State
+    #region On Scene
     // pauses the scene
     private void PauseScene()
     {
@@ -69,9 +77,7 @@ public class CharacterRespawn : MonoBehaviour
         Time.timeScale = originalTimeScale;
         isSceneFrozen = false;
     }
-    #endregion
 
-    #region Respawn functions
     // Remove boss if present
     private bool RemoveBoss()
     {
@@ -96,11 +102,15 @@ public class CharacterRespawn : MonoBehaviour
 
         return false;
     }
-    
+    #endregion
+
+    #region Respawn functions
     // when the player dies
     private void OnDeath()
     {
-        PauseScene();
+        //PauseScene();
+
+        rigidbody.velocity = initialVelocity;
     }
 
     // when the player returns to the save point
@@ -111,7 +121,7 @@ public class CharacterRespawn : MonoBehaviour
 
         RemoveBoss();
 
-        ResumeScene();
+        //ResumeScene();
     }
 
     // Player respawn logic
