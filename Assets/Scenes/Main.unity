@@ -268710,6 +268710,10 @@ PrefabInstance:
       propertyPath: _healthBar
       value: 
       objectReference: {fileID: 1363242446}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _attackRecoveryTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3137116559574273298, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_Layer
       value: 6
