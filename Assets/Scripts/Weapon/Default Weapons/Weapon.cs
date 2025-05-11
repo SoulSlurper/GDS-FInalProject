@@ -90,12 +90,20 @@ public class Weapon : MonoBehaviour
         {
             enabledAttack = true;
             spriteRenderer.color = color;
+
+            if (attackCount > 0) //regain attack availability overtime
+            {
+                attackCount--;
+                cooldownTimer = 0f;
+            }
         }
         else cooldownTimer += Time.deltaTime;
         //Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
         Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
 
         SetRealAmounts();
+
+        Debug.Log("attackCount: " + attackCount);
     }
     #endregion
 
