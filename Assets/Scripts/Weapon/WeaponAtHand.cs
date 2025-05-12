@@ -47,7 +47,7 @@ public class WeaponAtHand : MonoBehaviour
 
     private void Update()
     {
-        HandleDirectWeaponSwitching();
+        HandleWeaponSwitching();
         UpdateWeaponOrientation();
         HandleHealthRegeneration();
     }
@@ -57,7 +57,7 @@ public class WeaponAtHand : MonoBehaviour
     #region Public Methods
     
     /// <summary>
-    /// Increases the number of weapons the player can access at once
+    /// Increases weapon limit
     /// </summary>
     public void IncreaseAvailableWeaponLimit(int amount)
     {
@@ -66,30 +66,12 @@ public class WeaponAtHand : MonoBehaviour
             availableWeaponsLimit = weapons.Count;
     }
     
-    /// <summary>
-    /// Returns whether the player is currently in weapon selection mode
-    /// Maintained for compatibility with SlimeKnightController
-    /// </summary>
-    public bool IsSelecting()
-    {
-        return false;
-    }
-    
-    /// <summary>
-    /// Returns whether the weapon selection was recently canceled
-    /// Maintained for compatibility with SlimeKnightController
-    /// </summary>
-    public bool WasSelectionRecentlyCanceled()
-    {
-        return false;
-    }
-    
     #endregion
 
     #region Weapon Management Methods
     
     /// <summary>
-    /// Finds all child objects with Weapon component and caches them
+    /// Finds and caches all weapons
     /// </summary>
     private void FindAndCacheWeapons()
     {
@@ -114,7 +96,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets component references needed for operation
+    /// Gets required component references
     /// </summary>
     private void InitializeReferences()
     {
@@ -124,7 +106,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets the index from the weapons list based on the WeaponType enum
+    /// Gets weapon index by type
     /// </summary>
     private int GetWeaponIndex(WeaponType type)
     {
@@ -139,7 +121,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies visual settings and enables attack for active weapon
+    /// Sets up active weapon
     /// </summary>
     private void SetupSelectedWeapon(Weapon weaponDetails)
     {
@@ -151,20 +133,19 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Deactivates the current weapon
+    /// Deactivates current weapon
     /// </summary>
     private void DeselectWeapon()
     {
         if (currentWeaponIndex < 0) return;
 
-        //weapons[currentWeaponIndex].SetActive(false);
         weapons[currentWeaponIndex].GetComponent<SpriteRenderer>().enabled = false;
         weapons[currentWeaponIndex].GetComponent<Weapon>().isHeld = false;
         selectedWeapon = WeaponType.None;
     }
 
     /// <summary>
-    /// Activates a weapon by index and applies appropriate settings
+    /// Activates weapon by index
     /// </summary>
     private void SelectWeapon(int index)
     {
@@ -175,12 +156,11 @@ public class WeaponAtHand : MonoBehaviour
         GameObject weapon = weapons[index];
         Weapon wDetails = weapon.GetComponent<Weapon>();
 
-        //weapon.SetActive(true);
         SetupSelectedWeapon(wDetails);
     }
 
     /// <summary>
-    /// Selects a weapon by its index in the weapons list
+    /// Selects weapon by index
     /// </summary>
     private void SelectWeaponByIndex(int index)
     {
@@ -201,7 +181,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Selects a weapon by its type
+    /// Selects weapon by type
     /// </summary>
     private void SelectWeaponByType(WeaponType type)
     {
@@ -213,7 +193,7 @@ public class WeaponAtHand : MonoBehaviour
     #region Weapon Cycling Methods
     
     /// <summary>
-    /// Get next weapon index, cycling through all weapons
+    /// Get next weapon index
     /// </summary>
     private int GetNextWeaponIndex(int currentIndex)
     {
@@ -225,7 +205,7 @@ public class WeaponAtHand : MonoBehaviour
     }
     
     /// <summary>
-    /// Get previous weapon index, cycling through all weapons
+    /// Get previous weapon index
     /// </summary>
     private int GetPreviousWeaponIndex(int currentIndex)
     {
@@ -238,38 +218,52 @@ public class WeaponAtHand : MonoBehaviour
     
     #endregion
 
-    #region Direct Weapon Switching
+    #region Weapon Switching
     
     /// <summary>
-    /// Directly switches weapons based on mouse wheel input
+    /// Handles weapon switching with mouse wheel and number keys
     /// </summary>
-    private void HandleDirectWeaponSwitching()
+    private void HandleWeaponSwitching()
     {
+        // Handle mouse wheel switching
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
         
-        if (scrollValue == 0f || weapons.Count <= 1) 
-            return;
-            
-        if (scrollValue > 0f)
-        {
-            // Scroll up = previous weapon (corrected direction)
-            int newIndex = GetPreviousWeaponIndex(currentWeaponIndex);
-            SelectWeaponByIndex(newIndex);
+        if (scrollValue != 0f && weapons.Count > 1)
+        {   
+            if (scrollValue > 0f)
+            {
+                // Scroll up = previous weapon
+                int newIndex = GetPreviousWeaponIndex(currentWeaponIndex);
+                SelectWeaponByIndex(newIndex);
+            }
+            else
+            {
+                // Scroll down = next weapon
+                int newIndex = GetNextWeaponIndex(currentWeaponIndex);
+                SelectWeaponByIndex(newIndex);
+            }
         }
-        else
+        
+        // Handle number key switching (1-3)
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
-            // Scroll down = next weapon (corrected direction)
-            int newIndex = GetNextWeaponIndex(currentWeaponIndex);
-            SelectWeaponByIndex(newIndex);
+            SelectWeaponByIndex(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            SelectWeaponByIndex(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            SelectWeaponByIndex(2);
         }
     }
     
     /// <summary>
-    /// Regenerates health over time when no weapon is equipped
+    /// Regenerates health when no weapon equipped
     /// </summary>
     private void HandleHealthRegeneration()
     {
-        // Add a check to prevent regeneration if the player's health is 0 or below
         if (selectedWeapon == WeaponType.None && playerStatus != null && !playerStatus.noHealth)
         {
             playerStatus.TakeHealth(healthRegenPerSecond * Time.deltaTime);
@@ -281,7 +275,7 @@ public class WeaponAtHand : MonoBehaviour
     #region Weapon Orientation
     
     /// <summary>
-    /// Gets the normalized direction from weapon to mouse pointer
+    /// Gets direction to mouse pointer
     /// </summary>
     private Vector2 GetPointerDirection()
     {
@@ -290,7 +284,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Flips the text UI elements on weapons when facing direction changes
+    /// Flips weapon text elements
     /// </summary>
     private void FlipWeaponTexts()
     {
@@ -306,7 +300,7 @@ public class WeaponAtHand : MonoBehaviour
     }
 
     /// <summary>
-    /// Makes the weapon face towards the pointer's position
+    /// Makes weapon face towards mouse pointer
     /// </summary>
     private void UpdateWeaponOrientation()
     {
