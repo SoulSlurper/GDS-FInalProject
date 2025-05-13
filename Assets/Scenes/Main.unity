@@ -268711,8 +268711,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1363242446}
     - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _attackMaxLimit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _cooldownColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _cooldownColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _cooldownColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: _attackRecoveryTime
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3137116559574273298, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_Layer

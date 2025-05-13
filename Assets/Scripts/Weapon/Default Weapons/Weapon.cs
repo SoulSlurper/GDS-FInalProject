@@ -12,7 +12,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _cost;
     public bool isHeld = true; //whether the user is holding the weapon to use
 
-    [Header("Cooldown")]
+    [Header("Delay Attacks / Cooldown")]
+    //delayed attacks could be made by making the attackMaxLimit to 1 and the cooldownColor to white, where the attackRecoveryTime is the amount that the attack is delayed
     [SerializeField] private float _attackRecoveryTime; //the time taken for the user to attack again
     [SerializeField] private int _attackMaxLimit = 0; //the number of attacks that can be made before it goes in a cooldown state, 0 means infinite
     [SerializeField] private Color _cooldownColor = Color.gray; //the color state of when the weapon is in cooldown, which is reaching the max attack limit
