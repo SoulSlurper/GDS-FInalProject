@@ -12,11 +12,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _cost;
     public bool isHeld = true; //whether the user is holding the weapon to use
 
-    [Header("Cooldown")]
-    [SerializeField] private float _cooldown; //the time taken for the user to use the weapon again
-    [SerializeField] private Color _cooldownColor = Color.gray; //the color state of when the weapon is in cooldown
-    [SerializeField] private int _attackMaxLimit = 0; //the number of attacks that can be made before the cooldown starts
-    
+    [Header("Delay Attacks / Cooldown")]
+    //delayed attacks could be made by making the attackMaxLimit to 1 and the cooldownColor to white, where the attackRecoveryTime is the amount that the attack is delayed
+    [SerializeField] private float _attackRecoveryTime; //the time taken for the user to attack again
+    [SerializeField] private int _attackMaxLimit = 0; //the number of attacks that can be made before it goes in a cooldown state, 0 means infinite
+    [SerializeField] private Color _cooldownColor = Color.gray; //the color state of when the weapon is in cooldown, which is reaching the max attack limit
+
     [Header("Knockback Settings")]
     [SerializeField] private bool _applyKnockback = true;
     [SerializeField] private float _knockbackForce = 8f;
@@ -33,8 +34,8 @@ public class Weapon : MonoBehaviour
     private float _realDamage;
     private float _realCost;
     
-    private float cooldownTimer = 0f;
-    private int attackCount = 0;
+    private float attackRecoveryTimer = 0f; //tracks the time that passes for the attackRecoveryTime
+    private int attackCount = 0; //counts the number of attacks made before reaching the attackRecoveryTime
 
     private List<GameObject> textDetails = new List<GameObject>();
     private enum TDIndex { type, cost };
@@ -58,7 +59,7 @@ public class Weapon : MonoBehaviour
     public float cost { get => _cost; private set => _cost = value; }
     public float minCost { get => _minCost; private set => _minCost = value; }
     public float realCost { get => _realCost; private set => _realCost = value; }
-    public float cooldown { get => _cooldown; private set => _cooldown = value; }
+    public float attackRecoveryTime { get => _attackRecoveryTime; private set => _attackRecoveryTime = value; }
     public Color cooldownColor { get => _cooldownColor; private set => _cooldownColor = value; }
     public int attackMaxLimit { get => _attackMaxLimit; private set => _attackMaxLimit = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
@@ -86,16 +87,24 @@ public class Weapon : MonoBehaviour
 
     void LateUpdate()
     {
-        if (cooldownTimer > cooldown)
+        if (attackRecoveryTimer > attackRecoveryTime)
         {
             enabledAttack = true;
             spriteRenderer.color = color;
+
+            if (attackCount > 0) //regain attack availability overtime
+            {
+                attackCount--;
+                attackRecoveryTimer = 0f;
+            }
         }
-        else cooldownTimer += Time.deltaTime;
-        //Debug.Log(gameObject.name + " cooldownTimer: " + cooldownTimer);
-        Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
+        else attackRecoveryTimer += Time.deltaTime;
+        //Debug.Log(gameObject.name + " attackRecoveryTimer: " + attackRecoveryTimer);
+        //Debug.Log(gameObject.name + " enabledAttack: " + enabledAttack);
 
         SetRealAmounts();
+
+        Debug.Log("attackCount: " + attackCount);
     }
     #endregion
 
@@ -228,11 +237,11 @@ public class Weapon : MonoBehaviour
             if (enabledAttack)
             {
                 attackCount++;
+                attackRecoveryTimer = 0f;
 
                 if (attackCount > attackMaxLimit && !attackMaxLimit.Equals(0))
                 {
                     enabledAttack = false;
-                    cooldownTimer = 0f;
                     attackCount = 0;
                     spriteRenderer.color = cooldownColor;
                 }
