@@ -7002,7 +7002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &75428537
@@ -50903,7 +50903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &408838102
@@ -50940,7 +50940,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -50950,7 +50950,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.33}
   m_EdgeRadius: 0
 --- !u!212 &408838103
 SpriteRenderer:
@@ -51333,7 +51333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &410113478
@@ -51370,7 +51370,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -51380,7 +51380,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.33}
   m_EdgeRadius: 0
 --- !u!212 &410113479
 SpriteRenderer:
@@ -58545,7 +58545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &456654067
@@ -58582,7 +58582,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -58592,7 +58592,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.33}
   m_EdgeRadius: 0
 --- !u!212 &456654068
 SpriteRenderer:
@@ -77537,7 +77537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &650941775
@@ -86954,7 +86954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &720319624
@@ -87312,7 +87312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &722218524
@@ -93031,7 +93031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &780886355
@@ -93309,7 +93309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &782887663
@@ -135772,7 +135772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1143508348
@@ -144895,7 +144895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1176754991
@@ -171706,7 +171706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1353689319
@@ -176381,7 +176381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 4
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1386242839
@@ -196284,7 +196284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1522403457
@@ -209663,7 +209663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1607164209
@@ -213139,7 +213139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: 5
-  health: 100
+  health: 30
   _healthBar: {fileID: 0}
   _dropItem: {fileID: 0}
 --- !u!61 &1640215139
@@ -269058,11 +269058,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 137
+      value: 20.13
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11
+      value: -1.77
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.z
