@@ -268780,6 +268780,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5963409101367023838, guid: edcc6d27cd8bbf244b89237d0ae42d43, type: 3}
+      propertyPath: m_Size.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963409101367023838, guid: edcc6d27cd8bbf244b89237d0ae42d43, type: 3}
+      propertyPath: m_Size.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963409101367023838, guid: edcc6d27cd8bbf244b89237d0ae42d43, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.029999971
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963409101367023838, guid: edcc6d27cd8bbf244b89237d0ae42d43, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8450919297129376247, guid: edcc6d27cd8bbf244b89237d0ae42d43, type: 3}
       propertyPath: m_Name
       value: BouncePad_0
@@ -268990,7 +269006,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: _attackRecoveryTime
-      value: 1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 3137116559574273298, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_Layer
@@ -269038,11 +269054,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.5
+      value: 136
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.z

@@ -45,6 +45,7 @@ public class EyeBallBossManager : MonoBehaviour
     [SerializeField]
     public GameObject eyeball;
     private int eyeballCount = 2;
+    float summonTimer = 0f;
 
     [SerializeField]
     public GameObject Laser;
@@ -298,6 +299,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void SummonAttack() 
     {
+        summonTimer += Time.deltaTime;
         if (!rangedPosSet)
         {
             rangedAttackPos = this.GetComponent<Rigidbody2D>().position + new Vector2(0, 3);
@@ -316,11 +318,16 @@ public class EyeBallBossManager : MonoBehaviour
                 Instantiate(eyeball, rb.position + new Vector2(1.5f, 1f), Quaternion.identity);
                 eyeballCount -= 2;
             }
-            currentState = BossState.Idle;
-            Debug.Log(currentState);
-            rangedPosSet = false;
-            idleTimer = 0f;
-            eyeballCount = 2;
+            if (summonTimer > 6f)
+            {
+                currentState = BossState.Idle;
+                Debug.Log(currentState);
+                rangedPosSet = false;
+                idleTimer = 0f;
+                eyeballCount = 2;
+                summonTimer = 0f;
+            }
+            
         }
     }
 
