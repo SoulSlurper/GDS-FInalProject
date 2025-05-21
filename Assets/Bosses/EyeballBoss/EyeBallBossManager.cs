@@ -148,7 +148,7 @@ public class EyeBallBossManager : MonoBehaviour
     }
     void Idle()
     {
-        if (idleTimer > 7f)
+        if (idleTimer > 3.5f)
         {
             pickState();
             idleTimer = 0f;
