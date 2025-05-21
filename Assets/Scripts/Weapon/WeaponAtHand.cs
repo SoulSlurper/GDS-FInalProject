@@ -10,7 +10,7 @@ public class WeaponAtHand : MonoBehaviour
     [SerializeField] private GameObject player;
     
     [Header("Weapon Settings")]
-    [SerializeField] private WeaponType selectedWeapon = WeaponType.None;
+    [SerializeField] private WeaponType _selectedWeapon = WeaponType.None;
     [SerializeField][Range(1, 4)] private int _availableWeaponsLimit = 3;
     
     [Header("Health Regeneration")]
@@ -26,6 +26,13 @@ public class WeaponAtHand : MonoBehaviour
     private Color playerColor;
 
     // Properties
+    // FIX: Make selectedWeapon public to allow external access for damage checks
+    public WeaponType selectedWeapon
+    {
+        get { return _selectedWeapon; }
+        private set { _selectedWeapon = value; }
+    }
+    
     public int availableWeaponsLimit
     {
         get { return _availableWeaponsLimit; }

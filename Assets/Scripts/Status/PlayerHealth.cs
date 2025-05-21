@@ -17,14 +17,20 @@ public class PlayerHealth : Status
     // References
     private Vector3 initialSize;
     private SlimeKnightController playerController;
+    private WeaponAtHand weaponHandler;
     
     // Status effect trackers
     private Coroutine currentDamageFlashRoutine;
+    
+    // Lava damage control
+    private float lavaDamageTimer = 0f;
+    private float lavaDamageInterval = 0.5f; // Apply damage every 0.5 seconds
 
     void Start()
     {
         initialSize = transform.localScale;
         playerController = GetComponent<SlimeKnightController>();
+        weaponHandler = GetComponentInChildren<WeaponAtHand>();
         
         // Subscribe to damage events
         OnDamageTaken += HandleDamageTaken;
@@ -38,9 +44,8 @@ public class PlayerHealth : Status
 
     void Update()
     {
-       
-        // Update player size based on health
-        UpdatePlayerSize();
+       // Update player size based on health
+       UpdatePlayerSize();
     }
     
     // Handles damage event with knockback
@@ -69,25 +74,63 @@ public class PlayerHealth : Status
     // Handle various collision types
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // Handle damage from various sources
+        // Get contact point for directional effects
         Vector2 contactPoint = collision.ClosestPoint(transform.position);
         
-        if (collision.CompareTag("BossProjectile"))
+        // FIX BUG 1: Ignore spike damage if player is actively attacking with sword
+        if (collision.CompareTag("Spike"))
+        {
+            if (weaponHandler != null && 
+                weaponHandler.selectedWeapon == WeaponType.Sword && 
+                Input.GetMouseButton(0))
+            {
+                // Skip damage while attacking with sword
+                return;
+            }
+            
+            TakeDamage(_spikeDamage, contactPoint);
+        }
+        else if (collision.CompareTag("BossProjectile"))
         {
             TakeDamage(_bossProjectileDamage, contactPoint);
         }
-        //else if (collision.CompareTag("EnemyProjectile"))
-        //{
-        //    TakeDamage(_enemyProjectileDamage, contactPoint);
-        //}
+        else if (collision.CompareTag("EnemyProjectile"))
+        {
+            TakeDamage(_enemyProjectileDamage, contactPoint);
+        }
         else if (collision.CompareTag("Lava"))
         {
-            // Instant death from lava
+            // Initial damage from lava
             TakeDamage(_lavaDamage, contactPoint);
+            // Reset timer to delay next damage
+            lavaDamageTimer = 0f;
         }
-        else if (collision.CompareTag("Spike"))
+    }
+    
+    // FIX BUG 2: Implement continuous damage for Lava
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Lava"))
         {
-            TakeDamage(_spikeDamage, contactPoint);
+            lavaDamageTimer += Time.deltaTime;
+            
+            // Apply periodic damage while in lava
+            if (lavaDamageTimer >= lavaDamageInterval)
+            {
+                Vector2 contactPoint = collision.ClosestPoint(transform.position);
+                TakeDamage(_lavaDamage, contactPoint);
+                lavaDamageTimer = 0f;
+            }
+        }
+    }
+    
+    // Reset timer when exiting hazards
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Lava"))
+        {
+            // Reset timer to ensure damage is applied immediately on next entry
+            lavaDamageTimer = lavaDamageInterval;
         }
     }
     
