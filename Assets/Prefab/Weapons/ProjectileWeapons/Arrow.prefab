@@ -200,7 +200,7 @@ PrefabInstance:
       addedObject: {fileID: 1714389796360220931}
     - targetCorrespondingSourceObject: {fileID: 5041288964348727701, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -3486186417945426455}
+      addedObject: {fileID: 8125292515670732494}
   m_SourcePrefab: {fileID: 100100000, guid: fe2f7ddb1c283ed408f08c2f89aba71f, type: 3}
 --- !u!1 &2748061540730821741 stripped
 GameObject:
@@ -250,6 +250,10 @@ MonoBehaviour:
   _type: 5
   _damage: 0
   _cost: 0
+  isHeld: 1
+  _attackRecoveryTime: 0
+  _attackMaxLimit: 0
+  _cooldownColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _applyKnockback: 1
   _knockbackForce: 8
   _bossKnockbackMultiplier: 0.5
@@ -260,7 +264,7 @@ MonoBehaviour:
   _usesGravity: 0
   _launchForce: 1
   _dropItem: {fileID: 1578579390163867190, guid: 67a5bc9ccee85784c94adfdd452a138c, type: 3}
---- !u!61 &-3486186417945426455
+--- !u!61 &8125292515670732494
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,5 +308,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.2}
+  m_Size: {x: 0.44, y: 0.06}
   m_EdgeRadius: 0

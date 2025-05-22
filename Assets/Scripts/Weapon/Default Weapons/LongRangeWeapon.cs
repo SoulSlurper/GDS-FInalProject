@@ -20,7 +20,7 @@ public class LongRangeWeapon : Weapon
 
     private float _realProjectileCost;
 
-    #region Getter and Setters // // // //
+    #region Getter and Setters
     public float launchForce
     {
         get { return _launchForce; }
@@ -64,7 +64,7 @@ public class LongRangeWeapon : Weapon
     }
     #endregion
 
-    #region Unity // // // // //
+    #region Unity
     void Update()
     {
         PerformAttack();

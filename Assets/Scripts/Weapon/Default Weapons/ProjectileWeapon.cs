@@ -55,14 +55,14 @@ public class ProjectileWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger detects: " + collision.gameObject.name);
-
-        if (collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item")) return;
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item"))
+        {
+            Physics2D.IgnoreCollision(collision, collision.gameObject.GetComponent<Collider2D>());
+            return;
+        }
+        Debug.Log("trigger detects: " + collision.gameObject.name + " (" + collision.tag + ")");
 
         MakeDamage(collision);
-
-        Status status = collision.GetComponent<Status>();
-        if (status != null && weaponUser != null && status.user == weaponUser.user) return;
 
         CreateDropItem();
 
