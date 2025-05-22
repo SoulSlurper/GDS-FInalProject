@@ -269101,6 +269101,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6447503101416911556, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: _usesGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447503101416911556, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: _projectileCost
       value: 10
       objectReference: {fileID: 0}

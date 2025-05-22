@@ -148,7 +148,7 @@ public class LongRangeWeapon : Weapon
 
     private void SpawnProjectile()
     {
-        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, transform.rotation);
+        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, launchLocation.rotation);
         ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
 
         wDetails.SetWeaponUser(weaponUser);
