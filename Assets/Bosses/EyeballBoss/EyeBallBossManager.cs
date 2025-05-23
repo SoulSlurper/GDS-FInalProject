@@ -8,6 +8,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     public enum BossState
     {
+        Spawn,
         Idle,
         RangedAttack,
         Shooting,
@@ -24,6 +25,11 @@ public class EyeBallBossManager : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField]
     private float idleDistance = 5f;
+    CircleCollider2D bossCollider;
+
+    //Spawn
+    float spawnTimer = 0f;
+    Vector2 spawnPos = new Vector2(150,-3);
 
     //Ranged
     float idleTimer = 0f;
@@ -39,6 +45,7 @@ public class EyeBallBossManager : MonoBehaviour
     [SerializeField]
     public GameObject eyeball;
     private int eyeballCount = 2;
+    float summonTimer = 0f;
 
     [SerializeField]
     public GameObject Laser;
@@ -47,18 +54,35 @@ public class EyeBallBossManager : MonoBehaviour
     public GameObject Player;
     public Vector2 playerPos;
 
+    public Animator animator;
+
+    public Vector2 CalculatedVelocity { get; private set; }
+
+    private Vector2 lastPosition;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentState = BossState.Idle;
-        Debug.Log("Boss Idle");
+        bossCollider = GetComponent<CircleCollider2D>();
+        currentState = BossState.Spawn;
+        Debug.Log(currentState);
         Player = GameObject.FindGameObjectWithTag("Player");
+        lastPosition = rb.position;
+
     }
 
     void FixedUpdate()
     {
+        Vector2 currentPosition = rb.position;    //line 62 and 70-72 enables velocity so the water knows how much displacement the boss has on it
+        CalculatedVelocity = (currentPosition - lastPosition) / Time.deltaTime;
+        lastPosition = currentPosition;
+
         switch (currentState)
         {
+            case BossState.Spawn:
+                Spawn();
+                break;
             case BossState.Idle:
                 Idle();
                 break;
@@ -88,6 +112,25 @@ public class EyeBallBossManager : MonoBehaviour
         }
     }
 
+    void Spawn()
+    {
+        
+        Vector2 currentPos = rb.position;
+        Vector2 newPos = Vector2.Lerp(currentPos, spawnPos, 1.5f * Time.deltaTime);
+        rb.MovePosition(newPos);
+
+        if (Vector2.Distance(currentPos, spawnPos) < 0.1f)
+        {
+            spawnTimer += Time.deltaTime;
+        }
+
+        if (spawnTimer > 3f)
+        {
+            currentState = BossState.Idle;
+            Debug.Log(currentState);
+        }
+    }
+
     void pickState()
     {
         switch (Random.Range(0, 3))
@@ -101,10 +144,11 @@ public class EyeBallBossManager : MonoBehaviour
 
         }
         
+
     }
     void Idle()
     {
-        if (idleTimer > 7.5f)
+        if (idleTimer > 3.5f)
         {
             pickState();
             idleTimer = 0f;
@@ -156,7 +200,7 @@ public class EyeBallBossManager : MonoBehaviour
         {
             Vector2 shootDirection = (Player.GetComponent<Rigidbody2D>().position - rb.position).normalized;
             GameObject laser = Instantiate(Laser, rb.position, Quaternion.identity);
-
+            animator.SetTrigger("Shoot");
             laser.GetComponent<Rigidbody2D>().velocity = shootDirection * 8f;
 
             yield return new WaitForSeconds(0.5f);
@@ -172,7 +216,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void MeleeAttackStart() 
     {
-
+        bossCollider.enabled = false;
         chargeTimer += Time.deltaTime;
         playerPos = Player.GetComponent<Rigidbody2D>().position;
         charge1Start = playerPos + new Vector2(10, -1);
@@ -192,6 +236,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void Charge1()
     {
+        bossCollider.enabled = true;
         chargeTimer += Time.deltaTime;
         Vector2 currentPos = rb.position;
         Vector2 chargeEnd = (currentPos + new Vector2(-10, 0));
@@ -224,7 +269,7 @@ public class EyeBallBossManager : MonoBehaviour
         rb.MovePosition(newPos);
 
 
-        if (chargeTimer > 3f)
+        if (chargeTimer > 2.5f)
         {
             Debug.Log("Charge 3");
             currentState = BossState.Charge3;
@@ -257,6 +302,7 @@ public class EyeBallBossManager : MonoBehaviour
 
     void SummonAttack() 
     {
+        summonTimer += Time.deltaTime;
         if (!rangedPosSet)
         {
             rangedAttackPos = this.GetComponent<Rigidbody2D>().position + new Vector2(0, 3);
@@ -275,11 +321,16 @@ public class EyeBallBossManager : MonoBehaviour
                 Instantiate(eyeball, rb.position + new Vector2(1.5f, 1f), Quaternion.identity);
                 eyeballCount -= 2;
             }
-            currentState = BossState.Idle;
-            Debug.Log(currentState);
-            rangedPosSet = false;
-            idleTimer = 0f;
-            eyeballCount = 2;
+            if (summonTimer > 6f)
+            {
+                currentState = BossState.Idle;
+                Debug.Log(currentState);
+                rangedPosSet = false;
+                idleTimer = 0f;
+                eyeballCount = 2;
+                summonTimer = 0f;
+            }
+            
         }
     }
 

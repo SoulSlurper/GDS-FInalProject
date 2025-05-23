@@ -4,6 +4,7 @@ using UnityEngine;
 public class SlimeKnightController : MonoBehaviour
 {
     [Header("Movement Settings")]
+    [SerializeField] private float maxYVelocity = 14f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float fallMultiplier = 2.5f;
@@ -270,8 +271,21 @@ public class SlimeKnightController : MonoBehaviour
         // Apply better jump physics for more control
         if (rb.velocity.y < 0)
             rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        
         else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+        if (rb.velocity.y > maxYVelocity)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, maxYVelocity);
+        }
+        if (rb.velocity.y < -maxYVelocity)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -maxYVelocity);
+        }
+
     }
 
     private void CheckGroundAndWalls()

@@ -109,10 +109,10 @@ TextureImporter:
       name: EyeBoss_0
       rect:
         serializedVersion: 2
-        x: 86
-        y: 79
-        width: 336
-        height: 386
+        x: 0
+        y: 0
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,10 +130,10 @@ TextureImporter:
       name: EyeBoss_1
       rect:
         serializedVersion: 2
-        x: 583
-        y: 78
-        width: 339
-        height: 387
+        x: 500
+        y: 0
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,10 +151,10 @@ TextureImporter:
       name: EyeBoss_2
       rect:
         serializedVersion: 2
-        x: 1077
-        y: 71
-        width: 345
-        height: 394
+        x: 1000
+        y: 0
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,7 +171,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: faa68ac4f2419464bb4a3cc1051e0156
     internalID: 0
     vertices: []
     indices: 

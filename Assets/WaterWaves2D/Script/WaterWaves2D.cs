@@ -342,42 +342,86 @@ public class WaterWaves2D:MonoBehaviour{
 		}
 	}
 
-	#endregion
-	
-	#region Impact
+    #endregion
 
-	private void OnTriggerEnter2D(Collider2D other){
-		Vector2 closest=new Vector2();
-		#if UNIT2019_0_1_OR_NEWER
-			closest=other.ClosestPoint(other.transform.position)
-		#else
-			closest=other.bounds.ClosestPoint(other.transform.position);
-		#endif
-		StartCoroutine(DelayedImpact(
-			closest,
-			(Vector2)other.bounds.extents,
-			other.GetComponent<Rigidbody2D>().velocity,
-			0.1f
-		));
-		PlayEnterSound();
-	}
-	
-	private void OnTriggerExit2D(Collider2D other){
-		Vector2 closest=new Vector2();
-		#if UNIT2019_0_1_OR_NEWER
-			closest=other.ClosestPoint(other.transform.position)
-		#else
-			closest=other.bounds.ClosestPoint(other.transform.position);
-		#endif
-		Impact(
-			closest,
-			(Vector2)other.bounds.extents,
-			other.GetComponent<Rigidbody2D>().velocity
-		);
-		PlayExitSound();
-	}
+    #region Impact
 
-	private void ScheduleImpact(Vector2 position,Vector2 size,Vector2 force,float delay){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Vector2 closest = new Vector2();
+#if UNIT2019_0_1_OR_NEWER
+        closest = other.ClosestPoint(other.transform.position);
+#else
+        closest = other.bounds.ClosestPoint(other.transform.position);
+#endif
+
+        Vector2 velocity = Vector2.zero;
+
+        if (other.attachedRigidbody != null)
+        {
+            velocity = other.attachedRigidbody.velocity;
+
+            // Fallback to calculated velocity if it's zero
+            if (velocity.magnitude < 0.01f)
+            {
+                var boss = other.GetComponent<EyeBallBossManager>(); // Replace with actual boss class name
+                if (boss != null)
+                {
+                    velocity = boss.CalculatedVelocity;
+                }
+            }
+        }
+
+
+        StartCoroutine(DelayedImpact(
+            closest,
+            (Vector2)other.bounds.extents,
+            velocity,
+            0.1f
+        ));
+        PlayEnterSound();
+    }
+
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Vector2 closest = new Vector2();
+#if UNIT2019_0_1_OR_NEWER
+        closest = other.ClosestPoint(other.transform.position);
+#else
+        closest = other.bounds.ClosestPoint(other.transform.position);
+#endif
+
+        Vector2 velocity = Vector2.zero;
+
+        if (other.attachedRigidbody != null)
+        {
+            velocity = other.attachedRigidbody.velocity;
+
+            // Fallback to calculated velocity if it's zero
+            if (velocity.magnitude < 0.01f)
+            {
+                var boss = other.GetComponent<EyeBallBossManager>(); // Replace with actual boss class name
+                if (boss != null)
+                {
+                    velocity = boss.CalculatedVelocity;
+                }
+            }
+        }
+
+
+        Impact(
+            closest,
+            (Vector2)other.bounds.extents,
+            velocity
+        );
+
+        PlayExitSound();
+    }
+
+
+
+    private void ScheduleImpact(Vector2 position,Vector2 size,Vector2 force,float delay){
 		StartCoroutine(DelayedImpact(position,size,force,delay));
 	}
 	

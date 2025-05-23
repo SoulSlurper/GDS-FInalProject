@@ -55,25 +55,14 @@ public class ProjectileWeapon : Weapon
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("trigger detects: " + collision.gameObject.name);
-
-        if (collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item")) return;
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item")) return;
+        Debug.Log("trigger detects: " + collision.gameObject.name + " (" + collision.tag + ")");
 
         MakeDamage(collision);
 
-        bool canDestroy = true; //prevents weapon from destroying by the weaponUser
-        Status sDetails;
-        if (sDetails = collision.GetComponent<Status>())
-        {
-            if (sDetails.user == weaponUser.user) canDestroy = false;
-        }
+        CreateDropItem();
 
-        if (canDestroy)
-        {
-            CreateDropItem();
-
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
     #endregion
 

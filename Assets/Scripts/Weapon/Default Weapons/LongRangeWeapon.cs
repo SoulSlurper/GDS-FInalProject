@@ -15,12 +15,12 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private float _launchForce = 1f;
     [SerializeField] private bool _usesGravity = false;
     [SerializeField] private float _projectileCost = 0f;
-    [SerializeField] private bool _healthItemMatchesProjectileCost = true;
+    [SerializeField] private bool _healthItemReturnsProjectileCost = true;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
 
     private float _realProjectileCost;
 
-    #region Getter and Setters // // // //
+    #region Getter and Setters
     public float launchForce
     {
         get { return _launchForce; }
@@ -45,10 +45,10 @@ public class LongRangeWeapon : Weapon
         private set { _minProjectileCost = value; }
     }
 
-    public bool healthItemMatchesProjectileCost
+    public bool healthItemReturnsProjectileCost
     {
-        get { return _healthItemMatchesProjectileCost; }
-        private set { _healthItemMatchesProjectileCost = value; }
+        get { return _healthItemReturnsProjectileCost; }
+        private set { _healthItemReturnsProjectileCost = value; }
     }
 
     public float realProjectileCost
@@ -64,7 +64,7 @@ public class LongRangeWeapon : Weapon
     }
     #endregion
 
-    #region Unity // // // // //
+    #region Unity
     void Update()
     {
         PerformAttack();
@@ -148,17 +148,18 @@ public class LongRangeWeapon : Weapon
 
     private void SpawnProjectile()
     {
-        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, transform.rotation);
+        //instantiates as a child object in the LaunchLocation Transform to be accurately in its location when the weapon is flipped on the left side
+        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.transform);
+
         ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
 
         wDetails.SetWeaponUser(weaponUser);
         wDetails.SetUsesGravity(usesGravity);
         wDetails.SetLaunchForce(launchForce);
 
-        if (healthItemMatchesProjectileCost)
+        if (healthItemReturnsProjectileCost)
         {
-            HealthItem healthItem;
-            if (healthItem = wDetails.dropItem.GetComponent<HealthItem>()) { healthItem.SetHealthAmount(projectileCost); }
+            wDetails.dropItem.GetComponent<HealthItem>().SetHealthAmount(realProjectileCost);
         }
 
         // Use realDamage instead of damage to apply aiming bonus to projectiles

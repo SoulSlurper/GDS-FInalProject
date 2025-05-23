@@ -8,9 +8,9 @@ public class SnakeBossManager : MonoBehaviour
     public enum BossState
     {
         Idle,
-        Attack1,
-        Attack2,
-        Attack3,
+        TailAttack,
+        BiteAttack,
+        ShootAttack,
         Dead
     }
 
@@ -22,88 +22,75 @@ public class SnakeBossManager : MonoBehaviour
     public Vector2 playerPos;
 
     private float idleTime = 3f;
-    private float timer = 0f;
-    private bool canAttack = false;
-    private bool tailInPos = false;
-    private float tailStartY;
-    private float tailAttackTime = 4f;
-    public bool tailCanAttack = false;
-    
+    float idleTimer = 0f;
+
+    public SnakeTailManager TailManager;
+    public SnakeHeadManager HeadManager;
 
     void Start()
     {
         currentState = BossState.Idle;
         Debug.Log("Boss Idle");
         Player = GameObject.FindGameObjectWithTag("Player");
-        tailStartY = Tail.GetComponent<Rigidbody2D>().position.x - 10;
-
+        
+        HeadManager = Head.GetComponent<SnakeHeadManager>();
+        TailManager = Tail.GetComponent<SnakeTailManager>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        playerPos = Player.GetComponent<Rigidbody2D>().position;
+
+
         switch (currentState) 
         { 
             case BossState.Idle:
                 idleState();
                 break;
-            case BossState.Attack1:
-                attack1();
+            case BossState.TailAttack:
+                tailAttack();
+                TailManager.tailAttack(playerPos);
+                HeadManager.tailAttack(playerPos);
                 break;
-            case BossState.Attack2:
-                attack2();
+            case BossState.BiteAttack:
+                biteAttack();
+                HeadManager.biteAttack();
+                TailManager.biteAttack();
                 break;
-            case BossState.Attack3:
-                attack3();
+            case BossState.ShootAttack:
+                shootAttack();
+                HeadManager.shootAttack();
+                TailManager.shootAttack();
                 break;
             case BossState.Dead:
                 dead();
                 break;
         }
 
-        bossUpdates();
     }
 
-    void bossUpdates()
+    void pickState()
     {
-        /*Check if dead
-            NEED TO DO
-        */
-
-        //Update the players position
-        playerPos = Player.GetComponent<Rigidbody2D>().position;
-
-        if (!canAttack) { return; }
-
-        //reset timer and canAttack
-        timer = 0f;
-        tailAttackTime = 0f;
-        canAttack = false;
-
-        switch(/*Random.Range(0,4)*/1)
+        /*switch (Random.Range(0, 3))
         {
+            case 0:
+                currentState = BossState.TailAttack; break;
             case 1:
-                currentState = BossState.Attack1;
-                Debug.Log("Attack 1");
-                break;
+                currentState = BossState.BiteAttack; break;
             case 2:
-                currentState = BossState.Attack2;
-                Debug.Log("Attack 2");
-                break;
-            case 3:
-                currentState = BossState.Attack3;
-                Debug.Log("Attack 3");
-                break;
-        }
+                currentState = BossState.ShootAttack; break;
+        }*/
+        currentState = BossState.TailAttack;
+        Debug.Log(currentState);
     }
 
     void idleState()
     {
-        timer += Time.deltaTime;
-
-        if (timer > idleTime)
+        idleTimer += Time.deltaTime;
+        if (idleTimer > idleTime) 
         {
-            canAttack = true;
-            Debug.Log("Timer Finished");
+            pickState();
+            idleTimer = 0f;
         }
     }
 
@@ -112,35 +99,24 @@ public class SnakeBossManager : MonoBehaviour
 
     }
 
-    void attack1()
+    void tailAttack()
     {
-        Rigidbody2D tailRB = Tail.GetComponent<Rigidbody2D>();
-        BoxCollider2D tailCollider = Tail.gameObject.GetComponent<BoxCollider2D>();
-        tailCollider.isTrigger = true;
-        Vector2 tailPos;
-        
-        tailPos = new Vector2(playerPos.x, tailStartY);
-        tailRB.MovePosition(tailPos);
-
-        if (tailCanAttack)
+        if (TailManager.tailAttackDone) 
         {
-            tailRB.velocityY = 4f;
             currentState = BossState.Idle;
-            Debug.Log("Boss Idle");
-            tailCanAttack = false;
+            Debug.Log(currentState);
+            TailManager.tailAttackDone = false;
         }
     }
 
-    void attack2()
+    void biteAttack()
     {
-        currentState = BossState.Idle;
-        Debug.Log("Boss Idle");
+        
     }
 
-    void attack3()
+    void shootAttack()
     {
-        currentState = BossState.Idle;
-        Debug.Log("Boss Idle");
+       
     }
 
 }
