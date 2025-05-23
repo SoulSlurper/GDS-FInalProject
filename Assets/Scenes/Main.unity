@@ -165578,7 +165578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMusic: {fileID: 8300000, guid: d9ca95822f999664dab27a23e170728d, type: 3}
-  bossMusic: {fileID: 8300000, guid: 39912c741d8540042ad5a10e63e79d87, type: 3}
+  bossMusic: {fileID: 8300000, guid: 69d33980722e08a4a824fd64f1fd6565, type: 3}
   buttonSound: {fileID: 8300000, guid: c2aa696e635d9cc47a14c5b48e1bf8f7, type: 3}
   UIButtonSound: {fileID: 8300000, guid: 6e51b868815831d4e9bd4443cafb8c14, type: 3}
   doorOpenSound: {fileID: 8300000, guid: 53633dbc16c98cb42b1c724bc28f45d3, type: 3}
