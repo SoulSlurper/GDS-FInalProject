@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossTrigger : MonoBehaviour
@@ -10,20 +9,21 @@ public class BossTrigger : MonoBehaviour
     [Header("Camera Details")]
     [SerializeField] public Camera mainCamera;
     [SerializeField] private float bossCameraSize = 5f;
-    
+
     public static bool hasSpawnedBoss = false;
     private float originalCameraSize;
-    
+
+    private GameObject spawnedBoss;
+
     void Start()
     {
         healthBar.SetActiveState(false);
-        boss.GetComponent<Status>().SetHealthBar(healthBar);
 
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
         }
-        
+
         originalCameraSize = mainCamera.orthographicSize;
     }
 
@@ -32,31 +32,54 @@ public class BossTrigger : MonoBehaviour
         if (!hasSpawnedBoss && collision.CompareTag("Player"))
         {
             SpawnBoss();
-
-            // Set camera size for boss battle
             mainCamera.orthographicSize = bossCameraSize;
-            
-            // Optional: Disable the trigger after spawning
-            //gameObject.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayBossMusicUntilDefeated(this, () => spawnedBoss == null);
+            }
+
+            // Optional: disable the trigger so it doesn't trigger again
+            GetComponent<Collider2D>().enabled = false;
         }
     }
 
     private void SpawnBoss()
     {
-        //don't change position
-        Instantiate(boss, new Vector2(180f, -2f), Quaternion.identity);
+        spawnedBoss = Instantiate(boss, new Vector2(180f, -2f), Quaternion.identity);
         hasSpawnedBoss = true;
+
+        // Setup health bar if boss has Status
+        Status bossStatus = spawnedBoss.GetComponent<Status>();
+        if (bossStatus != null)
+        {
+            bossStatus.SetHealthBar(healthBar);
+        }
+
+        healthBar.SetActiveState(true);
+
+        // Start watching for boss defeat
+        StartCoroutine(WatchForBossDefeat());
     }
 
-    // Method to restore original camera settings (can be called when boss is defeated)
+    private IEnumerator WatchForBossDefeat()
+    {
+        while (spawnedBoss != null)
+        {
+            yield return null;
+        }
+
+        RestoreOriginalCamera();
+        healthBar.SetActiveState(false);
+    }
+
     public void RestoreOriginalCamera()
     {
         if (mainCamera != null)
         {
             mainCamera.orthographicSize = originalCameraSize;
         }
-        
-        // Reset the static flag if needed for future boss encounters
+
         hasSpawnedBoss = false;
     }
 }

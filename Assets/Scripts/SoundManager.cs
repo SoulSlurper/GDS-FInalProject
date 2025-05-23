@@ -60,6 +60,10 @@ public class SoundManager : MonoBehaviour
     private bool isWalking = false;
     private bool isSplattering = false;
     private GameObject player;
+    
+    
+    private Coroutine bossMusicRoutine;
+
 
     private void Awake()
     {
@@ -159,6 +163,17 @@ public class SoundManager : MonoBehaviour
     }
     
     #region Public Sound Methods
+    
+    public void PlayBossMusicUntilDefeated(MonoBehaviour caller, System.Func<bool> isBossDefeated)
+    {
+        if (bossMusicRoutine != null)
+        {
+            caller.StopCoroutine(bossMusicRoutine);
+        }
+
+        bossMusicRoutine = caller.StartCoroutine(WaitForBossDefeat(isBossDefeated));
+    }
+
     
     // UI Sounds
     public void PlayButtonSound()
@@ -405,6 +420,19 @@ public class SoundManager : MonoBehaviour
         
         // Active sound effects will update on their next play
     }
+    
+    private IEnumerator WaitForBossDefeat(System.Func<bool> isBossDefeated)
+    {
+        PlayBossMusic();
+
+        while (!isBossDefeated())
+        {
+            yield return null;
+        }
+
+        ResumeBackgroundMusic();
+    }
+
     
     #endregion
 }

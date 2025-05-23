@@ -85,7 +85,11 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadSceneWithFade(string sceneName)
     {
-        Time.timeScale = 1f; // Reset in case we're paused
+        Time.timeScale = 1f;
+
+        // Ensure background music resumes on non-boss scenes
+        SoundManager.Instance?.ResumeBackgroundMusic();
+
         if (fadeImage != null)
         {
             StartCoroutine(FadeAndLoadScene(sceneName));
@@ -96,6 +100,7 @@ public class SceneLoader : MonoBehaviour
             SceneManager.LoadScene(sceneName);
         }
     }
+
 
     private IEnumerator FadeAndLoadScene(string sceneName)
     {
@@ -121,7 +126,9 @@ public class SceneLoader : MonoBehaviour
 
     public void QuitGame()
     {
+        SoundManager.Instance?.ResumeBackgroundMusic();
         Debug.Log("Quitting Game...");
         Application.Quit();
     }
+
 }
