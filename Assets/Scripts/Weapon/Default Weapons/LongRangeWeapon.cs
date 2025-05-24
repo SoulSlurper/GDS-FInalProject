@@ -149,9 +149,19 @@ public class LongRangeWeapon : Weapon
     private void SpawnProjectile()
     {
         //instantiates as a child object in the LaunchLocation Transform to be accurately in its location when the weapon is flipped on the left side
-        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.transform);
-
+        GameObject projectileObject = Instantiate(projectile.gameObject, launchLocation.position, launchLocation.rotation);
         ProjectileWeapon wDetails = projectileObject.GetComponent<ProjectileWeapon>();
+
+        //based on the gameobject containing the WeaponAtHand.cs, where the arrow is not yet flipped (the arrow is slightly not in the center)
+        if (transform.parent.GetComponent<WeaponAtHand>())
+        {
+            if (transform.parent.transform.localScale.y < 0f)
+            {
+                Vector3 scale = projectileObject.transform.localScale;
+                scale.y *= -1;
+                projectileObject.transform.localScale = scale;
+            }
+        }
 
         wDetails.SetWeaponUser(weaponUser);
         wDetails.SetUsesGravity(usesGravity);
