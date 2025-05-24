@@ -22,6 +22,7 @@ TagManager:
   - Spike
   - Button
   - OneWayPlatform
+  - BossTrigger
   layers:
   - Default
   - TransparentFX

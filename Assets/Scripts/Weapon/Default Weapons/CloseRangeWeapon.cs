@@ -17,7 +17,7 @@ public class CloseRangeWeapon : Weapon
     {
         //Debug.Log("trigger detects: " + collision.gameObject.name);
 
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item")) return;
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Weapon") || collision.CompareTag("Item") || collision.CompareTag("BossTrigger")) return;
 
         MakeDamage(collision);
     }

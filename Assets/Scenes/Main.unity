@@ -17276,7 +17276,7 @@ GameObject:
   - component: {fileID: 169665448}
   m_Layer: 0
   m_Name: Boss Trigger Snake
-  m_TagString: Untagged
+  m_TagString: BossTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115203,7 +115203,7 @@ GameObject:
   - component: {fileID: 1001098786}
   m_Layer: 0
   m_Name: Boss Trigger Eyeball
-  m_TagString: Untagged
+  m_TagString: BossTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267580,11 +267580,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.94
+      value: 132.9
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.79
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.z
