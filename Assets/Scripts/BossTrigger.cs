@@ -39,8 +39,7 @@ public class BossTrigger : MonoBehaviour
                 SoundManager.Instance.PlayBossMusicUntilDefeated(this, () => spawnedBoss == null);
             }
 
-            // Optional: disable the trigger so it doesn't trigger again
-            GetComponent<Collider2D>().enabled = false;
+            
         }
     }
 
