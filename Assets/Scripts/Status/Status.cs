@@ -31,6 +31,7 @@ public class Status : MonoBehaviour
     public void SetHealthBar(HealthBar healthBar)
     {
         this.healthBar = healthBar;
+        SetupHealthBar();
     }
 
     private void SetupHealthBar()
@@ -58,7 +59,7 @@ public class Status : MonoBehaviour
 
         float previousHealth = currentHealth;
         DecreaseCurrentHealth(damage);
-        
+
         // Calculate actual damage dealt
         float actualDamage = previousHealth - currentHealth;
         
