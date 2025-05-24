@@ -11,6 +11,9 @@ public class BossTrigger : MonoBehaviour
     [SerializeField] private float bossCameraSize = 5f;
 
     public static bool hasSpawnedBoss = false;
+    public static bool bossDefeated = false;
+
+    private Collider2D col;
     private float originalCameraSize;
 
     private GameObject spawnedBoss;
@@ -24,6 +27,7 @@ public class BossTrigger : MonoBehaviour
             mainCamera = Camera.main;
         }
 
+        col = GetComponent<Collider2D>();
         originalCameraSize = mainCamera.orthographicSize;
     }
 
@@ -39,7 +43,7 @@ public class BossTrigger : MonoBehaviour
                 SoundManager.Instance.PlayBossMusicUntilDefeated(this, () => spawnedBoss == null);
             }
 
-            
+            col.enabled = false;
         }
     }
 
@@ -70,6 +74,8 @@ public class BossTrigger : MonoBehaviour
 
         RestoreOriginalCamera();
         healthBar.SetActiveState(false);
+
+        if (!bossDefeated) col.enabled = true;
     }
 
     public void RestoreOriginalCamera()

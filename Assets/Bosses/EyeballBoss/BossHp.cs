@@ -44,6 +44,7 @@ public class BossHp : Status
         if (noHealth)
         {
             Debug.Log(gameObject.name + " Boss is destroyed");
+            BossTrigger.bossDefeated = true;
             Destroy(gameObject);
 
             if (SoundManager.Instance != null)
