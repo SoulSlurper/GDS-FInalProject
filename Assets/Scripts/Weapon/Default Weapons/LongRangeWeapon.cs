@@ -18,7 +18,16 @@ public class LongRangeWeapon : Weapon
     [SerializeField] private bool _healthItemReturnsProjectileCost = true;
     [SerializeField][Range(0f, 1f)] private float _stopGapHealth = 0f; //stops making projectiles when the current health reaches at a certain point
 
+    [Header("Trajectory Display")]
+    [SerializeField] private bool showTrajectory = true;
+    [SerializeField] private int trajectoryPoints = 30;
+    [SerializeField] private float trajectoryTimeStep = 0.1f;
+    [SerializeField] private Color trajectoryColor = new Color(0f, 1f, 0f, 0.8f);
+    [SerializeField] private float maxTrajectoryDistance = 10f;
+
     private float _realProjectileCost;
+    private LineRenderer trajectoryLineRenderer;
+    private SlimeKnightController playerController;
 
     #region Getter and Setters
     public float launchForce
@@ -65,9 +74,111 @@ public class LongRangeWeapon : Weapon
     #endregion
 
     #region Unity
+    void Start()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerController = player.GetComponent<SlimeKnightController>();
+        }
+
+        if (showTrajectory)
+        {
+            SetupTrajectoryDisplay();
+        }
+    }
+
     void Update()
     {
         PerformAttack();
+
+        if (showTrajectory && trajectoryLineRenderer != null)
+        {
+            UpdateTrajectoryDisplay();
+        }
+    }
+    #endregion
+
+    #region Trajectory Display
+    private void SetupTrajectoryDisplay()
+    {
+        GameObject trajectoryObject = new GameObject("TrajectoryDisplay");
+        trajectoryObject.transform.SetParent(transform);
+        trajectoryObject.transform.localPosition = Vector3.zero;
+
+        trajectoryLineRenderer = trajectoryObject.AddComponent<LineRenderer>();
+        trajectoryLineRenderer.material = CreateTrajectoryMaterial();
+        trajectoryLineRenderer.startWidth = 0.03f;
+        trajectoryLineRenderer.endWidth = 0.03f;
+        trajectoryLineRenderer.useWorldSpace = true;
+        trajectoryLineRenderer.positionCount = trajectoryPoints;
+    }
+
+    private Material CreateTrajectoryMaterial()
+    {
+        Material mat = new Material(Shader.Find("Sprites/Default"));
+        mat.color = trajectoryColor;
+        return mat;
+    }
+
+    private void UpdateTrajectoryDisplay()
+    {
+        bool shouldShow = playerController != null && playerController.IsFocusing() && isHeld;
+        
+        if (trajectoryLineRenderer != null)
+        {
+            trajectoryLineRenderer.enabled = shouldShow;
+
+            if (shouldShow)
+            {
+                DrawTrajectory();
+            }
+        }
+    }
+
+    private void DrawTrajectory()
+    {
+        if (launchLocation == null) return;
+
+        Vector3[] points = new Vector3[trajectoryPoints];
+        Vector3 startPos = launchLocation.position;
+        Vector3 startVelocity = launchLocation.right * launchForce;
+
+        if (usesGravity)
+        {
+            for (int i = 0; i < trajectoryPoints; i++)
+            {
+                float time = i * trajectoryTimeStep;
+                Vector3 point = startPos + startVelocity * time;
+                point.y += 0.5f * Physics2D.gravity.y * time * time;
+
+                points[i] = point;
+
+                if (Vector3.Distance(startPos, point) > maxTrajectoryDistance)
+                {
+                    System.Array.Resize(ref points, i + 1);
+                    trajectoryLineRenderer.positionCount = i + 1;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            Vector3 direction = launchLocation.right;
+            for (int i = 0; i < trajectoryPoints; i++)
+            {
+                float distance = (i * trajectoryTimeStep * launchForce);
+                if (distance > maxTrajectoryDistance)
+                {
+                    System.Array.Resize(ref points, i);
+                    trajectoryLineRenderer.positionCount = i;
+                    break;
+                }
+                points[i] = startPos + direction * distance;
+            }
+        }
+
+        trajectoryLineRenderer.SetPositions(points);
     }
     #endregion
 
@@ -172,10 +283,35 @@ public class LongRangeWeapon : Weapon
             wDetails.dropItem.GetComponent<HealthItem>().SetHealthAmount(realProjectileCost);
         }
 
-        // Use realDamage instead of damage to apply aiming bonus to projectiles
+        // Use realDamage instead of damage to apply focusing bonus to projectiles
         wDetails.SetDamage(realDamage);
 
         wDetails.Attack();
+    }
+    #endregion
+
+    #region Public Methods
+    public void SetShowTrajectory(bool show)
+    {
+        showTrajectory = show;
+        if (trajectoryLineRenderer != null)
+        {
+            trajectoryLineRenderer.enabled = show && playerController != null && playerController.IsFocusing() && isHeld;
+        }
+    }
+
+    public void SetTrajectoryPoints(int points)
+    {
+        trajectoryPoints = points;
+        if (trajectoryLineRenderer != null)
+        {
+            trajectoryLineRenderer.positionCount = points;
+        }
+    }
+
+    public void SetMaxTrajectoryDistance(float distance)
+    {
+        maxTrajectoryDistance = distance;
     }
     #endregion
 }

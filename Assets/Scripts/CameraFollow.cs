@@ -9,11 +9,11 @@ public class CameraFollow : MonoBehaviour
     // Camera damping
     [SerializeField] private float damping = 0.5f;
     
-    // Aiming settings
-    [SerializeField] private float aimOffsetStrength = 0.5f;
-    [SerializeField] private float maxAimDistance = 3f;
+    // Focus settings
+    [SerializeField] private float focusOffsetStrength = 0.5f;
+    [SerializeField] private float maxFocusDistance = 3f;
     
-    // Reference to player for checking aim state
+    // Reference to player for checking focus state
     private SlimeKnightController playerController;
     
     // Track initial orthographic size 
@@ -61,24 +61,24 @@ public class CameraFollow : MonoBehaviour
         // Calculate base target position
         Vector3 targetPos = target.position + offset;
         
-        // Apply aim offset if player is aiming
-        if (playerController != null && playerController.IsAiming())
+        // Apply focus offset if player is focusing
+        if (playerController != null && playerController.IsFocusing())
         {
             // Get mouse position in world space
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = targetPos.z; // Keep the same z
             
             // Calculate direction to mouse
-            Vector3 aimDirection = mousePos - targetPos;
+            Vector3 focusDirection = mousePos - targetPos;
             
             // Limit the distance
-            if (aimDirection.magnitude > maxAimDistance)
+            if (focusDirection.magnitude > maxFocusDistance)
             {
-                aimDirection = aimDirection.normalized * maxAimDistance;
+                focusDirection = focusDirection.normalized * maxFocusDistance;
             }
             
-            // Apply aim offset based on strength
-            targetPos += aimDirection * aimOffsetStrength;
+            // Apply focus offset based on strength
+            targetPos += focusDirection * focusOffsetStrength;
         }
         
         // Apply exponential damping for smooth movement

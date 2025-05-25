@@ -203977,8 +203977,8 @@ MonoBehaviour:
   target: {fileID: 6462264909538255612}
   offset: {x: 0, y: 0, z: -10}
   damping: 0.5
-  aimOffsetStrength: 0.5
-  maxAimDistance: 5
+  focusOffsetStrength: 0.5
+  maxFocusDistance: 5
 --- !u!114 &1565849634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260787,8 +260787,8 @@ MonoBehaviour:
   target: {fileID: 6462264909538255612}
   offset: {x: 0, y: 0, z: -10}
   damping: 0.5
-  aimOffsetStrength: 0.5
-  maxAimDistance: 5
+  focusOffsetStrength: 0.5
+  maxFocusDistance: 3
 --- !u!81 &2101056556
 AudioListener:
   m_ObjectHideFlags: 0
@@ -267496,6 +267496,18 @@ PrefabInstance:
       propertyPath: _healthBar
       value: 
       objectReference: {fileID: 1363242446}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: rangeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: rangeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: rangeColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20
@@ -267535,6 +267547,18 @@ PrefabInstance:
     - target: {fileID: 5680072701811430040, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447503101416911556, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: trajectoryColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447503101416911556, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: trajectoryColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447503101416911556, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: trajectoryColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8328409611633574170, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: m_Name

@@ -77,14 +77,12 @@ public class PlayerHealth : Status
         // Get contact point for directional effects
         Vector2 contactPoint = collision.ClosestPoint(transform.position);
         
-        // FIX BUG 1: Ignore spike damage if player is actively attacking with sword
         if (collision.CompareTag("Spike"))
         {
             if (weaponHandler != null && 
                 weaponHandler.selectedWeapon == WeaponType.Sword && 
                 Input.GetMouseButton(0))
             {
-                // Skip damage while attacking with sword
                 return;
             }
             

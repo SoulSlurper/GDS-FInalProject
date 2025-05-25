@@ -27,10 +27,10 @@ public class SlimeKnightController : MonoBehaviour
     [SerializeField] private float flashInterval = 0.1f;
     [SerializeField] private bool playHurtAnimation = true;
 
-    [Header("Aiming Settings")]
-    [SerializeField] private float aimMovementMultiplier = 0.6f; // Slow down to 60% when aiming
-    [SerializeField] private float aimJumpMultiplier = 0.7f; // Reduce jump height when aiming
-    [SerializeField] private bool allowJumpWhileAiming = true; // Option to enable/disable jumping while aiming
+    [Header("Focus Settings")]
+    [SerializeField] private float focusMovementMultiplier = 0.6f; // Slow down to 60% when focusing
+    [SerializeField] private float focusJumpMultiplier = 0.7f; // Reduce jump height when focusing
+    [SerializeField] private bool allowJumpWhileFocusing = true; // Option to enable/disable jumping while focusing
 
     [Header("Physics Materials")]
     [SerializeField] private PhysicsMaterial2D noFriction;
@@ -53,7 +53,7 @@ public class SlimeKnightController : MonoBehaviour
     private Vector2 velocity = Vector2.zero;
     private bool facingRight = true;
     private bool isWalking = false;
-    private bool isAiming = false;
+    private bool isFocusing = false;
     
     // Jump related variables
     private float coyoteTimeCounter;
@@ -78,7 +78,7 @@ public class SlimeKnightController : MonoBehaviour
     private readonly string IS_FALLING = "IsFalling";
     private readonly string IS_GROUNDED = "IsGrounded";
     private readonly string IS_HURT = "IsHurt";
-    private readonly string IS_AIMING = "IsAiming";
+    private readonly string IS_FOCUSING = "IsFocusing";
 
     private void Awake()
     {
@@ -115,8 +115,8 @@ public class SlimeKnightController : MonoBehaviour
         // Process movement input
         horizontalInput = Input.GetAxisRaw("Horizontal");
         
-        // Handle aiming state
-        UpdateAimingState();
+        // Handle focusing state
+        UpdateFocusingState();
         
         // Handle jump input and buffer
         HandleJumpInput();
@@ -184,7 +184,7 @@ public class SlimeKnightController : MonoBehaviour
         }
     }
 
-    private void UpdateAimingState()
+    private void UpdateFocusingState()
     {
         if (weaponHandler == null)
         {
@@ -192,7 +192,7 @@ public class SlimeKnightController : MonoBehaviour
             if (weaponHandler == null) return;
         }
         
-        isAiming = Input.GetMouseButton(1);
+        isFocusing = Input.GetMouseButton(1);
     }
 
     private void CalculateCollisionPoints()
@@ -210,7 +210,7 @@ public class SlimeKnightController : MonoBehaviour
     private void HandleJumpInput()
     {
         // Handle jump buffer
-        if (Input.GetButtonDown("Jump") && (!isAiming || allowJumpWhileAiming))
+        if (Input.GetButtonDown("Jump") && (!isFocusing || allowJumpWhileFocusing))
         {
             jumpBufferCounter = jumpBufferTime;
         }
@@ -236,10 +236,10 @@ public class SlimeKnightController : MonoBehaviour
     {
         float currentJumpForce = jumpForce;
         
-        // Apply jump reduction if aiming
-        if (isAiming && allowJumpWhileAiming)
+        // Apply jump reduction if focusing
+        if (isFocusing && allowJumpWhileFocusing)
         {
-            currentJumpForce *= aimJumpMultiplier;
+            currentJumpForce *= focusJumpMultiplier;
         }
         
         rb.velocity = new Vector2(rb.velocity.x, currentJumpForce);
@@ -312,13 +312,13 @@ public class SlimeKnightController : MonoBehaviour
 
     private void HandleMovementPhysics()
     {
-        // Calculate target velocity with aiming slowdown if applicable
+        // Calculate target velocity with focusing slowdown if applicable
         float currentMoveSpeed = moveSpeed;
         
-        // Only apply aiming slowdown when on ground
-        if (isAiming && isGrounded)
+        // Only apply focusing slowdown when on ground
+        if (isFocusing && isGrounded)
         {
-            currentMoveSpeed *= aimMovementMultiplier;
+            currentMoveSpeed *= focusMovementMultiplier;
         }
         
         float targetVelocityX = horizontalInput * currentMoveSpeed;
@@ -357,19 +357,19 @@ public class SlimeKnightController : MonoBehaviour
         animator.SetBool(IS_RUNNING, Mathf.Abs(horizontalInput) > 0.1f);
         animator.SetBool(IS_FALLING, rb.velocity.y < -0.1f && !isGrounded);
         
-        // Set aiming animation if parameter exists
-        bool hasAimParameter = false;
+        // Set focusing animation if parameter exists
+        bool hasFocusParameter = false;
         foreach (AnimatorControllerParameter param in animator.parameters)
         {
-            if (param.name == IS_AIMING)
+            if (param.name == IS_FOCUSING)
             {
-                hasAimParameter = true;
+                hasFocusParameter = true;
                 break;
             }
         }
         
-        if (hasAimParameter)
-            animator.SetBool(IS_AIMING, isAiming);
+        if (hasFocusParameter)
+            animator.SetBool(IS_FOCUSING, isFocusing);
     }
 
     private void HandleWalkingSound()
@@ -471,7 +471,7 @@ public class SlimeKnightController : MonoBehaviour
     
     // Public state checks
     public bool IsMoving() => Mathf.Abs(horizontalInput) > 0.1f;
-    public bool IsAiming() => isAiming;
+    public bool IsFocusing() => isFocusing;
     public bool IsKnockedBack() => isKnockedBack;
     public bool IsInvincible() => isInvincible;
     

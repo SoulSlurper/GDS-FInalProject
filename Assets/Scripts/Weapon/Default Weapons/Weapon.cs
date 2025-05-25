@@ -23,8 +23,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _knockbackForce = 8f;
     [SerializeField] private float _bossKnockbackMultiplier = 0.5f;
 
-    [Header("Aim Settings")]
-    [SerializeField] private float _aimDamageMultiplier = 1.25f; // 25% damage increase when aiming
+    [Header("Focus Settings")]
+    [SerializeField] private float _focusDamageMultiplier = 1.25f; // 25% damage increase when focusing
 
     [Header("Details by User Health")]
     [SerializeField][Range(0f, 1f)] private float _minDamage = 1f;
@@ -64,7 +64,7 @@ public class Weapon : MonoBehaviour
     public int attackMaxLimit { get => _attackMaxLimit; private set => _attackMaxLimit = value; }
     public bool enabledAttack { get => _enabledAttack; set => _enabledAttack = value; }
     public Color color { get => _color; private set => _color = value; }
-    public float aimDamageMultiplier { get => _aimDamageMultiplier; set => _aimDamageMultiplier = value; }
+    public float focusDamageMultiplier { get => _focusDamageMultiplier; set => _focusDamageMultiplier = value; }
     #endregion
 
     #region Unity
@@ -77,7 +77,7 @@ public class Weapon : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         color = spriteRenderer.color;
         
-        // Find player controller for aim check
+        // Find player controller for focus check
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -211,10 +211,10 @@ public class Weapon : MonoBehaviour
         // Calculate base damage based on health
         float baseDamage = GetRealAmount(damage, minDamage);
         
-        // Apply aiming damage bonus if player is aiming
-        if (playerController != null && playerController.IsAiming())
+        // Apply focusing damage bonus if player is focusing
+        if (playerController != null && playerController.IsFocusing())
         {
-            realDamage = baseDamage * aimDamageMultiplier;
+            realDamage = baseDamage * focusDamageMultiplier;
         }
         else
         {
