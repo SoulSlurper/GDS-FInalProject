@@ -265386,6 +265386,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1363242446}
     - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: attackAngle
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
+      propertyPath: attackRange
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753254744412490651, guid: dc568b0a349a1264d9ce25af2801319d, type: 3}
       propertyPath: rangeColor.b
       value: 1
       objectReference: {fileID: 0}
