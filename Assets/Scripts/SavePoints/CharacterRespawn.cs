@@ -97,6 +97,8 @@ public class CharacterRespawn : MonoBehaviour
     {
         Time.timeScale = 0f;
         isSceneFrozen = true;
+
+        status.enabled = false; //prevent the Status function from updating the character's size
     }
 
     // resumes the scene
@@ -104,6 +106,8 @@ public class CharacterRespawn : MonoBehaviour
     {
         Time.timeScale = originalTimeScale;
         isSceneFrozen = false;
+
+        status.enabled = true;
     }
 
     // Remove boss if present
