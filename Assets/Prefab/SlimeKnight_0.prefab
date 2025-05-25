@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8328409611633574170}
-  selectedWeapon: 0
+  _selectedWeapon: 0
   _availableWeaponsLimit: 3
   healthRegenPerSecond: 1
 --- !u!1 &8328409611633574170
@@ -153,8 +153,7 @@ GameObject:
   - component: {fileID: 380340996724195687}
   - component: {fileID: 2556274459256270731}
   - component: {fileID: 6575998043804767380}
-  - component: {fileID: 810651818567229203}
-  - component: {fileID: 3087442641243320566}
+  - component: {fileID: 7647745233403823487}
   m_Layer: 6
   m_Name: SlimeKnight_0
   m_TagString: Player
@@ -245,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812f7f264023d8c40b70f6ee3f2df4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxYVelocity: 14
   moveSpeed: 5
   jumpForce: 7.5
   fallMultiplier: 2.5
@@ -488,21 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCollider: {fileID: 1554260181763405561}
---- !u!114 &810651818567229203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8328409611633574170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5baa8e66202cb4e9f0630168ee9018, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shrinkDuration: 0.5
-  cameraTravelDuration: 0.25
---- !u!114 &3087442641243320566
+--- !u!114 &7647745233403823487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -662,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3538161316389172762, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: _attackRecoveryTime
-      value: 1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 3945849607136574979, guid: dfe6f61d606b7d34e9a2fb5f9a56aa5f, type: 3}
       propertyPath: m_Layer

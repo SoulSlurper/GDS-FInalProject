@@ -14,7 +14,8 @@ public class CharacterRespawn : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 initialPosition;
     private Vector2 initialVelocity;
-    private Vector3 initialSize;
+    private Vector3 originalSize;
+    private Vector3 scaleSize;
 
     //on scene details
     private SavePoint savePoint;
@@ -39,7 +40,7 @@ public class CharacterRespawn : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         initialPosition = transform.position;
         initialVelocity = rb.velocity;
-        initialSize = transform.localScale;
+        originalSize = scaleSize = transform.localScale;
 
         mainCamera = Camera.main;
         
@@ -52,8 +53,6 @@ public class CharacterRespawn : MonoBehaviour
         if (!isSceneFrozen && (status.noHealth || Input.GetKeyDown(KeyCode.R)))
         {
             PauseScene();
-
-            Revive();
 
             OnDespawning();
         }
@@ -166,16 +165,18 @@ public class CharacterRespawn : MonoBehaviour
             {
                 playerController.ResetPlayerState();
             }
+
+            scaleSize = originalSize;
         }
     }
 
     // when the player dies, where it sets up the player and lerping details
     private void OnDespawning()
     {
-        initialSize = transform.localScale;
+        scaleSize = transform.localScale;
         rb.velocity = initialVelocity;
 
-        startLerpScale = initialSize;
+        startLerpScale = scaleSize;
         endLerpScale = Vector3.zero;
         t = 0f;
 
@@ -187,11 +188,12 @@ public class CharacterRespawn : MonoBehaviour
     {
         // Move player to save point or initial position
         transform.position = (savePoint != null) ? savePoint.position : initialPosition;
+        Revive();
 
         StartCoroutine(PositionCameraToCharacter(cameraTravelDuration));
 
         startLerpScale = transform.localScale;
-        endLerpScale = initialSize;
+        endLerpScale = scaleSize;
         t = 0f;
 
         isDespawning = false;
